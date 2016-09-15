@@ -45,6 +45,7 @@ public class UpdateDatabaseEJB {
 
         } catch (Exception e) {
             System.err.println("No Movie in TMDB with that ID ("+id+")" + e);
+            movieEntity = null;
         }
         return movieEntity;
     }
@@ -69,11 +70,11 @@ public class UpdateDatabaseEJB {
 
     public Integer getTMDBLimit() {
         //TODO get last added from TMDB API
-        return getLastTMDBIdFromDB()+1;
+        return getLastTMDBIdFromDB()+6;
     }
     public Integer getLastTMDBIdFromDB() {
         //TODO get last from DB in a elegant fashion
-        return 2;
+        return 3;
     }
 
     //TODO private? return value boolean or object?
@@ -88,8 +89,12 @@ public class UpdateDatabaseEJB {
     //TODO private?
     public List<MovieEntity> getMoviesInInterval(Integer start, Integer limit) {
         List<MovieEntity> movieInterval = new ArrayList<MovieEntity>();
+        MovieEntity currentMovie;
         for (int i = start; i < limit; i++) {
-            movieInterval.add(getMovieFromTMDB(i));
+            currentMovie = getMovieFromTMDB(i);
+            if (currentMovie != null) {
+                movieInterval.add(currentMovie);
+            }
         }
         return movieInterval;
     }
