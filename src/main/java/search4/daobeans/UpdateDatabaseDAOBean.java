@@ -22,12 +22,12 @@ public class UpdateDatabaseDAOBean {
     }
 
     public Integer getLastTmdbId() {
-        List<Integer> movieEntities = entityManager.createNamedQuery("MovieEntity.getLastTmdbId").getResultList();
-        System.out.println("found: "+movieEntities);
-        if (movieEntities.size() < 1) {
+        List<Integer> resultList = entityManager.createNamedQuery("MovieEntity.getLastTmdbId").getResultList();
+        Integer tmdbId = resultList.get(0);
+        if (tmdbId < 1) {
             return 1;
         }
-        return movieEntities.get(movieEntities.size()-1);
+        return tmdbId;
     }
 
     public boolean updateDatabaseWithMovieList(List<MovieEntity> movieList) {
