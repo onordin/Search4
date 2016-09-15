@@ -21,6 +21,15 @@ public class UpdateDatabaseDAOBean {
         return false;
     }
 
+    public Integer getLastTmdbId() {
+        List<Integer> movieEntities = entityManager.createNamedQuery("MovieEntity.getLastTmdbId").getResultList();
+        System.out.println("found: "+movieEntities);
+        if (movieEntities.size() < 1) {
+            return 1;
+        }
+        return movieEntities.get(movieEntities.size()-1);
+    }
+
     public boolean updateDatabaseWithMovieList(List<MovieEntity> movieList) {
         //TODO temporary to test
         for (MovieEntity movie : movieList) {

@@ -4,6 +4,7 @@ import search4.daobeans.UpdateDatabaseDAOBean;
 import search4.entities.MovieEntity;
 import search4.helpers.APIKeyReader;
 import search4.helpers.DateParser;
+import search4.helpers.MovieBubbleSort;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -13,6 +14,8 @@ import javax.json.JsonReader;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 //TODO interface?
@@ -60,21 +63,25 @@ public class UpdateDatabaseEJB {
          */
 
         //TODO this makes us loop through the list twice, is this wise?
+        MovieBubbleSort bubbleSort = new MovieBubbleSort();
         Integer start = getLastTMDBIdFromDB();
-        Integer limit = getTMDBLimit();
+        Integer limit = getTMDBLimit(start);
         List<MovieEntity> movieEntities = getMoviesInInterval(start, limit);
+
+        bubbleSort.bubbleSort(movieEntities); //TODO write proper sorting algorithm
+
         insertMovies(movieEntities);
 
         return true;
     }
 
-    public Integer getTMDBLimit() {
+    public Integer getTMDBLimit(int s) {
         //TODO get last added from TMDB API
-        return getLastTMDBIdFromDB()+6;
+        return s+5;
     }
     public Integer getLastTMDBIdFromDB() {
-        //TODO get last from DB in a elegant fashion
-        return 3;
+        //TODO is this an uggly fix?
+        return updateDatabaseDAOBean.getLastTmdbId()+1;
     }
 
     //TODO private? return value boolean or object?

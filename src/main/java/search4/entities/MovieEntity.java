@@ -7,7 +7,8 @@ import java.sql.Date;
  * Auto generated from database table
  */
 @Entity
-@Table(name = "movies", schema = "search4", catalog = "")
+@Table(name = "movies", schema = "search4", catalog = "") //    int tmdbId
+@NamedQuery(name = "MovieEntity.getLastTmdbId", query = "SELECT movieEntity.tmdbId FROM MovieEntity movieEntity ORDER BY movieEntity.id ASC ") //TODO limit
 public class MovieEntity {
     private int id;
     private int tmdbId;
