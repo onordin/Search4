@@ -12,7 +12,7 @@ import java.io.Serializable;
 public class UpdateDatabaseBean implements Serializable{
 
     @EJB
-    UpdateDatabaseEJB updateDatabaseEJB;
+    private UpdateDatabaseEJB updateDatabaseEJB;
 
     public String updateDatabase() {
         updateDatabaseEJB.updateDatabase();

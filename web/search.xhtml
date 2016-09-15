@@ -5,7 +5,16 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
-<f:view>
-    <h:outputLabel value="Hello, world"/>
-</f:view>
+<h:head>
+    <title>Search</title>
+</h:head>
+<h:body>
+    <h:form id="update">
+    <h:outputLabel for="searchQuery" value="Search:"></h:outputLabel>
+        <h:inputText id="searchQuery" label="search" value="#{searchBean.query}" required="true">
+            <!--<f:validateLength minimum="2" maximum="30"></f:validateLength>-->
+        </h:inputText>
+        <h:commandButton action="#{searchBean.search()}" value="Search"></h:commandButton>
+    </h:form>
+</h:body>
 </html>

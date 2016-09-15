@@ -8,7 +8,11 @@ import java.sql.Date;
  */
 @Entity
 @Table(name = "movies", schema = "search4", catalog = "") //    int tmdbId
-@NamedQuery(name = "MovieEntity.getLastTmdbId", query = "SELECT MAX(movieEntity.tmdbId) FROM MovieEntity movieEntity") //TODO limit
+@NamedQueries({
+@NamedQuery(name = "MovieEntity.getLastTmdbId", query = "SELECT MAX(movieEntity.tmdbId) FROM MovieEntity movieEntity"), //TODO limit
+@NamedQuery(name = "MovieEntity.search", query = "SELECT movieEntity FROM MovieEntity  movieEntity WHERE movieEntity.title LIKE :query")
+})
+
 public class MovieEntity {
     private int id;
     private int tmdbId;
