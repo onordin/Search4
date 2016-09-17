@@ -17,7 +17,22 @@ public class SearchEJB {
     public List<MovieEntity> search(String parameter) {
         return searchDAOBean.search(parameter);
     }
-    public List<MovieEntity> searchOrderByDate(String parameter) {
-        return searchDAOBean.searchOrderByDate(parameter);
+
+    public List<MovieEntity> searchOrderByDateAsc(String parameter) {
+        return searchDAOBean.searchOrderByDateAsc(parameter);
     }
+
+    public List<MovieEntity> searchOrderByDateDesc(String parameter) {
+        return searchDAOBean.searchOrderByDateDesc(parameter);
+    }
+
+    public List<MovieEntity> searchOrderByTitleAsc(String parameter) {
+        return searchDAOBean.searchOrderByTitleAsc(parameter);
+    }
+
+    public List<MovieEntity> searchOrderByTitleDesc(String parameter) {
+        return searchDAOBean.searchOrderByTitleDesc(parameter);
+    }
+
+
 }
