@@ -20,9 +20,8 @@ public class SearchBean implements Serializable{
     private SearchEJB searchEJB;
 
     public String search() { //TODO parameter?
-        //MovieEntity movieEntity = searchEJB.search(query).get(0); //TODO actually handle properly. Send parameter from frontend how?
-        //System.out.println("DA MOVVE ESSS "+movieEntity);
-        movieEntities = searchEJB.search(query);
+        //movieEntities = searchEJB.search(query);
+        movieEntities = searchEJB.searchOrderByDate(query); //TODO query or parameter all the way? better name?
         return "result";
     }
 

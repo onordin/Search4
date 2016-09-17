@@ -9,8 +9,9 @@ import java.sql.Date;
 @Entity
 @Table(name = "movies", schema = "search4", catalog = "") //    int tmdbId
 @NamedQueries({
-@NamedQuery(name = "MovieEntity.getLastTmdbId", query = "SELECT MAX(movieEntity.tmdbId) FROM MovieEntity movieEntity"), //TODO limit
-@NamedQuery(name = "MovieEntity.search", query = "SELECT movieEntity FROM MovieEntity  movieEntity WHERE movieEntity.title LIKE :query")
+    @NamedQuery(name = "MovieEntity.getLastTmdbId", query = "SELECT MAX(movieEntity.tmdbId) FROM MovieEntity movieEntity"), //TODO limit
+    @NamedQuery(name = "MovieEntity.search", query = "SELECT movieEntity FROM MovieEntity  movieEntity WHERE movieEntity.title LIKE :query OR movieEntity.title LIKE :query2"),
+    @NamedQuery(name = "MovieEntity.searchSortedByDate", query = "SELECT movieEntity FROM MovieEntity movieEntity WHERE movieEntity.title LIKE :query OR movieEntity.title LIKE :query2 ORDER BY movieEntity.date")//TODO name of querys?
 })
 
 public class MovieEntity {

@@ -14,8 +14,11 @@ public class SearchDAOBean {
     private EntityManager entityManager;
 
     public List<MovieEntity> search(String parameter) {
-        List<MovieEntity> movies = entityManager.createNamedQuery("MovieEntity.search").setParameter("query", parameter+"%").getResultList(); //TODO solve NamedQueries in MovieEntity when internet
-        movies.addAll(entityManager.createNamedQuery("MovieEntity.search").setParameter("query", "% "+parameter+"%").getResultList());
-        return movies; //TODO return directly when works
+        return entityManager.createNamedQuery("MovieEntity.search").setParameter("query", parameter+"%").setParameter("query", "% "+parameter+"%").getResultList(); //TODO solve NamedQueries in MovieEntity when internet
+    }
+
+    //TODO for this to actually work we need it to be only one query; otherwise we get 2 sorted lists
+    public List<MovieEntity> searchOrderByDate(String parameter) {
+        return entityManager.createNamedQuery("MovieEntity.searchSortedByDate").setParameter("query", parameter+"%").setParameter("query2", "% "+parameter+"%").getResultList();
     }
 }

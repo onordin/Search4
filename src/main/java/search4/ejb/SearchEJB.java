@@ -17,4 +17,7 @@ public class SearchEJB {
     public List<MovieEntity> search(String parameter) {
         return searchDAOBean.search(parameter);
     }
+    public List<MovieEntity> searchOrderByDate(String parameter) {
+        return searchDAOBean.searchOrderByDate(parameter);
+    }
 }
