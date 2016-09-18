@@ -5,4 +5,5 @@
         <jta-data-source>jdbc/search4</jta-data-source>
         <class>search4.entities.MovieEntity</class>
     </persistence-unit>
-</persistence>
+
+ </persistence>

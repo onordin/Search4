@@ -77,7 +77,7 @@ public class UpdateDatabaseEJB {
 
     public Integer getTMDBLimit(int s) {
         //TODO get last added from TMDB API
-        return s+5;
+        return s+10;
     }
     public Integer getLastTMDBIdFromDB() {
         //TODO is this an uggly fix?

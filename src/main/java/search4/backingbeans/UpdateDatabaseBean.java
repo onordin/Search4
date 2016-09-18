@@ -11,7 +11,11 @@ import java.io.Serializable;
 @SessionScoped
 public class UpdateDatabaseBean implements Serializable{
 
-    @EJB
+   
+	private static final long serialVersionUID = -59129171457314519L;
+	
+	
+	@EJB
     UpdateDatabaseEJB updateDatabaseEJB;
 
     public String updateDatabase() {
