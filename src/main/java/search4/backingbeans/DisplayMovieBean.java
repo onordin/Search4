@@ -28,8 +28,6 @@ public class DisplayMovieBean implements Serializable{
     public void getMovieData(Integer id) {
         MovieEntity movieEntity = displayMovieEJB.getMovieData(id);
         displayMovieEntity = displayMovieEJB.getFullMovieFromTMDB(movieEntity.getTmdbId());
-//        movieTitle = movieEntity.getTitle();
-//        movieDescription = movieEntity.getDate().toString();
     }
 
     public DisplayMovieEntity getDisplayMovieEntity() {
