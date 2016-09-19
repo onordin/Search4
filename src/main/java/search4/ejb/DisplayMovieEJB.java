@@ -47,7 +47,7 @@ public class DisplayMovieEJB {
             displayMovieEntity.setTitle(jsonObject.getString("original_title"));
             displayMovieEntity.setDescription(jsonObject.getString("overview"));
             displayMovieEntity.setDate(dateParser.getDateFromString(jsonObject.getString("release_date")));
-            displayMovieEntity.setPosterUrl(jsonObject.getString("poster_path"));
+            displayMovieEntity.setPosterUrl("http://image.tmdb.org/t/p/w185"+jsonObject.getString("poster_path"));
 
         } catch (Exception e) {
             System.err.println("No Movie in TMDB with that ID ("+tmdbId+")" + e);
