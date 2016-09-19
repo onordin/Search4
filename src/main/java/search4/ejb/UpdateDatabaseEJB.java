@@ -70,7 +70,7 @@ public class UpdateDatabaseEJB {
 
         //TODO this makes us loop through the list twice, is this wise?
         startMod = 0;
-        for (int i = 0; i < 500; i++) {
+        for (int i = 0; i < 1; i++) {
             start = getLastTMDBIdFromDB()+startMod;
 //            start = getLastTMDBIdFromDB()+35;
             limit = getTMDBLimit(start);

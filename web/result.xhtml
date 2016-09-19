@@ -23,6 +23,10 @@
             <f:facet name="header">Date</f:facet>
             #{movie.date}
         </h:column>
+        <h:column>
+            <f:facet name="header">Info</f:facet>
+            <a href="view_movie.xhtml?id=#{movie.id}">Info</a>
+        </h:column>
     </h:dataTable>
 </h:body>
 </html>

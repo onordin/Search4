@@ -9,20 +9,16 @@
     <title>Get Movie Title</title>
 </h:head>
 <h:body>
-    <h1>Movie Title</h1>
-    <h:dataTable value="#{searchBean.movieEntities}" var="movie">
-        <h:column>
-            <f:facet name="header">Movie Title</f:facet>
-            #{movie.title}
-        </h:column>
-        <h:column>
-            <f:facet name="header">TMDB ID</f:facet>
-            #{movie.tmdbId}
-        </h:column>
-        <h:column>
-            <f:facet name="header">Date</f:facet>
-            #{movie.date}
-        </h:column>
-    </h:dataTable>
+
+    <f:metadata>
+        <f:viewParam name="id" value="#{displayBean.movieId}" />
+        <f:event type="preRenderView" listener="#{displayBean.postInit()}" />
+    </f:metadata>
+
+
+    <h1>#{displayBean.displayMovieEntity.title}</h1>
+    <p>#{displayBean.displayMovieEntity.description}</p>
+    <p>#{displayBean.displayMovieEntity.date}</p>
+    <p>IMAGE COMING</p>
 </h:body>
 </html>
