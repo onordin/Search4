@@ -14,22 +14,37 @@ public class SearchDAOBean {
     private EntityManager entityManager;
 
     public List<MovieEntity> search(String parameter) {
-        return entityManager.createNamedQuery("MovieEntity.search").setParameter("query", parameter+"%").setParameter("query", "% "+parameter+"%").getResultList(); //TODO solve NamedQueries in MovieEntity when internet
+        return entityManager.createNamedQuery("MovieEntity.search")
+                .setParameter("query", parameter+"%")
+                .setParameter("query", "% "+parameter+"%")
+                .getResultList();
     }
 
     public List<MovieEntity> searchOrderByDateAsc(String parameter) {
-        return entityManager.createNamedQuery("MovieEntity.searchOrderByDateAsc").setParameter("query", parameter+"%").setParameter("query2", "% "+parameter+"%").getResultList();
+        return entityManager.createNamedQuery("MovieEntity.searchOrderByDateAsc")
+                .setParameter("query", parameter+"%")
+                .setParameter("query2", "% "+parameter+"%")
+                .getResultList();
     }
 
     public List<MovieEntity> searchOrderByDateDesc(String parameter) {
-        return entityManager.createNamedQuery("MovieEntity.searchOrderByDateDesc").setParameter("query", parameter+"%").setParameter("query2", "% "+parameter+"%").getResultList();
+        return entityManager.createNamedQuery("MovieEntity.searchOrderByDateDesc")
+                .setParameter("query", parameter+"%")
+                .setParameter("query2", "% "+parameter+"%")
+                .getResultList();
     }
 
     public List<MovieEntity> searchOrderByTitleAsc(String parameter) {
-        return entityManager.createNamedQuery("MovieEntity.searchOrderByTitleAsc").setParameter("query", parameter+"%").setParameter("query2", "% "+parameter+"%").getResultList();
+        return entityManager.createNamedQuery("MovieEntity.searchOrderByTitleAsc")
+                .setParameter("query", parameter+"%")
+                .setParameter("query2", "% "+parameter+"%")
+                .getResultList();
     }
 
     public List<MovieEntity> searchOrderByTitleDesc(String parameter) {
-        return entityManager.createNamedQuery("MovieEntity.searchOrderByTitleDesc").setParameter("query", parameter+"%").setParameter("query2", "% "+parameter+"%").getResultList();
+        return entityManager.createNamedQuery("MovieEntity.searchOrderByTitleDesc")
+                .setParameter("query", parameter+"%")
+                .setParameter("query2", "% "+parameter+"%")
+                .getResultList();
     }
 }

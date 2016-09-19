@@ -21,6 +21,7 @@ public class UpdateDatabaseDAOBean {
         return false;
     }
 
+    //TODO make this not retarded
     public Integer getLastTmdbId() {
         List<Integer> resultList = entityManager.createNamedQuery("MovieEntity.getLastTmdbId").getResultList();
         Integer tmdbId = resultList.get(0);
