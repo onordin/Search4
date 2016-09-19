@@ -25,18 +25,27 @@ public class DisplayMovieEJB {
         return displayMovieDAOBean.getMovieData(id); //TODO anything we want to handle here?
     }
 
-    public DisplayMovieEntity getMovieInfo(Integer tmdbId) {
-        return getFullMovieFromTMDB(tmdbId);
+    public DisplayMovieEntity getMovieInfoAndUpdateGuideboxId(MovieEntity movieEntity) {
+        DisplayMovieEntity displayMovieEntity = new DisplayMovieEntity();
+        checkIfGuideboxSet(movieEntity);
+        retrieveStreamingServices(displayMovieEntity, movieEntity.getGuideboxId());
+        getFullMovieFromTMDB(displayMovieEntity, movieEntity.getTmdbId());
+        return displayMovieEntity;
     }
 
-    public DisplayMovieEntity getFullMovieFromTMDB(Integer tmdbId) {
+    public void checkIfGuideboxSet(MovieEntity movieEntity) {
+        //TODO check if guidebox ID is set in movieEntity, otherwise make call and set it
+    }
+
+    public void retrieveStreamingServices(DisplayMovieEntity displayMovieEntity, Integer guideBoxId) {
+        //TODO retrieve streaming services from guidebox
+    }
+
+    public void getFullMovieFromTMDB(DisplayMovieEntity displayMovieEntity, Integer tmdbId) {
         APIKeyReader apiKeyReader = new APIKeyReader();
         DateParser dateParser = new DateParser();
         String tmdbUrl = "https://api.themoviedb.org/3/movie/"; //TODO import from file?
         String tmdbAPIKey = apiKeyReader.getKey("tmdb");
-
-        DisplayMovieEntity displayMovieEntity = new DisplayMovieEntity();
-
         try {
             String url = tmdbUrl+tmdbId+tmdbAPIKey;
             InputStream is = new URL(url).openStream();
@@ -51,8 +60,7 @@ public class DisplayMovieEJB {
 
         } catch (Exception e) {
             System.err.println("No Movie in TMDB with that ID ("+tmdbId+")" + e);
-            displayMovieEntity = null;
+            //TODO handle error?
         }
-        return displayMovieEntity;
     }
 }
