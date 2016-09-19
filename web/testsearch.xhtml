@@ -13,10 +13,24 @@
 </h:head>
 <h:body>
 	
-	<h2>This page is to test search for a movie called Citizen Kane</h2>    
+	<h2>This page is to test search for a movie</h2>    
+
+		
 
     <h:form id="searchtest">
+    
+    <h:messages></h:messages>
+
+		<h:panelGrid columns="2" columnClasses="rightAlign, leftAlign">
+   			 <h:outputLabel for="title" value="Title:"></h:outputLabel>
+				<h:inputText id="title" label="Title:" value="#{searchDatabaseBean.title}" required="true">
+					<f:validateLength minimum="2" maximum="60"></f:validateLength>
+			</h:inputText>
+    
         <h:commandButton action="#{searchDatabaseBean.searchMovie()}" value="Search"></h:commandButton>
+        
+        </h:panelGrid>
+        		
     </h:form>
     
 </h:body>

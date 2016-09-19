@@ -75,9 +75,9 @@ public class UpdateDatabaseEJB {
         return true;
     }
 
-    public Integer getTMDBLimit(int s) {
+    public Integer getTMDBLimit(int start) {
         //TODO get last added from TMDB API
-        return s+10;
+        return start+10;
     }
     public Integer getLastTMDBIdFromDB() {
         //TODO is this an uggly fix?
@@ -87,7 +87,6 @@ public class UpdateDatabaseEJB {
     //TODO private? return value boolean or object?
     public void insertMovies(List<MovieEntity> movies) {
         for (MovieEntity movieEntity : movies) {
-            System.out.println("inserting movie "+movieEntity);
             updateDatabaseDAOBean.createMovie(movieEntity);
         }
     }
