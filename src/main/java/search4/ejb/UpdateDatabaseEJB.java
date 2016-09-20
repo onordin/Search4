@@ -65,7 +65,6 @@ public class UpdateDatabaseEJB {
         startMod = 0;
         for (int i = 0; i < 500; i++) {
             start = getLastTMDBIdFromDB()+startMod;
-//            start = getLastTMDBIdFromDB()+35;
             limit = getTMDBLimit(start);
             movieEntities = getMoviesInInterval(start, limit);
             if (movieEntities.size() < 1) {
