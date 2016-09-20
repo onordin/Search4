@@ -21,7 +21,10 @@
     <p>#{displayBean.displayMovieEntity.date}</p>
     <img src="#{displayBean.displayMovieEntity.posterUrl}" alt="image"/>
 
-    <!-- TMP -->
-    <p>#{displayBean.displayMovieEntity.providerList.get(0)}</p>
+    <ui:repeat value="#{displayBean.displayMovieEntity.providerList}" var="provider">
+        <!--#{provider.type}-->
+        <!--<h:link value="PROVIDER TYPE" outcome="#{provider.url}"/>-->
+        <a href="#{provider.url}">PROVIDER TYPE</a>
+    </ui:repeat>
 </h:body>
 </html>

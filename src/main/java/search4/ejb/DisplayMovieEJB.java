@@ -64,11 +64,16 @@ public class DisplayMovieEJB {
 
         List<JsonObject> objectList = jSonHelper.getObjectList(url, "purchase_web_sources");
         List<ServiceProviderLink> serviceProviderLinks = new ArrayList<ServiceProviderLink>();
-        //TODO temporary
-        ServiceProviderLink serviceProviderLink = new ServiceProviderLink();
-        serviceProviderLink.setType(ServiceProviderType.AMAZON); //TODO make a parser that identifies this
-        serviceProviderLink.setUrl(objectList.get(0).getString("link"));
-        serviceProviderLinks.add(serviceProviderLink);
+
+        ServiceProviderLink providerLink;
+        for(JsonObject jsonObject : objectList) {
+            providerLink = new ServiceProviderLink();
+            providerLink.setType(null); //TODO fix
+            providerLink.setUrl(jsonObject.getString("link"));
+            serviceProviderLinks.add(providerLink);
+        }
+
+        displayMovieEntity.setProviderList(serviceProviderLinks);
     }
 
     private void setTmdbInfo(DisplayMovieEntity displayMovieEntity, Integer tmdbId) {
