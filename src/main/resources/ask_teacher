@@ -1,2 +1,9 @@
-Adrian:
-    Interfaces on EJBs?
+Interfaces on EJBs?
+Objects in DB editen in DB when object is edited.
+Unit Tests:
+    are there any point in current setup?
+BackingBeans:
+    DisplayMovieBean:
+        Should be viewscoped? How does this work?
+DisplayMovieEJB:
+    How to handle errors? Throw exceptions or send custom messages.. ?

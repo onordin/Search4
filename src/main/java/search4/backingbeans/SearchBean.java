@@ -21,7 +21,7 @@ public class SearchBean implements Serializable{
 
     //TODO choose order by from frontend?
     public String search() {
-        movieEntities = searchEJB.searchOrderByDateDesc(query); //TODO query or parameter all the way? better name?
+        movieEntities = searchEJB.searchOrderByDateDesc(query);
         return "result";
     }
 
