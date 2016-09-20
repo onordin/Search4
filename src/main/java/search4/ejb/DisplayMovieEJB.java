@@ -40,12 +40,29 @@ public class DisplayMovieEJB {
     /*
     public DisplayMovieEntity getMovieInfo(Integer tmdbId) {
         return getFullMovieFromTMDB(tmdbId);
+=======
+    public DisplayMovieEntity getMovieInfoAndUpdateGuideboxId(MovieEntity movieEntity) {
+        DisplayMovieEntity displayMovieEntity = new DisplayMovieEntity();
+        checkIfGuideboxSet(movieEntity);
+        retrieveStreamingServices(displayMovieEntity, movieEntity.getGuideboxId());
+        getFullMovieFromTMDB(displayMovieEntity, movieEntity.getTmdbId());
+        return displayMovieEntity;
+    }
+
+    public void checkIfGuideboxSet(MovieEntity movieEntity) {
+        //TODO check if guidebox ID is set in movieEntity, otherwise make call and set it
+    }
+
+    public void retrieveStreamingServices(DisplayMovieEntity displayMovieEntity, Integer guideBoxId) {
+        //TODO retrieve streaming services from guidebox
+>>>>>>> 23dc4b919a30eee2208562aed5ffc38df9620922
     }
     */
     
     
 
     public DisplayMovieEntity getFullMovieFromTMDB(MovieEntity movie) {
+
         APIKeyReader apiKeyReader = new APIKeyReader();
         DateParser dateParser = new DateParser();
         String tmdbUrl = "https://api.themoviedb.org/3/movie/"; //TODO import from file?
@@ -72,8 +89,9 @@ public class DisplayMovieEJB {
             
         } catch (Exception e) {
             System.err.println("No Movie in TMDB with that ID ("+tmdbId+")" + e);
-            displayMovieEntity = null;
+            //TODO handle error?
         }
+        
         return displayMovieEntity;
     }
     
