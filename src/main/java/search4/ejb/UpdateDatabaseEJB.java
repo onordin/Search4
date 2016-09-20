@@ -71,7 +71,7 @@ public class UpdateDatabaseEJB {
                 startMod += 40;
             }
             else {
-                bubbleSort.bubbleSort(movieEntities); //TODO write proper sorting algorithm
+//                bubbleSort.bubbleSort(movieEntities); //TODO write proper sorting algorithm    THIS IS UNESSECARY
                 insertMovies(movieEntities);
                 startMod = 0;
             }

@@ -19,6 +19,14 @@
             <artifactId>json</artifactId>
             <version>20160810</version>
         </dependency>
+
+        <!-- TEMP -->
+        <dependency>
+            <groupId>org.glassfish</groupId>
+            <artifactId>javax.json</artifactId>
+            <version>1.0.4</version>
+        </dependency>
+
         <dependency>
             <groupId>javax.enterprise</groupId>
             <artifactId>cdi-api</artifactId>
