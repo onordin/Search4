@@ -8,4 +8,11 @@ public class URLBuilder {
         String tmdbAPIKey = apiKeyReader.getKey("tmdb");
         return tmdbUrl+tmdbId+tmdbAPIKey;
     }
+
+    public String guideboxUrl(Integer id, String endQuery) {
+        APIKeyReader apiKeyReader = new APIKeyReader();
+        String guideBoxUrl = "https://api-public.guidebox.com/v1.43/US/";
+        String guideBoxAPIKey = apiKeyReader.getKey("guidebox");
+        return guideBoxUrl+guideBoxAPIKey+endQuery+id;
+    }
 }

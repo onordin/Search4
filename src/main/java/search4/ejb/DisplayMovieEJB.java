@@ -3,18 +3,17 @@ package search4.ejb;
 import search4.daobeans.DisplayMovieDAOBean;
 import search4.entities.DisplayMovieEntity;
 import search4.entities.MovieEntity;
-import search4.helpers.APIKeyReader;
+import search4.entities.ServiceProviderLink;
+import search4.entities.enums.ServiceProviderType;
 import search4.helpers.DateParser;
 import search4.helpers.JSonHelper;
 import search4.helpers.URLBuilder;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
-import javax.json.Json;
 import javax.json.JsonObject;
-import javax.json.JsonReader;
-import java.io.InputStream;
-import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 //TODO interface?
 @Stateless
@@ -31,25 +30,52 @@ public class DisplayMovieEJB {
     public DisplayMovieEntity getDisplayMovie(Integer id) {
         DisplayMovieEntity displayMovieEntity = new DisplayMovieEntity();
         MovieEntity movieEntity = getMovieData(id);
-        isGuideboxSet(movieEntity); //Check if guidbox id is set. If not, set it.
+        setGuideboxId(movieEntity); //Check if guidbox id is set. If not, set it.
         setStreamingServices(displayMovieEntity, movieEntity.getGuideboxId()); //Retrieve streaming services from guidebox
         setTmdbInfo(displayMovieEntity, movieEntity.getTmdbId()); //Retrieve movie information (description, poster etc) from TMDB
         return displayMovieEntity;
     }
 
-    private void isGuideboxSet(MovieEntity movieEntity) {
-        //TODO check if guidebox ID is set in movieEntity, otherwise make call and set it
+    private void setGuideboxId(MovieEntity movieEntity) {
+        if (movieEntity.getGuideboxId() < 1) { //TODO check what lowest guidebox id is
+            movieEntity.setGuideboxId(getGuideboxId(movieEntity.getTmdbId())); //TODO does this update or not?
+        }
+    }
+
+    private Integer getGuideboxId(Integer tmdbId) {
+        Integer guideboxId = 0; //TODO find lowest
+        JSonHelper jSonHelper = new JSonHelper();
+        URLBuilder urlBuilder = new URLBuilder();
+
+        String url = urlBuilder.guideboxUrl(tmdbId, "/search/movie/id/themoviedb/");
+
+        JsonObject jsonObject = jSonHelper.getObject(url);
+        if (jsonObject != null) {
+            guideboxId = jsonObject.getInt("id");
+        }
+        return guideboxId;
     }
 
     private void setStreamingServices(DisplayMovieEntity displayMovieEntity, Integer guideBoxId) {
-        //TODO retrieve streaming services from guidebox
+        JSonHelper jSonHelper = new JSonHelper();
+        URLBuilder urlBuilder = new URLBuilder();
+
+        String url = urlBuilder.guideboxUrl(guideBoxId, "/movie/");
+
+        List<JsonObject> objectList = jSonHelper.getObjectList(url, "purchase_web_sources");
+        List<ServiceProviderLink> serviceProviderLinks = new ArrayList<ServiceProviderLink>();
+        //TODO temporary
+        ServiceProviderLink serviceProviderLink = new ServiceProviderLink();
+        serviceProviderLink.setType(ServiceProviderType.AMAZON); //TODO make a parser that identifies this
+        serviceProviderLink.setUrl(objectList.get(0).getString("link"));
+        serviceProviderLinks.add(serviceProviderLink);
     }
 
     private void setTmdbInfo(DisplayMovieEntity displayMovieEntity, Integer tmdbId) {
         DateParser dateParser = new DateParser();
         JSonHelper jSonHelper = new JSonHelper();
         URLBuilder urlBuilder = new URLBuilder();
-        
+
         String url = urlBuilder.tmdbUrl(tmdbId);
 
         JsonObject jsonObject = jSonHelper.getObject(url);
