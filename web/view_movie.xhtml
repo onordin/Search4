@@ -22,9 +22,8 @@
     <img src="#{displayBean.displayMovieEntity.posterUrl}" alt="image"/>
 
     <ui:repeat value="#{displayBean.displayMovieEntity.providerList}" var="provider">
-        <!--#{provider.type}-->
-        <!--<h:link value="PROVIDER TYPE" outcome="#{provider.url}"/>-->
-        <a href="#{provider.url}">PROVIDER TYPE</a>
+        <br></br>
+        <a href="#{provider.url}">#{provider.type}</a>
     </ui:repeat>
 </h:body>
 </html>

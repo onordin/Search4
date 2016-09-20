@@ -68,12 +68,16 @@ public class DisplayMovieEJB {
         ServiceProviderLink providerLink;
         for(JsonObject jsonObject : objectList) {
             providerLink = new ServiceProviderLink();
-            providerLink.setType(null); //TODO fix
+            providerLink.setType(getType(jsonObject.getString("source"))); //TODO fix
             providerLink.setUrl(jsonObject.getString("link"));
             serviceProviderLinks.add(providerLink);
         }
 
         displayMovieEntity.setProviderList(serviceProviderLinks);
+    }
+
+    private ServiceProviderType getType(String identifier) {
+        return ServiceProviderType.valueOf(identifier.toUpperCase());
     }
 
     private void setTmdbInfo(DisplayMovieEntity displayMovieEntity, Integer tmdbId) {
