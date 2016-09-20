@@ -5,6 +5,8 @@ import search4.entities.DisplayMovieEntity;
 import search4.entities.MovieEntity;
 import search4.helpers.APIKeyReader;
 import search4.helpers.DateParser;
+import search4.helpers.JSonHelper;
+import search4.helpers.URLBuilder;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -21,46 +23,42 @@ public class DisplayMovieEJB {
     @EJB
     private DisplayMovieDAOBean displayMovieDAOBean;
 
-    public MovieEntity getMovieData(Integer id) {
+    private MovieEntity getMovieData(Integer id) {
         return displayMovieDAOBean.getMovieData(id); //TODO anything we want to handle here?
     }
 
-    public DisplayMovieEntity getMovieInfoAndUpdateGuideboxId(MovieEntity movieEntity) {
+    //NEW METHOD: better to send the id to EJB and retrieve MovieEntity here. No point in bringing it to backing bean.
+    public DisplayMovieEntity getDisplayMovie(Integer id) {
         DisplayMovieEntity displayMovieEntity = new DisplayMovieEntity();
-        checkIfGuideboxSet(movieEntity);
-        retrieveStreamingServices(displayMovieEntity, movieEntity.getGuideboxId());
-        getFullMovieFromTMDB(displayMovieEntity, movieEntity.getTmdbId());
+        MovieEntity movieEntity = getMovieData(id);
+        isGuideboxSet(movieEntity); //Check if guidbox id is set. If not, set it.
+        setStreamingServices(displayMovieEntity, movieEntity.getGuideboxId()); //Retrieve streaming services from guidebox
+        setTmdbInfo(displayMovieEntity, movieEntity.getTmdbId()); //Retrieve movie information (description, poster etc) from TMDB
         return displayMovieEntity;
     }
 
-    public void checkIfGuideboxSet(MovieEntity movieEntity) {
+    private void isGuideboxSet(MovieEntity movieEntity) {
         //TODO check if guidebox ID is set in movieEntity, otherwise make call and set it
     }
 
-    public void retrieveStreamingServices(DisplayMovieEntity displayMovieEntity, Integer guideBoxId) {
+    private void setStreamingServices(DisplayMovieEntity displayMovieEntity, Integer guideBoxId) {
         //TODO retrieve streaming services from guidebox
     }
 
-    public void getFullMovieFromTMDB(DisplayMovieEntity displayMovieEntity, Integer tmdbId) {
-        APIKeyReader apiKeyReader = new APIKeyReader();
+    private void setTmdbInfo(DisplayMovieEntity displayMovieEntity, Integer tmdbId) {
         DateParser dateParser = new DateParser();
-        String tmdbUrl = "https://api.themoviedb.org/3/movie/"; //TODO import from file?
-        String tmdbAPIKey = apiKeyReader.getKey("tmdb");
-        try {
-            String url = tmdbUrl+tmdbId+tmdbAPIKey;
-            InputStream is = new URL(url).openStream();
+        JSonHelper jSonHelper = new JSonHelper();
+        URLBuilder urlBuilder = new URLBuilder();
+        
+        String url = urlBuilder.tmdbUrl(tmdbId);
 
-            JsonReader jsonReader = Json.createReader(is);
-            JsonObject jsonObject = jsonReader.readObject();
-
+        JsonObject jsonObject = jSonHelper.getObject(url);
+        if (jsonObject != null) {
             displayMovieEntity.setTitle(jsonObject.getString("original_title"));
             displayMovieEntity.setDescription(jsonObject.getString("overview"));
             displayMovieEntity.setDate(dateParser.getDateFromString(jsonObject.getString("release_date")));
             displayMovieEntity.setPosterUrl("http://image.tmdb.org/t/p/w185"+jsonObject.getString("poster_path"));
-
-        } catch (Exception e) {
-            System.err.println("No Movie in TMDB with that ID ("+tmdbId+")" + e);
-            //TODO handle error?
         }
+        //TODO else throw error? or somehow send a message the operation failed
     }
 }

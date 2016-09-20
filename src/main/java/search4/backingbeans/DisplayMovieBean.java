@@ -24,8 +24,7 @@ public class DisplayMovieBean implements Serializable{
     }
 
     public void getMovieData(Integer id) {
-        MovieEntity movieEntity = displayMovieEJB.getMovieData(id);
-        displayMovieEntity = displayMovieEJB.getMovieInfoAndUpdateGuideboxId(movieEntity);
+        displayMovieEntity = displayMovieEJB.getDisplayMovie(id);
     }
 
     public DisplayMovieEntity getDisplayMovieEntity() {
