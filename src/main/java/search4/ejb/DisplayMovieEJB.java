@@ -5,6 +5,8 @@ import search4.entities.DisplayMovieEntity;
 import search4.entities.MovieEntity;
 import search4.entities.ServiceProviderLink;
 import search4.entities.enums.ServiceProviderType;
+import search4.exceptions.DataNotFoundException;
+import search4.exceptions.UnregisteredProviderException;
 import search4.helpers.DateParser;
 import search4.helpers.JSonHelper;
 import search4.helpers.URLBuilder;
@@ -12,6 +14,7 @@ import search4.helpers.URLBuilder;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.json.JsonObject;
+import javax.ws.rs.BadRequestException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,15 +25,15 @@ public class DisplayMovieEJB {
     @EJB
     private DisplayMovieDAOBean displayMovieDAOBean;
 
-    private MovieEntity getMovieData(Integer id) {
+    private MovieEntity getMovieData(Integer id) throws DataNotFoundException{
         return displayMovieDAOBean.getMovieData(id); //TODO error handling; here or in DAO?
     }
 
     //TODO error handling for all methods in this method. Throw exceptions? Send error messages? Return?
     //NEW METHOD: better to send the id to EJB and retrieve MovieEntity here. No point in bringing it to backing bean.
-    public DisplayMovieEntity getDisplayMovie(Integer id) {
+    public DisplayMovieEntity getDisplayMovie(Integer id) throws UnregisteredProviderException, DataNotFoundException{
         DisplayMovieEntity displayMovieEntity = new DisplayMovieEntity();
-        MovieEntity movieEntity = getMovieData(id);
+        MovieEntity movieEntity = getMovieData(id); //TODO throws TransactionRolledbackLocalException
         setGuideboxId(movieEntity); //Check if guidbox id is set. If not, set it.
         setStreamingServices(displayMovieEntity, movieEntity.getGuideboxId()); //Retrieve streaming services from guidebox
         setTmdbInfo(displayMovieEntity, movieEntity.getTmdbId()); //Retrieve movie information (description, poster etc) from TMDB
@@ -39,6 +42,7 @@ public class DisplayMovieEJB {
 
     private void setGuideboxId(MovieEntity movieEntity) {
         if (movieEntity.getGuideboxId() < 1) { //TODO check what lowest guidebox id is
+            //TODO if below throws exception, do it here to
             movieEntity.setGuideboxId(getGuideboxId(movieEntity.getTmdbId()));
         }
     }
@@ -54,10 +58,13 @@ public class DisplayMovieEJB {
         if (jsonObject != null && !jsonObject.isEmpty()) {
             guideboxId = jsonObject.getInt("id");
         }
+        else {
+            //TODO throw exception? or return 0?
+        }
         return guideboxId;
     }
 
-    private void setStreamingServices(DisplayMovieEntity displayMovieEntity, Integer guideBoxId) {
+    private void setStreamingServices(DisplayMovieEntity displayMovieEntity, Integer guideBoxId) throws UnregisteredProviderException, DataNotFoundException{
         JSonHelper jSonHelper = new JSonHelper();
         URLBuilder urlBuilder = new URLBuilder();
 
@@ -65,6 +72,10 @@ public class DisplayMovieEJB {
 
         List<JsonObject> objectList = jSonHelper.getObjectList(url, "purchase_web_sources");
         List<ServiceProviderLink> serviceProviderLinks = new ArrayList<ServiceProviderLink>();
+
+        if (objectList == null) {
+            throw new DataNotFoundException("Invalid Guidebox ID ("+guideBoxId+")");
+        }
 
         ServiceProviderLink providerLink;
         for(JsonObject jsonObject : objectList) {
@@ -77,11 +88,18 @@ public class DisplayMovieEJB {
         displayMovieEntity.setProviderList(serviceProviderLinks);
     }
 
-    private ServiceProviderType getType(String identifier) {
-        return ServiceProviderType.valueOf(identifier.toUpperCase());
+    private ServiceProviderType getType(String identifier) throws UnregisteredProviderException{
+        identifier = identifier.toUpperCase();
+        ServiceProviderType ret = null;
+        try {
+            ret = ServiceProviderType.valueOf(identifier);
+        } catch (IllegalArgumentException iae) {
+            throw new UnregisteredProviderException("Provider not in system "+identifier);
+        }
+        return ret;
     }
 
-    private void setTmdbInfo(DisplayMovieEntity displayMovieEntity, Integer tmdbId) {
+    private void setTmdbInfo(DisplayMovieEntity displayMovieEntity, Integer tmdbId) throws DataNotFoundException{
         DateParser dateParser = new DateParser();
         JSonHelper jSonHelper = new JSonHelper();
         URLBuilder urlBuilder = new URLBuilder();
@@ -95,6 +113,8 @@ public class DisplayMovieEJB {
             displayMovieEntity.setDate(dateParser.getDateFromString(jsonObject.getString("release_date")));
             displayMovieEntity.setPosterUrl("http://image.tmdb.org/t/p/w185"+jsonObject.getString("poster_path"));
         }
-        //TODO else throw error? or somehow send a message the operation failed
+        else {
+            throw new DataNotFoundException("Invalid TMdB Id ("+tmdbId+")");
+        }
     }
 }
