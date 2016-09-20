@@ -1,6 +1,7 @@
 package search4.ejb;
 
 import search4.daobeans.UpdateDatabaseDAOBean;
+import search4.ejb.interfaces.LocalUpdateDatabase;
 import search4.entities.MovieEntity;
 import search4.helpers.APIKeyReader;
 import search4.helpers.DateParser;
@@ -21,7 +22,7 @@ import java.util.List;
 //TODO interface?
 
 @Stateless
-public class UpdateDatabaseEJB {
+public class UpdateDatabaseEJB implements LocalUpdateDatabase{
 
     @EJB
     private UpdateDatabaseDAOBean updateDatabaseDAOBean;
