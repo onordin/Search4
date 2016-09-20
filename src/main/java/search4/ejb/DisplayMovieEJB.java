@@ -23,9 +23,10 @@ public class DisplayMovieEJB {
     private DisplayMovieDAOBean displayMovieDAOBean;
 
     private MovieEntity getMovieData(Integer id) {
-        return displayMovieDAOBean.getMovieData(id); //TODO anything we want to handle here?
+        return displayMovieDAOBean.getMovieData(id); //TODO error handling; here or in DAO?
     }
 
+    //TODO error handling for all methods in this method. Throw exceptions? Send error messages? Return?
     //NEW METHOD: better to send the id to EJB and retrieve MovieEntity here. No point in bringing it to backing bean.
     public DisplayMovieEntity getDisplayMovie(Integer id) {
         DisplayMovieEntity displayMovieEntity = new DisplayMovieEntity();
@@ -38,7 +39,7 @@ public class DisplayMovieEJB {
 
     private void setGuideboxId(MovieEntity movieEntity) {
         if (movieEntity.getGuideboxId() < 1) { //TODO check what lowest guidebox id is
-            movieEntity.setGuideboxId(getGuideboxId(movieEntity.getTmdbId())); //TODO does this update or not?
+            movieEntity.setGuideboxId(getGuideboxId(movieEntity.getTmdbId()));
         }
     }
 
@@ -68,7 +69,7 @@ public class DisplayMovieEJB {
         ServiceProviderLink providerLink;
         for(JsonObject jsonObject : objectList) {
             providerLink = new ServiceProviderLink();
-            providerLink.setType(getType(jsonObject.getString("source"))); //TODO fix
+            providerLink.setType(getType(jsonObject.getString("source"))); //TODO make sure all guidebox sources are implemented in Enum
             providerLink.setUrl(jsonObject.getString("link"));
             serviceProviderLinks.add(providerLink);
         }

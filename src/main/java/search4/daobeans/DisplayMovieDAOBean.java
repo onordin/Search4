@@ -15,6 +15,4 @@ public class DisplayMovieDAOBean {
     public MovieEntity getMovieData(Integer id) {
         return  (MovieEntity) entityManager.createNamedQuery("MovieEntity.getMovieById").setParameter("id", id).getSingleResult(); //TODO failsafe? can it be wrong?
     }
-
-    //TODO get service availabilty data (needs tables, object, API-support)
 }

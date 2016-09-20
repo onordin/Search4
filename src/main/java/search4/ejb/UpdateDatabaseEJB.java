@@ -26,10 +26,11 @@ public class UpdateDatabaseEJB {
     @EJB
     private UpdateDatabaseDAOBean updateDatabaseDAOBean;
 
+    //TODO implement jsonhelper
     public MovieEntity getMovieFromTMDB(int id) {
         APIKeyReader apiKeyReader = new APIKeyReader();
         DateParser dateParser = new DateParser();
-        String tmdbUrl = "https://api.themoviedb.org/3/movie/"; //TODO import from file?
+        String tmdbUrl = "https://api.themoviedb.org/3/movie/";
         String tmdbAPIKey = apiKeyReader.getKey("tmdb");
 
         MovieEntity movieEntity = new MovieEntity();
@@ -90,12 +91,11 @@ public class UpdateDatabaseEJB {
         return start+40;
     }
     public Integer getLastTMDBIdFromDB() {
-        //TODO is this an uggly fix?
         return updateDatabaseDAOBean.getLastTmdbId()+1;
     }
 
     //TODO private? return value boolean or object?
-    public void insertMovies(List<MovieEntity> movies) {
+    private void insertMovies(List<MovieEntity> movies) {
         for (MovieEntity movieEntity : movies) {
             updateDatabaseDAOBean.createMovie(movieEntity);
         }
@@ -103,7 +103,7 @@ public class UpdateDatabaseEJB {
 
 
     //TODO private?
-    public List<MovieEntity> getMoviesInInterval(Integer start, Integer limit) {
+    private List<MovieEntity> getMoviesInInterval(Integer start, Integer limit) {
         List<MovieEntity> movieInterval = new ArrayList<MovieEntity>();
         MovieEntity currentMovie;
         for (int i = start; i < limit; i++) {
