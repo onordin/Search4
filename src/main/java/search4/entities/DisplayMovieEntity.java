@@ -1,6 +1,7 @@
 package search4.entities;
 
 import java.sql.Date;
+import java.util.List;
 
 public class DisplayMovieEntity {
 
@@ -8,7 +9,7 @@ public class DisplayMovieEntity {
     private String description;
     private Date date;
     private String posterUrl;
-    //TODO other data?
+    private List<ServiceProviderLink> providerList;
 
 
     public String getTitle() {
@@ -41,5 +42,13 @@ public class DisplayMovieEntity {
 
     public void setPosterUrl(String posterUrl) {
         this.posterUrl = posterUrl;
+    }
+
+    public List<ServiceProviderLink> getProviderList() {
+        return providerList;
+    }
+
+    public void setProviderList(List<ServiceProviderLink> providerList) {
+        this.providerList = providerList;
     }
 }
