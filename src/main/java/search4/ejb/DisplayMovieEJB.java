@@ -51,7 +51,7 @@ public class DisplayMovieEJB {
         String url = urlBuilder.guideboxUrl(tmdbId, "/search/movie/id/themoviedb/");
 
         JsonObject jsonObject = jSonHelper.getObject(url);
-        if (jsonObject != null) {
+        if (jsonObject != null && !jsonObject.isEmpty()) {
             guideboxId = jsonObject.getInt("id");
         }
         return guideboxId;
