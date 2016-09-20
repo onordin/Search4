@@ -7,7 +7,7 @@ import java.sql.Date;
  * Auto generated from database table
  */
 @Entity
-@Table(name = "movies", schema = "search4", catalog = "") //    int tmdbId
+@Table(name = "movies", schema = "search4", catalog = "")
 @NamedQueries({
     @NamedQuery(name = "MovieEntity.getLastTmdbId", query = "SELECT MAX(movieEntity.tmdbId) FROM MovieEntity movieEntity"), //TODO limit
     @NamedQuery(name = "MovieEntity.search", query = "SELECT movieEntity FROM MovieEntity  movieEntity WHERE movieEntity.title LIKE :query OR movieEntity.title LIKE :query2"),
