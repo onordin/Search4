@@ -11,13 +11,12 @@ import java.io.Serializable;
 @Named(value="updateDatabaseBean") //if we want to use another name to call this from the JSF file
 @ApplicationScoped
 public class UpdateDatabaseBean implements Serializable{
-
    
 	private static final long serialVersionUID = -59129171457314519L;
 	
 	
 	@EJB
-    UpdateDatabaseEJB updateDatabaseEJB;
+    private UpdateDatabaseEJB updateDatabaseEJB;
 
     public String updateDatabase() {
         updateDatabaseEJB.updateDatabase();

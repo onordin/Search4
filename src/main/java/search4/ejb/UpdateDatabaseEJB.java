@@ -62,22 +62,40 @@ public class UpdateDatabaseEJB {
             for each insert movie object into DB
          */
 
-        //TODO this makes us loop through the list twice, is this wise?
+        Integer start;
+        Integer startMod;
+        Integer limit;
+        List<MovieEntity> movieEntities;
         MovieBubbleSort bubbleSort = new MovieBubbleSort();
-        Integer start = getLastTMDBIdFromDB();
-        Integer limit = getTMDBLimit(start);
-        List<MovieEntity> movieEntities = getMoviesInInterval(start, limit);
 
-        bubbleSort.bubbleSort(movieEntities); //TODO write proper sorting algorithm
-
-        insertMovies(movieEntities);
+        //TODO this makes us loop through the list twice, is this wise?
+        startMod = 0;
+        for (int i = 0; i < 500; i++) {
+            start = getLastTMDBIdFromDB()+startMod;
+//            start = getLastTMDBIdFromDB()+35;
+            limit = getTMDBLimit(start);
+            movieEntities = getMoviesInInterval(start, limit);
+            if (movieEntities.size() < 1) {
+                startMod += 40;
+            }
+            else {
+                bubbleSort.bubbleSort(movieEntities); //TODO write proper sorting algorithm
+                insertMovies(movieEntities);
+                startMod = 0;
+            }
+            try {
+                Thread.sleep(11*1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
 
         return true;
     }
 
     public Integer getTMDBLimit(int start) {
         //TODO get last added from TMDB API
-        return start+10;
+        return start+40;
     }
     public Integer getLastTMDBIdFromDB() {
         //TODO is this an uggly fix?

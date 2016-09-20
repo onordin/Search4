@@ -8,7 +8,16 @@ import java.sql.Date;
  */
 @Entity
 @Table(name = "movies", schema = "search4", catalog = "") //    int tmdbId
-	@NamedQuery(name = "MovieEntity.getLastTmdbId", query = "SELECT MAX(moovieEntity.tmdbId) FROM MovieEntity moovieEntity") //TODO limit
+@NamedQueries({
+    @NamedQuery(name = "MovieEntity.getLastTmdbId", query = "SELECT MAX(movieEntity.tmdbId) FROM MovieEntity movieEntity"), //TODO limit
+    @NamedQuery(name = "MovieEntity.search", query = "SELECT movieEntity FROM MovieEntity  movieEntity WHERE movieEntity.title LIKE :query OR movieEntity.title LIKE :query2"),
+    @NamedQuery(name = "MovieEntity.searchOrderByDateAsc", query = "SELECT movieEntity FROM MovieEntity movieEntity WHERE movieEntity.title LIKE :query OR movieEntity.title LIKE :query2 ORDER BY movieEntity.date ASC"),//TODO name of querys?
+    @NamedQuery(name = "MovieEntity.searchOrderByDateDesc", query = "SELECT movieEntity FROM MovieEntity movieEntity WHERE movieEntity.title LIKE :query OR movieEntity.title LIKE :query2 ORDER BY movieEntity.date DESC"),//TODO name of querys?
+    @NamedQuery(name = "MovieEntity.searchOrderByTitleAsc", query = "SELECT movieEntity FROM MovieEntity movieEntity WHERE movieEntity.title LIKE :query OR movieEntity.title LIKE :query2 ORDER BY movieEntity.title ASC"),//TODO name of querys?
+    @NamedQuery(name = "MovieEntity.searchOrderByTitleDesc", query = "SELECT movieEntity FROM MovieEntity movieEntity WHERE movieEntity.title LIKE :query OR movieEntity.title LIKE :query2 ORDER BY movieEntity.title DESC"),//TODO name of querys?
+    @NamedQuery(name = "MovieEntity.getMovieById", query = "SELECT movieEntity FROM MovieEntity movieEntity WHERE movieEntity.id = :id")
+})
+
 public class MovieEntity {
     private int id;
     private int tmdbId;
