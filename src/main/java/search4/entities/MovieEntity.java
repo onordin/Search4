@@ -15,7 +15,8 @@ import java.sql.Date;
     @NamedQuery(name = "MovieEntity.searchOrderByDateDesc", query = "SELECT movieEntity FROM MovieEntity movieEntity WHERE movieEntity.title LIKE :query OR movieEntity.title LIKE :query2 ORDER BY movieEntity.date DESC"),//TODO name of querys?
     @NamedQuery(name = "MovieEntity.searchOrderByTitleAsc", query = "SELECT movieEntity FROM MovieEntity movieEntity WHERE movieEntity.title LIKE :query OR movieEntity.title LIKE :query2 ORDER BY movieEntity.title ASC"),//TODO name of querys?
     @NamedQuery(name = "MovieEntity.searchOrderByTitleDesc", query = "SELECT movieEntity FROM MovieEntity movieEntity WHERE movieEntity.title LIKE :query OR movieEntity.title LIKE :query2 ORDER BY movieEntity.title DESC"),//TODO name of querys?
-    @NamedQuery(name = "MovieEntity.getMovieById", query = "SELECT movieEntity FROM MovieEntity movieEntity WHERE movieEntity.id = :id")
+    @NamedQuery(name = "MovieEntity.getMovieById", query = "SELECT movieEntity FROM MovieEntity movieEntity WHERE movieEntity.id = :id"),
+    @NamedQuery(name = "MovieEntity.getMovieByTmdbId", query = "SELECT movieEntity FROM MovieEntity movieEntity WHERE movieEntity.tmdbId = :tmdbId")
 })
 
 public class MovieEntity {

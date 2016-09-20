@@ -13,30 +13,22 @@ public class UpdateDatabaseDAOBean {
     @PersistenceContext
     private EntityManager entityManager;
 
+    public MovieEntity getMovieWithTmdbId(Integer tmdbId) {
+        return (MovieEntity) entityManager.createNamedQuery("MovieEntity.getMovieByTmdbId").setParameter("tmdbId", tmdbId).getSingleResult();
+    }
 
     public boolean createMovie(MovieEntity movieEntity) {
-        if (entityManager.merge(movieEntity) != null) {
+        if (entityManager.merge(movieEntity) != null && getMovieWithTmdbId(movieEntity.getTmdbId()) == null) {
             return true;
         }
         return false;
     }
 
-    //TODO make this not retarded
     public Integer getLastTmdbId() {
-        List<Integer> resultList = entityManager.createNamedQuery("MovieEntity.getLastTmdbId").getResultList();
-        Integer tmdbId = resultList.get(0);
+        Integer tmdbId = (Integer) entityManager.createNamedQuery("MovieEntity.getLastTmdbId").getSingleResult();
         if (tmdbId < 1) {
             return 1;
         }
         return tmdbId;
     }
-
-    public boolean updateDatabaseWithMovieList(List<MovieEntity> movieList) {
-        //TODO temporary to test
-        for (MovieEntity movie : movieList) {
-            System.out.println(entityManager.merge(movie));
-        }
-        return false;
-    }
-
 }

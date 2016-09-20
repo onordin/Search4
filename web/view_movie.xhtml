@@ -20,5 +20,10 @@
     <p>#{displayBean.displayMovieEntity.description}</p>
     <p>#{displayBean.displayMovieEntity.date}</p>
     <img src="#{displayBean.displayMovieEntity.posterUrl}" alt="image"/>
+
+    <ui:repeat value="#{displayBean.displayMovieEntity.providerList}" var="provider">
+        <br></br>
+        <a href="#{provider.url}">#{provider.type}</a>
+    </ui:repeat>
 </h:body>
 </html>

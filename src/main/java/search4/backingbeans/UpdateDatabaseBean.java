@@ -16,6 +16,6 @@ public class UpdateDatabaseBean implements Serializable{
 
     public String updateDatabase() {
         updateDatabaseEJB.updateDatabase();
-        return "updated"; //TODO setup frontend
+        return "updated";
     }
 }

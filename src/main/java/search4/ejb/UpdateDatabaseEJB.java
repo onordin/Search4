@@ -44,7 +44,7 @@ public class UpdateDatabaseEJB {
             movieEntity.setTitle(jsonObject.getString("original_title"));
             movieEntity.setTmdbId(id);
             movieEntity.setDate(dateParser.getDateFromString(jsonObject.getString("release_date")));
-            //TODO guidebox id? wrong place to set, default value?
+            //Guidebox id defaults to 0
 
         } catch (Exception e) {
             System.err.println("No Movie in TMDB with that ID ("+id+")" + e);
@@ -71,7 +71,7 @@ public class UpdateDatabaseEJB {
                 startMod += 40;
             }
             else {
-                bubbleSort.bubbleSort(movieEntities); //TODO write proper sorting algorithm
+//                bubbleSort.bubbleSort(movieEntities); //TODO write proper sorting algorithm    THIS IS UNESSECARY
                 insertMovies(movieEntities);
                 startMod = 0;
             }
