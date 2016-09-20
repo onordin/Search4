@@ -55,13 +55,6 @@ public class UpdateDatabaseEJB {
 
     //TODO return object instead of boolean for error message purposes and such? or convert to message here and return to backing bean?
     public boolean updateDatabase() {
-        /*
-        check current tmdb id
-        decide span/interval limit
-        loop from id+1 to limit calling getMovieFormTMDB
-            for each insert movie object into DB
-         */
-
         Integer start;
         Integer startMod;
         Integer limit;
@@ -72,7 +65,6 @@ public class UpdateDatabaseEJB {
         startMod = 0;
         for (int i = 0; i < 500; i++) {
             start = getLastTMDBIdFromDB()+startMod;
-//            start = getLastTMDBIdFromDB()+35;
             limit = getTMDBLimit(start);
             movieEntities = getMoviesInInterval(start, limit);
             if (movieEntities.size() < 1) {
