@@ -20,7 +20,6 @@ import javax.ws.rs.BadRequestException;
 import java.util.ArrayList;
 import java.util.List;
 
-//TODO interface?
 @Stateless
 public class DisplayMovieEJB{
 
@@ -28,14 +27,13 @@ public class DisplayMovieEJB{
     private DisplayMovieDAOBean displayMovieDAOBean;
 
     private MovieEntity getMovieData(Integer id) throws Exception{
-        return displayMovieDAOBean.getMovieData(id); //TODO error handling; here or in DAO?
+        return displayMovieDAOBean.getMovieData(id);
     }
 
-    //TODO error handling for all methods in this method. Throw exceptions? Send error messages? Return?
     //NEW METHOD: better to send the id to EJB and retrieve MovieEntity here. No point in bringing it to backing bean.
     public DisplayMovieEntity getDisplayMovie(Integer id) throws Exception{
         DisplayMovieEntity displayMovieEntity = new DisplayMovieEntity();
-        MovieEntity movieEntity = getMovieData(id); //TODO throws TransactionRolledbackLocalException
+        MovieEntity movieEntity = getMovieData(id);
         setGuideboxId(movieEntity); //Check if guidbox id is set. If not, set it.
         setStreamingServices(displayMovieEntity, movieEntity.getGuideboxId()); //Retrieve streaming services from guidebox
         setTmdbInfo(displayMovieEntity, movieEntity.getTmdbId()); //Retrieve movie information (description, poster etc) from TMDB

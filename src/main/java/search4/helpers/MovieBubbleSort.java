@@ -4,6 +4,7 @@ import search4.entities.MovieEntity;
 
 import java.util.List;
 
+//TODO is any sorting algorithm ever needed? if not, remove
 public class MovieBubbleSort {
 
     public List<MovieEntity> bubbleSort(List<MovieEntity> list) {

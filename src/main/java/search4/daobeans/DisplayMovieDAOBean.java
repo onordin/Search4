@@ -17,7 +17,7 @@ public class DisplayMovieDAOBean {
 
     public MovieEntity getMovieData(Integer id) throws Exception{
         try {
-            return (MovieEntity) entityManager.createNamedQuery("MovieEntity.getMovieById").setParameter("id", id).getSingleResult(); //TODO failsafe? can it be wrong?
+            return (MovieEntity) entityManager.createNamedQuery("MovieEntity.getMovieById").setParameter("id", id).getSingleResult();
         }
         catch (NoResultException ne) {
             throw new DataNotFoundException("No movie in database with that ID ("+id+")");
