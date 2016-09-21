@@ -12,6 +12,7 @@ import search4.helpers.JSonHelper;
 import search4.helpers.URLBuilder;
 
 import javax.ejb.EJB;
+import javax.ejb.EJBTransactionRolledbackException;
 import javax.ejb.Stateless;
 import javax.json.JsonObject;
 import javax.ws.rs.BadRequestException;
@@ -25,13 +26,13 @@ public class DisplayMovieEJB {
     @EJB
     private DisplayMovieDAOBean displayMovieDAOBean;
 
-    private MovieEntity getMovieData(Integer id) throws DataNotFoundException{
+    private MovieEntity getMovieData(Integer id) throws Exception{
         return displayMovieDAOBean.getMovieData(id); //TODO error handling; here or in DAO?
     }
 
     //TODO error handling for all methods in this method. Throw exceptions? Send error messages? Return?
     //NEW METHOD: better to send the id to EJB and retrieve MovieEntity here. No point in bringing it to backing bean.
-    public DisplayMovieEntity getDisplayMovie(Integer id) throws UnregisteredProviderException, DataNotFoundException{
+    public DisplayMovieEntity getDisplayMovie(Integer id) throws Exception{
         DisplayMovieEntity displayMovieEntity = new DisplayMovieEntity();
         MovieEntity movieEntity = getMovieData(id); //TODO throws TransactionRolledbackLocalException
         setGuideboxId(movieEntity); //Check if guidbox id is set. If not, set it.
@@ -99,6 +100,7 @@ public class DisplayMovieEJB {
         return ret;
     }
 
+    //TODO Kind of dubplicate with getMovieFromTMDB in UpdateDatabaseEJB
     private void setTmdbInfo(DisplayMovieEntity displayMovieEntity, Integer tmdbId) throws DataNotFoundException{
         DateParser dateParser = new DateParser();
         JSonHelper jSonHelper = new JSonHelper();
