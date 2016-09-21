@@ -1,6 +1,7 @@
 package search4.backingbeans;
 
-import search4.ejb.DisplayMovieEJB;
+
+import search4.ejb.interfaces.LocalDisplayMovie;
 import search4.entities.DisplayMovieEntity;
 import search4.entities.MovieEntity;
 import search4.exceptions.DataNotFoundException;
@@ -17,8 +18,10 @@ import java.io.Serializable;
 //@ViewScoped
 public class DisplayMovieBean implements Serializable{
 
-    @EJB
-    DisplayMovieEJB displayMovieEJB;
+	private static final long serialVersionUID = -1109287815566247040L;
+
+	@EJB
+    LocalDisplayMovie displayMovieEJB;
 
     private DisplayMovieEntity displayMovieEntity;
     private Integer movieId;
