@@ -18,7 +18,7 @@ import java.util.List;
 
 //TODO interface?
 @Stateless
-public class DisplayMovieEJB implements LocalDisplayMovie {
+public class DisplayMovieEJB{
 
     @EJB
     private DisplayMovieDAOBean displayMovieDAOBean;

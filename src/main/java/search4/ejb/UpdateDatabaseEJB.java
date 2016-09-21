@@ -22,7 +22,7 @@ import java.util.List;
 //TODO interface?
 
 @Stateless
-public class UpdateDatabaseEJB implements LocalUpdateDatabase{
+public class UpdateDatabaseEJB{
 
     @EJB
     private UpdateDatabaseDAOBean updateDatabaseDAOBean;
