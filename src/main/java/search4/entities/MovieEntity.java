@@ -1,6 +1,8 @@
 package search4.entities;
 
 import javax.persistence.*;
+
+import java.io.Serializable;
 import java.sql.Date;
 
 /**
@@ -19,7 +21,7 @@ import java.sql.Date;
     @NamedQuery(name = "MovieEntity.getMovieByTmdbId", query = "SELECT movieEntity FROM MovieEntity movieEntity WHERE movieEntity.tmdbId = :tmdbId")
 })
 
-public class MovieEntity {
+public class MovieEntity implements Serializable {
     private int id;
     private int tmdbId;
     private int guideboxId;

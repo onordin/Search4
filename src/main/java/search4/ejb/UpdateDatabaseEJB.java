@@ -15,8 +15,6 @@ import javax.json.JsonReader;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 //TODO interface?
