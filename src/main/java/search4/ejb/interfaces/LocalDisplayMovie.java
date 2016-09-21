@@ -7,5 +7,5 @@ import search4.entities.DisplayMovieEntity;
 @Local
 public interface LocalDisplayMovie {
 
-	DisplayMovieEntity getDisplayMovie(Integer id);
+	DisplayMovieEntity getDisplayMovie(Integer id) throws Exception;
 }

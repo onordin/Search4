@@ -9,9 +9,9 @@ public interface LocalUpdateDatabase {
 	
 	MovieEntity getMovieFromTMDB(int id);
 	
-	boolean updateDatabase();
+	boolean updateDatabase() throws Exception;
 	
 	Integer getTMDBLimit(int start);
 	
-	Integer getLastTMDBIdFromDB();
+	Integer getLastTMDBIdFromDB() throws Exception;
 }

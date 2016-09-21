@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Stateless
-public class DisplayMovieEJB{
+public class DisplayMovieEJB implements LocalDisplayMovie {
 
     @EJB
     private DisplayMovieDAOBean displayMovieDAOBean;

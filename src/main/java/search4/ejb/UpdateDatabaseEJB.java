@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Stateless
-public class UpdateDatabaseEJB{
+public class UpdateDatabaseEJB implements LocalUpdateDatabase{
 
     @EJB
     private UpdateDatabaseDAOBean updateDatabaseDAOBean;
@@ -99,4 +99,10 @@ public class UpdateDatabaseEJB{
         }
         return movieInterval;
     }
+
+	@Override
+	public MovieEntity getMovieFromTMDB(int id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
