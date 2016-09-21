@@ -1,6 +1,9 @@
 package search4.backingbeans;
 
 import search4.ejb.UpdateDatabaseEJB;
+import search4.exceptions.DataNotFoundException;
+import search4.exceptions.DuplicateDataException;
+import search4.ejb.interfaces.LocalUpdateDatabase;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
@@ -11,11 +14,21 @@ import java.io.Serializable;
 @SessionScoped
 public class UpdateDatabaseBean implements Serializable{
 
-    @EJB
-    private UpdateDatabaseEJB updateDatabaseEJB;
+	private static final long serialVersionUID = 5248188089139817907L;
+
+	@EJB
+    private LocalUpdateDatabase updateDatabaseEJB;
 
     public String updateDatabase() {
-        updateDatabaseEJB.updateDatabase();
+        try {
+            updateDatabaseEJB.updateDatabase();
+        } catch (DataNotFoundException dnfe) {
+            System.err.println(""+dnfe);
+        } catch (DuplicateDataException dde) { //TODO can this happen?
+            System.err.println(""+dde);
+        } catch (Exception e) { //TODO more specfic cases?
+            System.err.println(""+e);
+        }
         return "updated";
     }
 }

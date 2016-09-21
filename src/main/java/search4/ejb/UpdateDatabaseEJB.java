@@ -3,9 +3,7 @@ package search4.ejb;
 import search4.daobeans.UpdateDatabaseDAOBean;
 import search4.ejb.interfaces.LocalUpdateDatabase;
 import search4.entities.MovieEntity;
-import search4.helpers.APIKeyReader;
-import search4.helpers.DateParser;
-import search4.helpers.MovieBubbleSort;
+import search4.helpers.*;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -15,11 +13,7 @@ import javax.json.JsonReader;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
-
-//TODO interface?
 
 @Stateless
 public class UpdateDatabaseEJB{
@@ -27,54 +21,42 @@ public class UpdateDatabaseEJB{
     @EJB
     private UpdateDatabaseDAOBean updateDatabaseDAOBean;
 
-    //TODO implement jsonhelper
-    public MovieEntity getMovieFromTMDB(int id) {
-        APIKeyReader apiKeyReader = new APIKeyReader();
-        DateParser dateParser = new DateParser();
-        String tmdbUrl = "https://api.themoviedb.org/3/movie/";
-        String tmdbAPIKey = apiKeyReader.getKey("tmdb");
-
+    public MovieEntity getMovieFromTMDB(Integer tmdbId) throws Exception{
         MovieEntity movieEntity = new MovieEntity();
+        JSonHelper jSonHelper = new JSonHelper();
+        URLBuilder urlBuilder = new URLBuilder();
+        DateParser dateParser = new DateParser();
 
-        try {
-            String url = tmdbUrl+id+tmdbAPIKey;
-            InputStream is = new URL(url).openStream();
+        String url = urlBuilder.tmdbUrl(tmdbId);
 
-            JsonReader jsonReader = Json.createReader(is);
-            JsonObject jsonObject = jsonReader.readObject();
+        JsonObject jsonObject = jSonHelper.getObject(url);
+        movieEntity.setTitle(jsonObject.getString("original_title"));
+        movieEntity.setTmdbId(tmdbId);
+        movieEntity.setDate(dateParser.getDateFromString(jsonObject.getString("release_date")));
 
-            movieEntity.setTitle(jsonObject.getString("original_title"));
-            movieEntity.setTmdbId(id);
-            movieEntity.setDate(dateParser.getDateFromString(jsonObject.getString("release_date")));
-            //Guidebox id defaults to 0
+        //TODO catch if movie not in TMDb, make movieEntity null? throw DataNotFoundException?
 
-        } catch (Exception e) {
-            System.err.println("No Movie in TMDB with that ID ("+id+")" + e);
-            movieEntity = null;
-        }
         return movieEntity;
     }
 
-    //TODO return object instead of boolean for error message purposes and such? or convert to message here and return to backing bean?
-    public boolean updateDatabase() {
+    //TODO returntype?
+    public boolean updateDatabase() throws Exception{
         Integer start;
         Integer startMod;
         Integer limit;
         List<MovieEntity> movieEntities;
-        MovieBubbleSort bubbleSort = new MovieBubbleSort();
 
-        //TODO this makes us loop through the list twice, is this wise?
+        //Marked methods both loops through the list of movies; combine them?
         startMod = 0;
         for (int i = 0; i < 500; i++) {
             start = getLastTMDBIdFromDB()+startMod;
             limit = getTMDBLimit(start);
-            movieEntities = getMoviesInInterval(start, limit);
+            movieEntities = getMoviesInInterval(start, limit); //#1
             if (movieEntities.size() < 1) {
                 startMod += 40;
             }
             else {
-//                bubbleSort.bubbleSort(movieEntities); //TODO write proper sorting algorithm    THIS IS UNESSECARY
-                insertMovies(movieEntities);
+                insertMovies(movieEntities); //#2
                 startMod = 0;
             }
             try {
@@ -88,27 +70,29 @@ public class UpdateDatabaseEJB{
     }
 
     public Integer getTMDBLimit(int start) {
-        //TODO get last added from TMDB API
+        //TODO get last tmdb movie added
         return start+40;
     }
-    public Integer getLastTMDBIdFromDB() {
+    public Integer getLastTMDBIdFromDB() throws Exception {
         return updateDatabaseDAOBean.getLastTmdbId()+1;
     }
 
-    //TODO private? return value boolean or object?
-    private void insertMovies(List<MovieEntity> movies) {
+    private void insertMovies(List<MovieEntity> movies) throws Exception {
         for (MovieEntity movieEntity : movies) {
             updateDatabaseDAOBean.createMovie(movieEntity);
         }
     }
 
-
-    //TODO private?
-    private List<MovieEntity> getMoviesInInterval(Integer start, Integer limit) {
+    private List<MovieEntity> getMoviesInInterval(Integer start, Integer limit) throws Exception{
         List<MovieEntity> movieInterval = new ArrayList<MovieEntity>();
         MovieEntity currentMovie;
         for (int i = start; i < limit; i++) {
-            currentMovie = getMovieFromTMDB(i);
+            try {
+                currentMovie = getMovieFromTMDB(i);
+            } catch (Exception e) { //TODO proper catch
+                System.err.println(""+e);
+                currentMovie = null;
+            }
             if (currentMovie != null) {
                 movieInterval.add(currentMovie);
             }
