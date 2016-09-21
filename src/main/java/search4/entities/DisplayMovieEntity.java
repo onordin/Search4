@@ -1,11 +1,14 @@
 package search4.entities;
 
+import java.io.Serializable;
 import java.sql.Date;
 import java.util.List;
 
-public class DisplayMovieEntity {
+public class DisplayMovieEntity implements Serializable{
 
-    private String title;
+	private static final long serialVersionUID = -8197962163887331570L;
+
+	private String title;
     private String description;
     private Date date;
     private String posterUrl;

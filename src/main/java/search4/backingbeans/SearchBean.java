@@ -1,6 +1,6 @@
 package search4.backingbeans;
 
-import search4.ejb.SearchEJB;
+import search4.ejb.interfaces.LocalSearch;
 import search4.entities.MovieEntity;
 
 import javax.ejb.EJB;
@@ -13,11 +13,13 @@ import java.util.List;
 @SessionScoped
 public class SearchBean implements Serializable{
 
-    private String query;
+	private static final long serialVersionUID = 8335492042247599634L;
+	
+	private String query;
     private List<MovieEntity> movieEntities;
 
     @EJB
-    private SearchEJB searchEJB;
+    private LocalSearch searchEJB;
 
     //TODO choose order by from frontend?
     public String search() {

@@ -1,6 +1,8 @@
 package search4.entities;
 
 import javax.persistence.*;
+
+import java.io.Serializable;
 import java.sql.Date;
 
 /**
@@ -9,7 +11,7 @@ import java.sql.Date;
 @Entity
 @Table(name = "movies", schema = "search4", catalog = "")
 @NamedQueries({
-    @NamedQuery(name = "MovieEntity.getLastTmdbId", query = "SELECT MAX(movieEntity.tmdbId) FROM MovieEntity movieEntity"),
+    @NamedQuery(name = "MovieEntity.getLastTmdbId", query = "SELECT MAX(movieEntity.tmdbId) FROM MovieEntity movieEntity"), 
     @NamedQuery(name = "MovieEntity.search", query = "SELECT movieEntity FROM MovieEntity  movieEntity WHERE movieEntity.title LIKE :query OR movieEntity.title LIKE :query2"),
     @NamedQuery(name = "MovieEntity.searchOrderByDateAsc", query = "SELECT movieEntity FROM MovieEntity movieEntity WHERE movieEntity.title LIKE :query OR movieEntity.title LIKE :query2 ORDER BY movieEntity.date ASC"),//TODO name of querys?
     @NamedQuery(name = "MovieEntity.searchOrderByDateDesc", query = "SELECT movieEntity FROM MovieEntity movieEntity WHERE movieEntity.title LIKE :query OR movieEntity.title LIKE :query2 ORDER BY movieEntity.date DESC"),//TODO name of querys?
@@ -19,7 +21,7 @@ import java.sql.Date;
     @NamedQuery(name = "MovieEntity.getMovieByTmdbId", query = "SELECT movieEntity FROM MovieEntity movieEntity WHERE movieEntity.tmdbId = :tmdbId")
 })
 
-public class MovieEntity {
+public class MovieEntity implements Serializable {
     private int id;
     private int tmdbId;
     private int guideboxId;

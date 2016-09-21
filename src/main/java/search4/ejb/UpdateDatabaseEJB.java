@@ -1,6 +1,7 @@
 package search4.ejb;
 
 import search4.daobeans.UpdateDatabaseDAOBean;
+import search4.ejb.interfaces.LocalUpdateDatabase;
 import search4.entities.MovieEntity;
 import search4.helpers.*;
 
@@ -12,14 +13,12 @@ import javax.json.JsonReader;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 //TODO interface?
 
 @Stateless
-public class UpdateDatabaseEJB {
+public class UpdateDatabaseEJB{
 
     @EJB
     private UpdateDatabaseDAOBean updateDatabaseDAOBean;

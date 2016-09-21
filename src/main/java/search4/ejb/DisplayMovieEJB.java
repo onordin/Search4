@@ -1,6 +1,7 @@
 package search4.ejb;
 
 import search4.daobeans.DisplayMovieDAOBean;
+import search4.ejb.interfaces.LocalDisplayMovie;
 import search4.entities.DisplayMovieEntity;
 import search4.entities.MovieEntity;
 import search4.entities.ServiceProviderLink;
@@ -21,7 +22,7 @@ import java.util.List;
 
 //TODO interface?
 @Stateless
-public class DisplayMovieEJB {
+public class DisplayMovieEJB{
 
     @EJB
     private DisplayMovieDAOBean displayMovieDAOBean;
