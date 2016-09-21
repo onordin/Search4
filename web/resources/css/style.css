@@ -41,7 +41,7 @@
 
 
 /* Search field */
-.search {
+#search {
 	margin: auto;
 	width: 70%;
 }
@@ -94,27 +94,37 @@
 
 .order-table{
 	border-collapse:collapse;
+	margin: auto;
 }
 
 .order-table-header{
-	text-align:center;
+	text-align:left;
 	background:none repeat scroll 0 0 #004FFF;
 	border-bottom:1px solid #BBBBBB;
-	padding:16px 16px 10px 16px;;
+	padding:12px 16px 10px 10px;
 	color: white;
 	font-size: 16px;
 }
 
 .order-table-odd-row{
-	text-align:center;
+	text-align:left;
 	background:none repeat scroll 0 0 #FFFFFF;
 	border-top:1px solid #BBBBBB;
 }
 
 .order-table-even-row{
-	text-align:center;
+	text-align:left;
 	background:none repeat scroll 0 0 #5E90FF;
 	border-top:1px solid #BBBBBB;
 } 
+
+#resultH2 {
+	text-align: center;
+}
+
+.row-output {
+	padding: 10px;
+}
+
 
 
