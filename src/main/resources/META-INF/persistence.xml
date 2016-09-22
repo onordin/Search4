@@ -4,5 +4,6 @@
     <persistence-unit name="search4">
         <jta-data-source>jdbc/search4</jta-data-source>
         <class>search4.entities.MovieEntity</class>
+        <class>search4.entities.UserEntity</class>
     </persistence-unit>
 </persistence>
