@@ -10,7 +10,7 @@ import java.util.List;
 
 
 @Stateless
-public class SearchEJB{
+public class SearchEJB implements LocalSearch{
 
     @EJB
     private SearchDAOBean searchDAOBean;

@@ -18,7 +18,7 @@ import java.util.List;
 //TODO interface?
 
 @Stateless
-public class UpdateDatabaseEJB{
+public class UpdateDatabaseEJB implements LocalUpdateDatabase{
 
     @EJB
     private UpdateDatabaseDAOBean updateDatabaseDAOBean;
@@ -107,4 +107,10 @@ public class UpdateDatabaseEJB{
         }
         return movieInterval;
     }
+
+	@Override
+	public MovieEntity getMovieFromTMDB(int id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
