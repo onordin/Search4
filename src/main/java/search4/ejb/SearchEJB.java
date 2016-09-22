@@ -1,6 +1,7 @@
 package search4.ejb;
 
 import search4.daobeans.SearchDAOBean;
+import search4.ejb.interfaces.LocalDisplayMovie;
 import search4.ejb.interfaces.LocalSearch;
 import search4.entities.MovieEntity;
 

@@ -12,7 +12,7 @@ public class APIKeyReader {
 
     //Parameter should be 'tmdb' or 'guidebox'
     public String getKey(String api) {
-        //System.out.println("test  "+this.getClass().getResource("APIKeyReader.class")); //TODO use to see path to class
+        //System.out.println("test  "+this.getClass().getResource("APIKeyReader.class")); //use to see path to class
         String key = "";
         try {
             File file = new File(getClass().getResource("../../"+api+"_api_key.api").getFile());

@@ -15,15 +15,12 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-//TODO interface?
-
 @Stateless
 public class UpdateDatabaseEJB implements LocalUpdateDatabase{
 
     @EJB
     private UpdateDatabaseDAOBean updateDatabaseDAOBean;
 
-    //TODO implement jsonhelper
     public MovieEntity getMovieFromTMDB(Integer tmdbId) throws Exception{
         MovieEntity movieEntity = new MovieEntity();
         JSonHelper jSonHelper = new JSonHelper();
@@ -42,26 +39,24 @@ public class UpdateDatabaseEJB implements LocalUpdateDatabase{
         return movieEntity;
     }
 
-    //TODO return object instead of boolean for error message purposes and such? or convert to message here and return to backing bean?
+    //TODO returntype?
     public boolean updateDatabase() throws Exception{
         Integer start;
         Integer startMod;
         Integer limit;
         List<MovieEntity> movieEntities;
-        MovieBubbleSort bubbleSort = new MovieBubbleSort();
 
-        //TODO this makes us loop through the list twice, is this wise?
+        //Marked methods both loops through the list of movies; combine them?
         startMod = 0;
         for (int i = 0; i < 500; i++) {
             start = getLastTMDBIdFromDB()+startMod;
             limit = getTMDBLimit(start);
-            movieEntities = getMoviesInInterval(start, limit);
+            movieEntities = getMoviesInInterval(start, limit); //#1
             if (movieEntities.size() < 1) {
                 startMod += 40;
             }
             else {
-//                bubbleSort.bubbleSort(movieEntities); //TODO write proper sorting algorithm    THIS IS UNESSECARY
-                insertMovies(movieEntities);
+                insertMovies(movieEntities); //#2
                 startMod = 0;
             }
             try {
@@ -75,22 +70,19 @@ public class UpdateDatabaseEJB implements LocalUpdateDatabase{
     }
 
     public Integer getTMDBLimit(int start) {
-        //TODO get last added from TMDB API
+        //TODO get last tmdb movie added
         return start+40;
     }
     public Integer getLastTMDBIdFromDB() throws Exception {
         return updateDatabaseDAOBean.getLastTmdbId()+1;
     }
 
-    //TODO private? return value boolean or object?
     private void insertMovies(List<MovieEntity> movies) throws Exception {
         for (MovieEntity movieEntity : movies) {
             updateDatabaseDAOBean.createMovie(movieEntity);
         }
     }
 
-
-    //TODO private?
     private List<MovieEntity> getMoviesInInterval(Integer start, Integer limit) throws Exception{
         List<MovieEntity> movieInterval = new ArrayList<MovieEntity>();
         MovieEntity currentMovie;
