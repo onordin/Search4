@@ -9,5 +9,5 @@ public interface LocalUser {
 
 	void createUser(UserEntity userEntity);
 	
-	UserEntity getUser();
+	UserEntity getUser(String email,String password);
 }

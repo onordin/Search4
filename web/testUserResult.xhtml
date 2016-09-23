@@ -8,14 +8,13 @@
 	xmlns:f="http://xmlns.jcp.org/jsf/core"
 	xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
 
-
 	<h:head>
 	
 		<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
     	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
     	<meta name="viewport" content="width=device-width, initial-scale=1" />	
 		
-		<title>Index.xhtml</title>
+		<title>Result.xhtml</title>
 		
 		
 		<link rel="stylesheet" href="resources/css/bootstrap.min.css" />
@@ -36,7 +35,9 @@
 	            <span class="icon-bar"></span>
 	            <span class="icon-bar"></span>
 	          </button>
-	          <a class="navbar-brand" href="search.xhtml">Home</a>
+	          
+	          		<a class="navbar-brand" href="search.xhtml">Home</a>
+          		
 	        </div>
 	        <div id="navbar" class="navbar-collapse collapse">
 	          	<form class="navbar-form navbar-right">
@@ -67,40 +68,52 @@
         	</div><!--/.nav-collapse -->
 	      </div>
 	    </nav>
-		
-		<div class="row">
-			<div class="col-md-4">
-				<h:form id="userForm">
-					<h:panelGrid columns="2" columnClasses="rightAlign,leftAlign">
-						<h:outputLabel for="firstName" value="First Name:"></h:outputLabel>
-						<h:inputText id="firstName" label="First Name" value="#{userBean.firstName}" required="true">
-				
-						</h:inputText>
-						
-						<h:outputLabel for="lastName" value="Last Name:"></h:outputLabel>
-						<h:inputText id="lastName" label="Last Name" value="#{userBean.lastName}" required="true">
-						</h:inputText>
-						
-						<h:outputLabel for="email" value="Email:"></h:outputLabel>
-						<h:inputText id="email" label="Email" value="#{userBean.email}" required="true">
-						</h:inputText>
-						
-						<h:outputLabel for="password" value="Password:"></h:outputLabel>
-						<h:inputText id="password" label="Password" value="#{userBean.password}" required="true">
-						</h:inputText>
-						
-						<h:panelGroup></h:panelGroup>
-						<h:commandButton action="#{userBean.createUser}" value="Save"></h:commandButton>
-						
-					</h:panelGrid>
-				</h:form>
+	    
+<!-- Search area -->
+	    <div class="jumbotron">
+	    	<h1 id="searchHeadline">Search4</h1>
+		    <h:form id="user">
+		    <h:panelGrid columns="2" columnClasses="rightAlign,leftAlign">
+		    	
+			        <h:inputText id="searchQuery" class="form-control search-field"  label="search" value="#{userBean.email}" p:placeholder="Get user" required="true">
+			            <!--<f:validateLength minimum="2" maximum="30"></f:validateLength>-->
+			        </h:inputText>
+        			<h:commandButton class="searchBtn" action="#{userBean.login()}" value="   " />
+		         </h:panelGrid>
+	    	</h:form>
+		   
+      	</div>
+      
+      
+<!-- Result area -->
+
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-12 col-xs-12">
+					<h2 id="resultH2">Results on "<b>#{userBean.email}</b>"</h2>
+    				<h:dataTable value="#{userBean.userEntity}" var="user"
+    						styleClass="order-table"
+    						headerClass="order-table-header"
+    						rowClasses="order-table-odd-row,order-table-even-row">
+				        <h:column>
+				            <f:facet name="header">First name</f:facet>
+				            <h:outputText class="row-output" value="#{user.firstName}" />
+				        </h:column>
+				        <h:column>
+				            <f:facet name="header">Last name</f:facet>
+				            <h:outputText class="row-output" value="#{user.lastName}" />
+				        </h:column>
+				    </h:dataTable>
+				</div>
 			</div>
 		</div>
+	
 		
 		<script type='text/javascript' src="https://cdn.rawgit.com/jamesallardice/Placeholders.js/master/dist/placeholders.min.js"></script>
 		<script src="resources/js/jquery-3.1.0.min.js" />
 		<script src="resources/js/bootstrap.min.js" />
 		<!-- IE10 viewport hack for Surface/desktop Windows 8 bug (TA BORT?!) -->
     	<script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
-	</h:body>
+   	</h:body>
+
 </html>

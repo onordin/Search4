@@ -1,12 +1,15 @@
 package search4.daobeans;
 
-import javax.ejb.Stateless;
+
+import javax.ejb.Stateful;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 
 import search4.entities.UserEntity;
+import search4.exceptions.DataNotFoundException;
 
-@Stateless
+@Stateful
 public class UserDAOBean {
 
 	@PersistenceContext
@@ -17,7 +20,7 @@ public class UserDAOBean {
 		return true;
 	}
 	
-	public UserEntity getUser(Integer userId){
-		return null;
+	public UserEntity getUser(String email) {
+		return (UserEntity) entityManager.createNamedQuery("UserEntity.getUserByEmail").setParameter("email", email).getSingleResult();
 	}
 }
