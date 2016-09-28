@@ -43,6 +43,13 @@
         <a href="#{provider.url}">#{provider.type}</a>
     </ui:repeat>
 
+    <h3>Tv Everywhere</h3>
+    <ui:repeat value="#{displayBean.displayMovieEntity.providerListWebTvEverywhere}" var="provider">
+        <br></br>
+        <a href="#{provider.url}">#{provider.type}</a>
+    </ui:repeat>
+
+
     <h2>Android Providers</h2>
     <h3>Free</h3>
     <ui:repeat value="#{displayBean.displayMovieEntity.providerListAndroidFree}" var="provider">
@@ -62,21 +69,43 @@
         <a href="#{provider.url}">#{provider.type}</a>
     </ui:repeat>
 
+    <h3>Tv Everywhere</h3>
+    <ui:repeat value="#{displayBean.displayMovieEntity.providerListAndroidTvEverywhere}" var="provider">
+        <br></br>
+        <a href="#{provider.url}">#{provider.type}</a>
+    </ui:repeat>
+
+
     <h2>iOS Providers</h2>
     <h3>Free</h3>
     <ui:repeat value="#{displayBean.displayMovieEntity.providerListIOSFree}" var="provider">
         <br></br>
         <a href="#{provider.url}">#{provider.type}</a>
     </ui:repeat>
+
     <h3>Purchase</h3>
     <ui:repeat value="#{displayBean.displayMovieEntity.providerListIOSPurchase}" var="provider">
         <br></br>
         <a href="#{provider.url}">#{provider.type}</a>
     </ui:repeat>
+
     <h3>Streaming</h3>
     <ui:repeat value="#{displayBean.displayMovieEntity.providerListIOSSubscription}" var="provider">
         <br></br>
         <a href="#{provider.url}">#{provider.type}</a>
     </ui:repeat>
+
+    <h3>Tv Everywhere</h3>
+     <ui:repeat value="#{displayBean.displayMovieEntity.providerListIOSTvEverywhere}" var="provider">
+        <br></br>
+        <a href="#{provider.url}">#{provider.type}</a>
+    </ui:repeat>
+
+    <h2>Other</h2>
+     <ui:repeat value="#{displayBean.displayMovieEntity.providerListOther}" var="provider">
+        <br></br>
+        <a href="#{provider.url}">#{provider.type}</a>
+    </ui:repeat>
+
 </h:body>
 </html>

@@ -16,16 +16,19 @@ public class DisplayMovieEntity {
     private List<ServiceProviderLink> providerListWebSubscription;
     private List<ServiceProviderLink> providerListWebPurchase;
     private List<ServiceProviderLink> providerListWebFree;
+    private List<ServiceProviderLink> providerListWebTvEverywhere;
 
     private List<ServiceProviderLink> providerListAndroidSubscription;
     private List<ServiceProviderLink> providerListAndroidPurchase;
     private List<ServiceProviderLink> providerListAndroidFree;
-//    private List<ServiceProviderLink> providerListAndroid;
+    private List<ServiceProviderLink> providerListAndroidTvEverywhere;
 
     private List<ServiceProviderLink> providerListIOSSubscription;
     private List<ServiceProviderLink> providerListIOSPurchase;
     private List<ServiceProviderLink> providerListIOSFree;
-//    private List<ServiceProviderLink> providerListIOS;
+    private List<ServiceProviderLink> providerListIOSTvEverywhere;
+
+    private List<ServiceProviderLink> providerListOther;
 
 
     public String getTitle() {
@@ -130,5 +133,37 @@ public class DisplayMovieEntity {
 
     public void setProviderListIOSFree(List<ServiceProviderLink> providerListIOSFree) {
         this.providerListIOSFree = providerListIOSFree;
+    }
+
+    public List<ServiceProviderLink> getProviderListWebTvEverywhere() {
+        return providerListWebTvEverywhere;
+    }
+
+    public void setProviderListWebTvEverywhere(List<ServiceProviderLink> providerListWebTvEverywhere) {
+        this.providerListWebTvEverywhere = providerListWebTvEverywhere;
+    }
+
+    public List<ServiceProviderLink> getProviderListAndroidTvEverywhere() {
+        return providerListAndroidTvEverywhere;
+    }
+
+    public void setProviderListAndroidTvEverywhere(List<ServiceProviderLink> providerListAndroidTvEverywhere) {
+        this.providerListAndroidTvEverywhere = providerListAndroidTvEverywhere;
+    }
+
+    public List<ServiceProviderLink> getProviderListIOSTvEverywhere() {
+        return providerListIOSTvEverywhere;
+    }
+
+    public void setProviderListIOSTvEverywhere(List<ServiceProviderLink> providerListIOSTvEverywhere) {
+        this.providerListIOSTvEverywhere = providerListIOSTvEverywhere;
+    }
+
+    public List<ServiceProviderLink> getProviderListOther() {
+        return providerListOther;
+    }
+
+    public void setProviderListOther(List<ServiceProviderLink> providerListOther) {
+        this.providerListOther = providerListOther;
     }
 }
