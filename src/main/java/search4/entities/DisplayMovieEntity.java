@@ -4,15 +4,28 @@ import java.io.Serializable;
 import java.sql.Date;
 import java.util.List;
 
-public class DisplayMovieEntity implements Serializable{
+public class DisplayMovieEntity {
 
-	private static final long serialVersionUID = -8197962163887331570L;
+//	private static final long serialVersionUID = -8197962163887331570L;
 
 	private String title;
     private String description;
     private Date date;
     private String posterUrl;
-    private List<ServiceProviderLink> providerList;
+    //TODO right categories?
+    private List<ServiceProviderLink> providerListWebSubscription;
+    private List<ServiceProviderLink> providerListWebPurchase;
+    private List<ServiceProviderLink> providerListWebFree;
+
+    private List<ServiceProviderLink> providerListAndroidSubscription;
+    private List<ServiceProviderLink> providerListAndroidPurchase;
+    private List<ServiceProviderLink> providerListAndroidFree;
+//    private List<ServiceProviderLink> providerListAndroid;
+
+    private List<ServiceProviderLink> providerListIOSSubscription;
+    private List<ServiceProviderLink> providerListIOSPurchase;
+    private List<ServiceProviderLink> providerListIOSFree;
+//    private List<ServiceProviderLink> providerListIOS;
 
 
     public String getTitle() {
@@ -47,11 +60,75 @@ public class DisplayMovieEntity implements Serializable{
         this.posterUrl = posterUrl;
     }
 
-    public List<ServiceProviderLink> getProviderList() {
-        return providerList;
+    public List<ServiceProviderLink> getProviderListWebSubscription() {
+        return providerListWebSubscription;
     }
 
-    public void setProviderList(List<ServiceProviderLink> providerList) {
-        this.providerList = providerList;
+    public void setProviderListWebSubscription(List<ServiceProviderLink> providerListWebSubscription) {
+        this.providerListWebSubscription = providerListWebSubscription;
+    }
+
+    public List<ServiceProviderLink> getProviderListWebPurchase() {
+        return providerListWebPurchase;
+    }
+
+    public void setProviderListWebPurchase(List<ServiceProviderLink> providerListWebPurchase) {
+        this.providerListWebPurchase = providerListWebPurchase;
+    }
+
+    public List<ServiceProviderLink> getProviderListWebFree() {
+        return providerListWebFree;
+    }
+
+    public void setProviderListWebFree(List<ServiceProviderLink> providerListWebFree) {
+        this.providerListWebFree = providerListWebFree;
+    }
+
+    public List<ServiceProviderLink> getProviderListAndroidSubscription() {
+        return providerListAndroidSubscription;
+    }
+
+    public void setProviderListAndroidSubscription(List<ServiceProviderLink> providerListAndroidSubscription) {
+        this.providerListAndroidSubscription = providerListAndroidSubscription;
+    }
+
+    public List<ServiceProviderLink> getProviderListAndroidPurchase() {
+        return providerListAndroidPurchase;
+    }
+
+    public void setProviderListAndroidPurchase(List<ServiceProviderLink> providerListAndroidPurchase) {
+        this.providerListAndroidPurchase = providerListAndroidPurchase;
+    }
+
+    public List<ServiceProviderLink> getProviderListAndroidFree() {
+        return providerListAndroidFree;
+    }
+
+    public void setProviderListAndroidFree(List<ServiceProviderLink> providerListAndroidFree) {
+        this.providerListAndroidFree = providerListAndroidFree;
+    }
+
+    public List<ServiceProviderLink> getProviderListIOSSubscription() {
+        return providerListIOSSubscription;
+    }
+
+    public void setProviderListIOSSubscription(List<ServiceProviderLink> providerListIOSSubscription) {
+        this.providerListIOSSubscription = providerListIOSSubscription;
+    }
+
+    public List<ServiceProviderLink> getProviderListIOSPurchase() {
+        return providerListIOSPurchase;
+    }
+
+    public void setProviderListIOSPurchase(List<ServiceProviderLink> providerListIOSPurchase) {
+        this.providerListIOSPurchase = providerListIOSPurchase;
+    }
+
+    public List<ServiceProviderLink> getProviderListIOSFree() {
+        return providerListIOSFree;
+    }
+
+    public void setProviderListIOSFree(List<ServiceProviderLink> providerListIOSFree) {
+        this.providerListIOSFree = providerListIOSFree;
     }
 }
