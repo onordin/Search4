@@ -65,12 +65,35 @@ public class DisplayMovieEJB implements LocalDisplayMovie{
     }
 
     private void setStreamingServices(DisplayMovieEntity displayMovieEntity, Integer guideBoxId) throws UnregisteredProviderException, DataNotFoundException{
-        JSonHelper jSonHelper = new JSonHelper();
         URLBuilder urlBuilder = new URLBuilder();
 
         String url = urlBuilder.guideboxUrl(guideBoxId, "/movie/");
 
-        List<JsonObject> objectList = jSonHelper.getObjectList(url, "purchase_web_sources");
+        //Android
+        displayMovieEntity.setProviderListAndroidFree(getProvidersOfType(url, "free_android_sources", guideBoxId));
+        displayMovieEntity.setProviderListAndroidPurchase(getProvidersOfType(url, "purchase_android_sources", guideBoxId));
+        displayMovieEntity.setProviderListAndroidSubscription(getProvidersOfType(url, "subscription_android_sources", guideBoxId));
+        displayMovieEntity.setProviderListAndroidTvEverywhere(getProvidersOfType(url, "tv_everywhere_android_sources", guideBoxId));
+
+        //iOS
+        displayMovieEntity.setProviderListIOSFree(getProvidersOfType(url, "free_ios_sources", guideBoxId));
+        displayMovieEntity.setProviderListIOSPurchase(getProvidersOfType(url, "purchase_ios_sources", guideBoxId));
+        displayMovieEntity.setProviderListIOSSubscription(getProvidersOfType(url, "subscription_ios_sources", guideBoxId));
+        displayMovieEntity.setProviderListIOSTvEverywhere(getProvidersOfType(url, "tv_everywhere_ios_sources", guideBoxId));
+
+        //Web
+        displayMovieEntity.setProviderListWebFree(getProvidersOfType(url, "free_web_sources", guideBoxId));
+        displayMovieEntity.setProviderListWebPurchase(getProvidersOfType(url, "purchase_web_sources", guideBoxId));
+        displayMovieEntity.setProviderListWebSubscription(getProvidersOfType(url, "subscription_web_sources", guideBoxId));
+        displayMovieEntity.setProviderListWebTvEverywhere(getProvidersOfType(url, "tv_everywhere_web_sources", guideBoxId));
+
+        //Others
+        displayMovieEntity.setProviderListOther(getProvidersOfType(url, "other_sources", guideBoxId));
+    }
+
+    private List<ServiceProviderLink> getProvidersOfType(String url, String providerType, Integer guideBoxId) {
+        JSonHelper jSonHelper = new JSonHelper();
+        List<JsonObject> objectList = jSonHelper.getObjectList(url, providerType);
         List<ServiceProviderLink> serviceProviderLinks = new ArrayList<ServiceProviderLink>();
 
         if (objectList == null) {
@@ -80,15 +103,16 @@ public class DisplayMovieEJB implements LocalDisplayMovie{
         ServiceProviderLink providerLink;
         for(JsonObject jsonObject : objectList) {
             providerLink = new ServiceProviderLink();
-            providerLink.setType(getType(jsonObject.getString("source"))); //TODO make sure all guidebox sources are implemented in Enum
+            providerLink.setType(getType(jsonObject.getString("source")));
             providerLink.setUrl(jsonObject.getString("link"));
             serviceProviderLinks.add(providerLink);
         }
-
-        displayMovieEntity.setProviderList(serviceProviderLinks);
+        return serviceProviderLinks;
     }
 
     private ServiceProviderType getType(String identifier) throws UnregisteredProviderException{
+        if (identifier.startsWith("60"))
+            identifier = "sixty"+identifier.substring(2);
         identifier = identifier.toUpperCase();
         ServiceProviderType ret = null;
         try {
