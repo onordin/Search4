@@ -17,14 +17,10 @@ public class UserDAOBean {
 	private EntityManager entityManager;
 	
 	public boolean createUser(UserEntity userEntity){
-		System.out.println("in create user");
 		try {
-			System.out.println("Trying to create user...");
 			entityManager.merge(userEntity);
-			System.out.println("It worked");
 			return true;
 		} catch (Exception e) {
-			System.err.println("1234: " + e);
 			return false;
 		}
 	}
