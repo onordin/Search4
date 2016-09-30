@@ -99,8 +99,7 @@ public class UpdateDatabaseEJB implements LocalUpdateDatabase{
         }
         return movieInterval;
     }
-
-	@Override
+    
 	public MovieEntity getMovieFromTMDB(int id) {
 		// TODO Auto-generated method stub
 		return null;

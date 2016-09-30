@@ -34,7 +34,7 @@ public class DisplayMovieBean implements Serializable{
         try {
             displayMovieEntity = displayMovieEJB.getDisplayMovie(id);
         } catch (UnregisteredProviderException pe) {
-            System.err.println("Provider Error: "+pe);
+            System.err.println("Provider Error: "+pe); //TODO shouldnt these be exchanged for something you can see in frontend?
         } catch (DataNotFoundException de) {
             System.err.println("Data Error: "+de);
         }
