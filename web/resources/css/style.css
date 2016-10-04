@@ -95,6 +95,7 @@
 .order-table{
 	border-collapse:collapse;
 	margin: auto;
+	width: 99%;
 }
 
 .order-table-header{
@@ -126,5 +127,12 @@
 	padding: 10px;
 }
 
+.resultCol1 {
+	width: 85%;
+}
+
+.resultCol2 {
+	width: 14%;
+}
 
 
