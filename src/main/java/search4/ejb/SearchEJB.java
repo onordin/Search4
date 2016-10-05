@@ -19,26 +19,26 @@ public class SearchEJB implements LocalSearch{
    
     public List<MovieEntity> search(String parameter) {
         return searchDAOBean.search(parameter);
+    } //TODO this entire thing is now redundant?
+
+    
+    public List<MovieEntity> searchOrderByDateAsc(String parameter, Integer limit) {
+        return searchDAOBean.searchOrderByDateAsc(parameter, limit);
     }
 
     
-    public List<MovieEntity> searchOrderByDateAsc(String parameter) {
-        return searchDAOBean.searchOrderByDateAsc(parameter);
+    public List<MovieEntity> searchOrderByDateDesc(String parameter, Integer limit) {
+        return searchDAOBean.searchOrderByDateDesc(parameter, limit);
     }
 
     
-    public List<MovieEntity> searchOrderByDateDesc(String parameter) {
-        return searchDAOBean.searchOrderByDateDesc(parameter);
-    }
-
-    
-    public List<MovieEntity> searchOrderByTitleAsc(String parameter) {
-        return searchDAOBean.searchOrderByTitleAsc(parameter);
+    public List<MovieEntity> searchOrderByTitleAsc(String parameter, Integer limit) {
+        return searchDAOBean.searchOrderByTitleAsc(parameter, limit);
     }
 
    
-    public List<MovieEntity> searchOrderByTitleDesc(String parameter) {
-        return searchDAOBean.searchOrderByTitleDesc(parameter);
+    public List<MovieEntity> searchOrderByTitleDesc(String parameter, Integer limit) {
+        return searchDAOBean.searchOrderByTitleDesc(parameter, limit);
     }
 
 

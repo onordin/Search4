@@ -20,31 +20,35 @@ public class SearchDAOBean {
                 .getResultList();
     }
 
-    public List<MovieEntity> searchOrderByDateAsc(String query) {
+    public List<MovieEntity> searchOrderByDateAsc(String query, Integer limit) {
         return entityManager.createNamedQuery("MovieEntity.searchOrderByDateAsc")
                 .setParameter("query", query+"%")
                 .setParameter("query2", "% "+query+"%")
+                .setMaxResults(limit)
                 .getResultList();
     }
 
-    public List<MovieEntity> searchOrderByDateDesc(String query) {
+    public List<MovieEntity> searchOrderByDateDesc(String query, Integer limit) {
         return entityManager.createNamedQuery("MovieEntity.searchOrderByDateDesc")
                 .setParameter("query", query+"%")
                 .setParameter("query2", "% "+query+"%")
+                .setMaxResults(limit)
                 .getResultList();
     }
 
-    public List<MovieEntity> searchOrderByTitleAsc(String query) {
+    public List<MovieEntity> searchOrderByTitleAsc(String query, Integer limit) {
         return entityManager.createNamedQuery("MovieEntity.searchOrderByTitleAsc")
                 .setParameter("query", query+"%")
                 .setParameter("query2", "% "+query+"%")
+                .setMaxResults(limit)
                 .getResultList();
     }
 
-    public List<MovieEntity> searchOrderByTitleDesc(String query) {
+    public List<MovieEntity> searchOrderByTitleDesc(String query, Integer limit) {
         return entityManager.createNamedQuery("MovieEntity.searchOrderByTitleDesc")
                 .setParameter("query", query+"%")
                 .setParameter("query2", "% "+query+"%")
+                .setMaxResults(limit)
                 .getResultList();
     }
 }
