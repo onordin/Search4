@@ -16,7 +16,6 @@
 		
 		<title>Search4</title>
 		
-		
 		<link rel="stylesheet" href="resources/css/bootstrap.min.css" />
 		<link rel="stylesheet" href="resources/css/bootstrap-theme.min.css" />
 		<link rel="stylesheet" href="resources/css/style.css" />
@@ -25,58 +24,91 @@
 
 	<h:body>
 	
-	
+	<!-- If user are NOT logged in -->
+		<ui:fragment rendered="#{request.remoteUser == null}">
+		
 		<!-- Static navbar -->
-	    <nav class="navbar navbar-inverse navbar-static-top">
-	      <div class="container">
-	        <div class="navbar-header">
-	          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-	            <span class="sr-only">Toggle navigation</span>
-	            <span class="icon-bar"></span>
-	            <span class="icon-bar"></span>
-	            <span class="icon-bar"></span>
-	          </button>
-	          
-	          		<a class="navbar-brand" href="full_startpage.xhtml">Home</a>
-          		
-	        </div>
-	        <div id="navbar" class="navbar-collapse collapse">
-	          	<form class="navbar-form navbar-right">
-		            <div class="form-group">
-		              <h:inputText type="email" id="inputEmail" class="form-control" p:placeholder="Email address" />
-		            </div>
-		            <div class="form-group">
-		              <h:inputText type="password" id="inputPassword" class="form-control" p:placeholder="Password" />
-		            </div>
-		            <div class="form-group">
-		            	<h:commandButton type="submit" class="btn" value="Sign in" />
-		            </div>
-		            <div class="form-group">
-			            <table class="navbar-right">
-			            	<tr>
-			            		<td>
-			            			<a href="register.xhtml" class="register-password">Register</a>
-			            		</td>
-			            	</tr>
-			            	<tr>
-			            		<td>
-			            			<a href="resetpassword.xhtml" class="register-password">Forgot password</a>
-			            		</td>
-			            	</tr>
-			            </table>
-					</div>
-	          	</form>
-        	</div><!--/.nav-collapse -->
-	      </div>
-	    </nav>
+		    <nav class="navbar navbar-inverse navbar-static-top">
+		      <div class="container">
+		        <div class="navbar-header">
+		          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+		            <span class="sr-only">Toggle navigation</span>
+		            <span class="icon-bar"></span>
+		            <span class="icon-bar"></span>
+		            <span class="icon-bar"></span>
+		          </button>
+		          
+		          		<a class="navbar-brand" href="full_startpage.xhtml">Search movie</a>
+	          		
+		        </div>
+		        <div id="navbar" class="navbar-collapse collapse">
+		          	<form class="navbar-form navbar-right">
+			            <div class="form-group">
+			              <h:inputText id="inputEmail" class="form-control" p:placeholder="Email address" />
+			            </div>
+			            <div class="form-group">
+			              <h:inputSecret id="inputPassword" class="form-control" p:placeholder="Password" />
+			            </div>
+			            <div class="form-group">
+			            	<h:commandButton type="submit" class="btn" value="Sign in" />
+			            </div>
+			            <div class="form-group">
+				            <table class="navbar-right">
+				            	<tr>
+				            		<td>
+				            			<a href="register.xhtml" class="register-password">Register</a>
+				            		</td>
+				            	</tr>
+				            	<tr>
+				            		<td>
+				            			<a href="resetpassword.xhtml" class="register-password">Forgot password</a>
+				            		</td>
+				            	</tr>
+				            </table>
+						</div>
+		          	</form>
+	        	</div><!--/.nav-collapse -->
+		      </div>
+		    </nav>
 	    
+	    </ui:fragment>
+	    
+	<!-- If user are logged in -->
+		<ui:fragment rendered="#{request.remoteUser != null}}">
+			<nav class="navbar navbar-inverse navbar-static-top">
+		      <div class="container">
+		        <div class="navbar-header">
+		        
+		          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+		            <span class="sr-only">Toggle navigation</span>
+		            <span class="icon-bar"></span>
+		            <span class="icon-bar"></span>
+		            <span class="icon-bar"></span>
+		          </button>
+		          <a class="navbar-brand" href="search.xhtml">Search movie</a>
+		        </div>
+		        <div id="navbar" class="navbar-collapse collapse">
+		          	<h:form class="navbar-form navbar-right">
+			           
+			            <div class="form-group">
+			            	<h:commandButton type="submit" class="btn" value="Mina sidor" 
+			            			action="#{userBean.methodName()}" />
+			            </div>
+			            <div class="form-group">
+			            	<h:commandButton type="submit" class="btn" value="Sign out" 
+			            			action="#{userBean.methodName()}" />
+			            </div>
+		          	</h:form>
+	        	</div>
+		      </div>
+		    </nav>
+	    </ui:fragment>
+
 		<script type='text/javascript' src="https://cdn.rawgit.com/jamesallardice/Placeholders.js/master/dist/placeholders.min.js"></script>
 		<script src="resources/js/jquery-3.1.0.min.js" />
 		<script src="resources/js/bootstrap.min.js" />
 		<!-- IE10 viewport hack for Surface/desktop Windows 8 bug (TA BORT?!) -->
     	<script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
- 
-
 
    	</h:body>
 
