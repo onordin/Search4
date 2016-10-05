@@ -37,6 +37,7 @@ public class DisplayMovieEJB implements LocalDisplayMovie{
         setGuideboxId(movieEntity); //Check if guidbox id is set. If not, set it.
         setStreamingServices(displayMovieEntity, movieEntity.getGuideboxId()); //Retrieve streaming services from guidebox
         setTmdbInfo(displayMovieEntity, movieEntity.getTmdbId()); //Retrieve movie information (description, poster etc) from TMDB
+        displayMovieEntity.checkAddedServices();	//populate all boolean has-properties
         return displayMovieEntity;
     }
 

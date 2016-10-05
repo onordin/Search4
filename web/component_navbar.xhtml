@@ -14,7 +14,7 @@
     	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
     	<meta name="viewport" content="width=device-width, initial-scale=1" />	
 		
-		<title>Result.xhtml</title>
+		<title>Search4</title>
 		
 		
 		<link rel="stylesheet" href="resources/css/bootstrap.min.css" />
@@ -24,6 +24,7 @@
 	</h:head>
 
 	<h:body>
+	
 	
 		<!-- Static navbar -->
 	    <nav class="navbar navbar-inverse navbar-static-top">
@@ -36,7 +37,7 @@
 	            <span class="icon-bar"></span>
 	          </button>
 	          
-	          		<a class="navbar-brand" href="search.xhtml">Home</a>
+	          		<a class="navbar-brand" href="full_startpage.xhtml">Home</a>
           		
 	        </div>
 	        <div id="navbar" class="navbar-collapse collapse">
@@ -69,52 +70,15 @@
 	      </div>
 	    </nav>
 	    
-<!-- Search area -->
-	    <div class="jumbotron">
-	    	<h1 id="searchHeadline">Search4</h1>
-		    <h:form id="search">
-		    <h:panelGrid columns="2" columnClasses="rightAlign,leftAlign">
-		    	
-		    	
-			        <h:inputText id="searchQuery" class="form-control search-field" label="search" value="#{searchBean.query}" p:placeholder="Search for a movie or TV-show" required="true">
-			            <!--<f:validateLength minimum="2" maximum="30"></f:validateLength>-->
-			            <f:ajax event="keyup" delay="500" listener="#{searchBean.ajaxListener}" render="resultInfo resultH2 movieTable" update=":resultContainer:resultH2 :resultContainer:movieTable"/>
-			        </h:inputText>
-        			<h:commandButton class="searchBtn" action="#{searchBean.search()}" value="   " />
-		         </h:panelGrid>
-	    	</h:form>
-		   
-      	</div>
-      
-      
-<!-- Result area -->
-
-		<div class="container">
-			<div class="row">
-				<div class="col-lg-12 col-xs-12" id="resultContainer">
-					<h2 id="resultH2">Results on "<b><h:outputText id="resultInfo" value="#{searchBean.query !=null ? searchBean.query : ''}"/></b>"</h2>
-    				<h:dataTable value="#{searchBean.movieEntities}" var="movie" id="movieTable"
-    						styleClass="order-table"
-    						rowClasses="order-table-odd-row,order-table-even-row">
-				        <h:column headerClass="resultCol1 order-table-header">
-				            <f:facet name="header">Movie Title</f:facet>
-				            <a class="row-output" href="view_movie_test.xhtml?id=#{movie.id}"><h:outputText class="row-output" value="#{movie.title}" /></a>
-				        </h:column>
-				        <h:column headerClass="resultCol2 order-table-header">
-				            <f:facet name="header">Release Date</f:facet>
-				            <h:outputText class="row-output" value="#{movie.date}" />
-				        </h:column>
-				    </h:dataTable>
-				</div>
-			</div>
-		</div>
-	
-		
 		<script type='text/javascript' src="https://cdn.rawgit.com/jamesallardice/Placeholders.js/master/dist/placeholders.min.js"></script>
 		<script src="resources/js/jquery-3.1.0.min.js" />
 		<script src="resources/js/bootstrap.min.js" />
 		<!-- IE10 viewport hack for Surface/desktop Windows 8 bug (TA BORT?!) -->
     	<script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
+ 
+
+
    	</h:body>
 
 </html>
+	    
