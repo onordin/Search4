@@ -11,6 +11,7 @@ import search4.ejb.interfaces.LocalUser;
 import search4.entities.DisplayUserEntity;
 import search4.entities.UserEntity;
 import search4.exceptions.DuplicateDataException;
+import search4.exceptions.InvalidInputException;
 
 @Named(value="userBean")
 @SessionScoped
@@ -37,17 +38,21 @@ public class UserBean implements Serializable{
 		userEntity.setPassword(password); // TODO password security
 		try {
 			userEJB.createUser(userEntity);
-			message = "New user with email: " + email + "created";
-			return "login";
+			message = "New user with email: " + email + " created";
+			return "full_startpage";
 		} catch (DuplicateDataException dde) {
 			message = dde.getMessage(); //TODO is this the right way to do it?
-			return "login"; //TODO create error page
+			return "full_startpage"; //TODO create error page
 		} catch (InternalServerErrorException isee) {
 			message = isee.getMessage();
-			return "login";
-		} catch (Exception e) {
-			message = "SOME ERROR WAT";
-			return "login";
+			return "full_startpage";
+		} catch (InvalidInputException iie) {
+			message = iie.getMessage();
+			return "full_startpage";
+		}
+		catch (Exception e) {
+			message = "Unknown Error";
+			return "full_startpage";
 		}
 	}
 	

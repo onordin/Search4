@@ -74,7 +74,6 @@
 					<h:panelGrid columns="2" columnClasses="rightAlign,leftAlign">
 						<h:outputLabel for="firstName" value="First Name:"></h:outputLabel>
 						<h:inputText id="firstName" label="First Name" value="#{userBean.firstName}" required="true">
-				
 						</h:inputText>
 						
 						<h:outputLabel for="lastName" value="Last Name:"></h:outputLabel>
@@ -83,6 +82,7 @@
 						
 						<h:outputLabel for="email" value="Email:"></h:outputLabel>
 						<h:inputText id="email" label="Email" value="#{userBean.email}" required="true">
+							<f:validator validatorId="emailValidator"/> <!-- TODO this dont work properly? -->
 						</h:inputText>
 						
 						<h:outputLabel for="password" value="Password:"></h:outputLabel>
