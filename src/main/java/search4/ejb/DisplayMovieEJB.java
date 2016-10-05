@@ -70,31 +70,33 @@ public class DisplayMovieEJB implements LocalDisplayMovie{
 
         String url = urlBuilder.guideboxUrl(guideBoxId, "/movie/");
 
+        JsonObject movieObject = new JSonHelper().getObject(url);
+
         //Android
-        displayMovieEntity.setProviderListAndroidFree(getProvidersOfType(url, "free_android_sources", guideBoxId));
-        displayMovieEntity.setProviderListAndroidPurchase(getProvidersOfType(url, "purchase_android_sources", guideBoxId));
-        displayMovieEntity.setProviderListAndroidSubscription(getProvidersOfType(url, "subscription_android_sources", guideBoxId));
-        displayMovieEntity.setProviderListAndroidTvEverywhere(getProvidersOfType(url, "tv_everywhere_android_sources", guideBoxId));
+        displayMovieEntity.setProviderListAndroidFree(getProvidersOfType(movieObject, "free_android_sources", guideBoxId));
+        displayMovieEntity.setProviderListAndroidPurchase(getProvidersOfType(movieObject, "purchase_android_sources", guideBoxId));
+        displayMovieEntity.setProviderListAndroidSubscription(getProvidersOfType(movieObject, "subscription_android_sources", guideBoxId));
+        displayMovieEntity.setProviderListAndroidTvEverywhere(getProvidersOfType(movieObject, "tv_everywhere_android_sources", guideBoxId));
 
         //iOS
-        displayMovieEntity.setProviderListIOSFree(getProvidersOfType(url, "free_ios_sources", guideBoxId));
-        displayMovieEntity.setProviderListIOSPurchase(getProvidersOfType(url, "purchase_ios_sources", guideBoxId));
-        displayMovieEntity.setProviderListIOSSubscription(getProvidersOfType(url, "subscription_ios_sources", guideBoxId));
-        displayMovieEntity.setProviderListIOSTvEverywhere(getProvidersOfType(url, "tv_everywhere_ios_sources", guideBoxId));
+        displayMovieEntity.setProviderListIOSFree(getProvidersOfType(movieObject, "free_ios_sources", guideBoxId));
+        displayMovieEntity.setProviderListIOSPurchase(getProvidersOfType(movieObject, "purchase_ios_sources", guideBoxId));
+        displayMovieEntity.setProviderListIOSSubscription(getProvidersOfType(movieObject, "subscription_ios_sources", guideBoxId));
+        displayMovieEntity.setProviderListIOSTvEverywhere(getProvidersOfType(movieObject, "tv_everywhere_ios_sources", guideBoxId));
 
         //Web
-        displayMovieEntity.setProviderListWebFree(getProvidersOfType(url, "free_web_sources", guideBoxId));
-        displayMovieEntity.setProviderListWebPurchase(getProvidersOfType(url, "purchase_web_sources", guideBoxId));
-        displayMovieEntity.setProviderListWebSubscription(getProvidersOfType(url, "subscription_web_sources", guideBoxId));
-        displayMovieEntity.setProviderListWebTvEverywhere(getProvidersOfType(url, "tv_everywhere_web_sources", guideBoxId));
+        displayMovieEntity.setProviderListWebFree(getProvidersOfType(movieObject, "free_web_sources", guideBoxId));
+        displayMovieEntity.setProviderListWebPurchase(getProvidersOfType(movieObject, "purchase_web_sources", guideBoxId));
+        displayMovieEntity.setProviderListWebSubscription(getProvidersOfType(movieObject, "subscription_web_sources", guideBoxId));
+        displayMovieEntity.setProviderListWebTvEverywhere(getProvidersOfType(movieObject, "tv_everywhere_web_sources", guideBoxId));
 
         //Others
-        displayMovieEntity.setProviderListOther(getProvidersOfType(url, "other_sources", guideBoxId));
+        displayMovieEntity.setProviderListOther(getProvidersOfType(movieObject, "other_sources", guideBoxId));
     }
 
-    private List<ServiceProviderLink> getProvidersOfType(String url, String providerType, Integer guideBoxId) {
+    private List<ServiceProviderLink> getProvidersOfType(JsonObject movieObject, String providerType, Integer guideBoxId) {
         JSonHelper jSonHelper = new JSonHelper();
-        List<JsonObject> objectList = jSonHelper.getObjectList(url, providerType);
+        List<JsonObject> objectList = jSonHelper.getObjectList(movieObject, providerType);
         List<ServiceProviderLink> serviceProviderLinks = new ArrayList<ServiceProviderLink>();
 
         if (objectList == null) {

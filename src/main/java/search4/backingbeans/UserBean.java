@@ -55,6 +55,7 @@ public class UserBean implements Serializable{
 		displayUserEntity = userEJB.getUser(email, password);
 		if (displayUserEntity == null) {
 			message = "Email or Password Wrong!";
+			System.err.println("WRONG LOGIN");
 			return "login"; //TODO display message
 		}
 		message = "Login Successfull";
@@ -63,6 +64,7 @@ public class UserBean implements Serializable{
 		lastName = "";
 		email = "";
 		password = "";
+		System.out.println("RIGHT LOGIN");
 		return "login_success"; //TODO create page
 	}
 
