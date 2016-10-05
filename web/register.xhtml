@@ -69,6 +69,7 @@
 	    </nav>
 		
 		<div class="row">
+			<h:messages></h:messages>
 			<div class="col-md-4">
 				<h:form id="userForm">
 					<h:panelGrid columns="2" columnClasses="rightAlign,leftAlign">
@@ -82,7 +83,7 @@
 						
 						<h:outputLabel for="email" value="Email:"></h:outputLabel>
 						<h:inputText id="email" label="Email" value="#{userBean.email}" required="true">
-							<f:validator validatorId="emailValidator"/> <!-- TODO this dont work properly? -->
+							<f:validator validatorId="emailValidator"/> <!-- TODO move message to a better place -->
 						</h:inputText>
 						
 						<h:outputLabel for="password" value="Password:"></h:outputLabel>
