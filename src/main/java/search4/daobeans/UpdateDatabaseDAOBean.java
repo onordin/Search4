@@ -28,12 +28,17 @@ public class UpdateDatabaseDAOBean {
 
     public boolean createMovie(MovieEntity movieEntity) throws Exception{
         Integer tmdbId = movieEntity.getTmdbId();
-        MovieEntity result = entityManager.merge(movieEntity); //TODO try/catch? What if ONLY DB is down?
-        if (getMovieWithTmdbId(tmdbId) != null) {
+        MovieEntity result = null;
+        try {
+            result = entityManager.merge(movieEntity);
+        } catch (Exception e) {
+            throw new InternalServerErrorException("Failed to insert movie in database.");
+        }
+        if (getMovieWithTmdbId(tmdbId) != null) { //TODO this should be done before merge?!
             throw new DuplicateDataException("Already exists movie in database with that TMdB ID ("+tmdbId+")");
         }
         else if (result == null) {
-            throw new InternalServerErrorException("Failed to insert entity in database."); //TODO identification for failed obect?
+            throw new InternalServerErrorException("Failed to insert entity in database."); //TODO unreacable?
         }
         return true; //TODO return type?
     }

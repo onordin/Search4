@@ -25,6 +25,7 @@ public class DisplayMovieBean implements Serializable{
 
     private DisplayMovieEntity displayMovieEntity;
     private Integer movieId;
+    private String message;
 
     public void postInit() {
         getMovieData(movieId);
@@ -33,14 +34,22 @@ public class DisplayMovieBean implements Serializable{
     public void getMovieData(Integer id) {
         try {
             displayMovieEntity = displayMovieEJB.getDisplayMovie(id);
+            message = "";
         } catch (UnregisteredProviderException pe) {
-            System.err.println("Provider Error: "+pe); //TODO shouldnt these be exchanged for something you can see in frontend?
+            displayMovieEntity = null;
+            message = "Error: "+pe;
         } catch (DataNotFoundException de) {
-            System.err.println("Data Error: "+de);
+            displayMovieEntity = null;
+            message = "400 Bad Request: No such movie!";
         }
         catch (Exception e) {
-            System.err.println("Another Error: "+e);
+            displayMovieEntity = null;
+            message = "Error"+e;
         }
+    }
+
+    public String getMessage() {
+        return message;
     }
 
     public DisplayMovieEntity getDisplayMovieEntity() {

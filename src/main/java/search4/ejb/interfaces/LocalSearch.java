@@ -7,8 +7,6 @@ import search4.entities.MovieEntity;
 
 @Local
 public interface LocalSearch {
-
-	List<MovieEntity> search(String parameter);
 	
 	List<MovieEntity> searchOrderByDateAsc(String parameter, Integer limit);
 	

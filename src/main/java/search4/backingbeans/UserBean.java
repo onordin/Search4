@@ -43,15 +43,15 @@ public class UserBean implements Serializable{
 		UserEntity userEntity = new UserEntity();
 		userEntity.setFirstName(firstName);
 		userEntity.setLastName(lastName);
-		userEntity.setEmail(email); //TODO check if email is already in db.
-		userEntity.setPassword(password); // TODO password security
+		userEntity.setEmail(email);
+		userEntity.setPassword(password);
 		try {
 			userEJB.createUser(userEntity);
 			message = "New user with email: " + email + " created";
 			return "full_startpage";
 		} catch (DuplicateDataException dde) {
-			message = dde.getMessage(); //TODO is this the right way to do it?
-			return "full_startpage"; //TODO create error page
+			message = dde.getMessage();
+			return "full_startpage";
 		} catch (InternalServerErrorException isee) {
 			message = isee.getMessage();
 			return "full_startpage";
@@ -70,26 +70,26 @@ public class UserBean implements Serializable{
 		if (displayUserEntity == null) {
 			message = "Email or Password Wrong!";
 			userIsLoggedIn = null;
-			return "login"; //TODO display message
+			return "login";
 		}
 		message = "Login Successfull";
 		userIsLoggedIn = "user is now logged in";
-		//Wiping these just to be sure //TODO this the right way to go about this?
+		//Wiping these just to be sure
 		firstName = "";
 		lastName = "";
 		email = "";
 		password = "";
-		return "full_startpage"; //TODO create page
+		return "full_startpage";
 	}
 	
 	public String logOffUser() {
-		message = "User logged off.";
+		message = "You logged out.";
 		userIsLoggedIn = null;
 		firstName = "";
 		lastName = "";
 		email = "";
 		password = "";
-		return "full_startpage"; //TODO create page
+		return "full_startpage";
 		
 	}
 	

@@ -26,7 +26,6 @@ public class JSonHelper {
     public List<JsonObject> getObjectList(JsonObject jsonObject, String listId) {
         List<JsonObject> jsonObjects = new ArrayList<JsonObject>();
         try {
-            //JsonObject jsonObject = getObject(url);
             JsonArray jsonArray = (JsonArray) jsonObject.get(listId);
 
             for (int i = 0; i < jsonArray.size(); i++) {

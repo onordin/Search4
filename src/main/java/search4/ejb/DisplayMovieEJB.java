@@ -42,14 +42,14 @@ public class DisplayMovieEJB implements LocalDisplayMovie{
     }
 
     private void setGuideboxId(MovieEntity movieEntity) {
-        if (movieEntity.getGuideboxId() < 1) { //TODO check what lowest guidebox id is
-            //TODO if below throws exception, do it here to
+        if (movieEntity.getGuideboxId() < 1) { //first actual guidebox id is 6
+            //TODO if we get weird errors with getting display movie it probably means there is an exception thrown from this method
             movieEntity.setGuideboxId(getGuideboxId(movieEntity.getTmdbId()));
         }
     }
 
     private Integer getGuideboxId(Integer tmdbId) {
-        Integer guideboxId = 0; //TODO find lowest
+        Integer guideboxId = 0;
         JSonHelper jSonHelper = new JSonHelper();
         URLBuilder urlBuilder = new URLBuilder();
 
@@ -60,7 +60,7 @@ public class DisplayMovieEJB implements LocalDisplayMovie{
             guideboxId = jsonObject.getInt("id");
         }
         else {
-            //TODO throw exception? or return 0?
+            return 0; //Currently if there is no guidebox movie with the specified tmdb id, set guidebox id to 0 (unset)
         }
         return guideboxId;
     }
@@ -126,7 +126,6 @@ public class DisplayMovieEJB implements LocalDisplayMovie{
         return ret;
     }
 
-    //TODO Kind of dubplicate with getMovieFromTMDB in UpdateDatabaseEJB
     private void setTmdbInfo(DisplayMovieEntity displayMovieEntity, Integer tmdbId) throws DataNotFoundException{
         DateParser dateParser = new DateParser();
         JSonHelper jSonHelper = new JSonHelper();

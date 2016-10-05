@@ -35,7 +35,7 @@ public class UserEJB implements LocalUser {
 		if (userEntity.getPassword().length() < 4) {
 			throw new InvalidInputException("Password must be 4 or more characters.");
 		}
- 		userEntity.setEmail(userEntity.getEmail().toLowerCase()); //Keep all email addresses in lowercase always //TODO right place to do this?
+ 		userEntity.setEmail(userEntity.getEmail().toLowerCase()); //Keep all email addresses in lowercase always //TODO right place to do this? ask teacher
 		if (emailInDb(userEntity.getEmail())) {
 			throw new DuplicateDataException("The email address already exists in the system");
 		}
