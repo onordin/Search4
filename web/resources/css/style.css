@@ -126,5 +126,33 @@
 	padding: 10px;
 }
 
+/* Register page */
+
+.col-centered {
+    margin: auto;
+    float: none;
+    top: 50px;
+}
+
+
+.left-register {
+	padding: 10px 10px 10px 10px;
+	text-align: right;
+}
+
+.right-register {
+	padding: 10px 10px 10px 10px;
+}
+
+/* User registered page */
+
+.oscar {
+	background-color: red;
+	padding: 20px 20px 20px 20px;
+}
+
+
+
+
 
 

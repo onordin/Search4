@@ -16,7 +16,7 @@
     	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
     	<meta name="viewport" content="width=device-width, initial-scale=1" />	
 		
-		<title>Search_backup</title>
+		<title>Search page</title>
 		
 		
 		<link rel="stylesheet" href="resources/css/bootstrap.min.css" />
@@ -26,47 +26,8 @@
 	</h:head>
 	<h:body>
 
-	<!-- Static navbar -->
-	    <nav class="navbar navbar-inverse navbar-static-top">
-	      <div class="container">
-	        <div class="navbar-header">
-	          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-	            <span class="sr-only">Toggle navigation</span>
-	            <span class="icon-bar"></span>
-	            <span class="icon-bar"></span>
-	            <span class="icon-bar"></span>
-	          </button>
-	          <a class="navbar-brand" href="search.xhtml">Home</a>
-	        </div>
-	        <div id="navbar" class="navbar-collapse collapse">
-	          	<form class="navbar-form navbar-right">
-		            <div class="form-group">
-		              <h:inputText type="email" id="inputEmail" class="form-control" p:placeholder="Email address" />
-		            </div>
-		            <div class="form-group">
-		              <h:inputText type="password" id="inputPassword" class="form-control" p:placeholder="Password" />
-		            </div>
-		            <div class="form-group">
-		            	<h:commandButton type="submit" class="btn" value="Sign in" />
-		            </div>
-		            <div class="form-group">
-			            <table class="navbar-right">
-			            	<tr>
-			            		<td>
-			            			<a href="register.xhtml" class="register-password">Register</a>
-			            		</td>
-			            	</tr>
-			            	<tr>
-			            		<td>
-			            			<a href="resetpassword.xhtml" class="register-password">Forgot password</a>
-			            		</td>
-			            	</tr>
-			            </table>
-					</div>
-	          	</form>
-        	</div><!--/.nav-collapse -->
-	      </div>
-	    </nav>
+<!-- Static navbar -->
+	    <ui:include src="navbar_signed_in.xhtml" />
 	    
 <!-- Search area -->
 	    <div class="jumbotron">
@@ -77,24 +38,19 @@
 			        <h:inputText id="searchQuery" class="form-control search-field"  label="search" value="#{searchBean.query}" p:placeholder="Search for a movie or TV-show" required="true">
 			            <!--<f:validateLength minimum="2" maximum="30"></f:validateLength>-->
 			        </h:inputText>
-        			<h:commandButton class="searchBtn" action="#{searchBean.search()}" value="   " />
+        			<h:commandButton type="submit" class="searchBtn" action="#{searchBean.search()}" value="   " />
 		         </h:panelGrid>
 	    	</h:form>
       	</div>
       	 
-      	<b:container>
-            <b:row>
-                <b:column class="col-lg-4">
-                    Hello, world!
-                </b:column>
-                <b:column class="col-lg-4">
-                    next one
-                </b:column>
-                <b:column class="col-lg-4">
-                    last
-                </b:column>
-            </b:row>
-        </b:container>
-    
+<!-- Result area -->
+		<ui:include src="result.xhtml" />
+		
+		
+    	<script type='text/javascript' src="https://cdn.rawgit.com/jamesallardice/Placeholders.js/master/dist/placeholders.min.js"></script>
+		<script src="resources/js/jquery-3.1.0.min.js" />
+		<script src="resources/js/bootstrap.min.js" />
+		<!-- IE10 viewport hack for Surface/desktop Windows 8 bug (TA BORT?!) -->
+    	<script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
 </h:body>
 </html>
