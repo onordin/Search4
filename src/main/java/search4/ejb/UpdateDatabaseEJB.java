@@ -101,7 +101,6 @@ public class UpdateDatabaseEJB implements LocalUpdateDatabase{
     }
     
 	public MovieEntity getMovieFromTMDB(int id) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 }
