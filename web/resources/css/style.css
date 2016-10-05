@@ -108,8 +108,7 @@
 
 .order-table-odd-row{
 	text-align:left;
-	/*background:none repeat scroll 0 0 #FFFFFF;*/
-	background:none repeat scroll 0 0 red;
+	background:none repeat scroll 0 0 #FFFFFF;
 	border-top:1px solid #BBBBBB;
 }
 
