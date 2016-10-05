@@ -8,6 +8,7 @@ import javax.inject.Named;
 import javax.ws.rs.InternalServerErrorException;
 
 import search4.ejb.interfaces.LocalUser;
+import search4.entities.DisplayUserEntity;
 import search4.entities.UserEntity;
 import search4.exceptions.DuplicateDataException;
 
@@ -23,13 +24,13 @@ public class UserBean implements Serializable{
 	private String password;
 	private String message;
 	
-	private UserEntity userEntity;
+	private DisplayUserEntity displayUserEntity;
 	
 	@EJB
 	LocalUser userEJB;
 	
 	public String createUser(){
-		userEntity = new UserEntity();
+		UserEntity userEntity = new UserEntity();
 		userEntity.setFirstName(firstName);
 		userEntity.setLastName(lastName);
 		userEntity.setEmail(email); //TODO check if email is already in db.
@@ -37,6 +38,7 @@ public class UserBean implements Serializable{
 		try {
 			userEJB.createUser(userEntity);
 			message = "New user with email: " + email + "created";
+			return "login";
 		} catch (DuplicateDataException dde) {
 			message = dde.getMessage(); //TODO is this the right way to do it?
 			return "login"; //TODO create error page
@@ -47,12 +49,21 @@ public class UserBean implements Serializable{
 			message = "SOME ERROR WAT";
 			return "login";
 		}
-		return "login";
 	}
 	
 	public String loginUser(){
-		userEntity= userEJB.getUser(email,password);//TODO sercurity und so weiter
-		return "testUserResult";
+		displayUserEntity = userEJB.getUser(email, password);
+		if (displayUserEntity == null) {
+			message = "Email or Password Wrong!";
+			return "login"; //TODO display message
+		}
+		message = "Login Successfull";
+		//Wiping these just to be sure //TODO this the right way to go about this?
+		firstName = "";
+		lastName = "";
+		email = "";
+		password = "";
+		return "full_startpage"; //TODO create page
 	}
 
 	public String getFirstName() {
@@ -87,16 +98,15 @@ public class UserBean implements Serializable{
 		return password;
 	}
 
-	public UserEntity getUserEntity() {
-		return userEntity;
+	public DisplayUserEntity getDisplayUserEntity() {
+		return displayUserEntity;
 	}
 
-	public void setUserEntity(UserEntity userEntity) {
-		this.userEntity = userEntity;
+	public void setDisplayUserEntity(DisplayUserEntity displayUserEntity) {
+		this.displayUserEntity = displayUserEntity;
 	}
-	
-	
-	
-	
-	
+
+	public String getMessage() {
+		return message;
+	}
 }
