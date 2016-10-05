@@ -25,7 +25,20 @@ public class SearchBean implements Serializable {
 
     //TODO choose order by from frontend?
     public String search() {
-        movieEntities = searchEJB.searchOrderByDateDesc(query);
+        boolean titleSort = true;
+        boolean ascending = true;
+        if (titleSort && ascending) {
+            movieEntities = searchEJB.searchOrderByTitleAsc(query);
+        }
+        else if (titleSort && !ascending) {
+            movieEntities = searchEJB.searchOrderByTitleDesc(query);
+        }
+        else if (!titleSort && ascending) {
+            movieEntities = searchEJB.searchOrderByDateAsc(query);
+        }
+        else {
+            movieEntities = searchEJB.searchOrderByDateDesc(query);
+        }
         return "full_startpage";
     }
 
