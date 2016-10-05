@@ -91,10 +91,10 @@
 			<div class="row">
 				<div class="col-lg-12 col-xs-12">
 					<h2 id="resultH2">Results on "<b>#{userBean.email}</b>"</h2>
-    				<h:dataTable value="#{userBean.userEntity}" var="user"
-    						styleClass="order-table"
-    						headerClass="order-table-header"
-    						rowClasses="order-table-odd-row,order-table-even-row">
+    				<h:dataTable value="#{userBean.displayUserEntity}" var="user"
+                                 styleClass="order-table"
+                                 headerClass="order-table-header"
+                                 rowClasses="order-table-odd-row,order-table-even-row">
 				        <h:column>
 				            <f:facet name="header">First name</f:facet>
 				            <h:outputText class="row-output" value="#{user.firstName}" />

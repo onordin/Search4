@@ -7,6 +7,7 @@ import javax.ws.rs.InternalServerErrorException;
 import search4.daobeans.UserDAOBean;
 import search4.ejb.interfaces.LocalUser;
 import search4.ejb.passwordencrytion.PBKDF2;
+import search4.entities.DisplayUserEntity;
 import search4.entities.UserEntity;
 import search4.exceptions.DataNotFoundException;
 import search4.exceptions.DuplicateDataException;
@@ -46,20 +47,29 @@ public class UserEJB implements LocalUser {
 	}
 
 	
-	public UserEntity getUser(String email,String password) {
+	public DisplayUserEntity getUser(String email,String password) {
 		UserEntity userEntity = userDAOBean.getUser(email);
-		checkPassword(userEntity, password);
-		return userEntity;
-	}
-
-	//TODO make more fancy method for login
-	private void checkPassword(UserEntity userEntity, String password) {
-		if (userEntity.getPassword().equals(password)) {
-			System.out.println("CHECKPASSWORD: " + userEntity.getFirstName() + " logged in!");
-		}else{
-			
+		DisplayUserEntity displayUser = getDisplayUserFromDBEntity(userEntity);
+		try {
+			if (PBKDF2.validatePassword(password, displayUser.getPassword())) {
+				displayUser.setPassword("HIDDEN");
+				return displayUser;
+			}
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		} catch (InvalidKeySpecException e) {
+			e.printStackTrace();
 		}
-		
+		return null;
 	}
 
+	private DisplayUserEntity getDisplayUserFromDBEntity(UserEntity userEntity) {
+		DisplayUserEntity displayUser = new DisplayUserEntity();
+		displayUser.setId(userEntity.getId());
+		displayUser.setEmail(userEntity.getEmail());
+		displayUser.setPassword(userEntity.getPassword());
+		displayUser.setFirstName(userEntity.getFirstName());
+		displayUser.setLastName(userEntity.getLastName());
+		return displayUser;
+	}
 }
