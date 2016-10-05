@@ -25,7 +25,7 @@
 	<h:body>
 	
 	<!-- If user are NOT logged in -->
-		<ui:fragment rendered="#{request.remoteUser == null}">
+		<ui:fragment rendered="#{userBean.userIsLoggedIn == null}">
 		
 		<!-- Static navbar -->
 
@@ -39,7 +39,7 @@
 	            <span class="icon-bar"></span>
 	          </button>
 
-	          		<a class="navbar-brand" href="full_startpage.xhtml">Home</a>
+	          		<a class="navbar-brand" href="full_startpage.xhtml">Search movie</a>
           		
 	        </div>
 	        <div id="navbar" class="navbar-collapse collapse">
@@ -76,7 +76,7 @@
 	    </ui:fragment>
 	    
 	<!-- If user are logged in -->
-		<ui:fragment rendered="#{request.remoteUser != null}}">
+		<ui:fragment rendered="#{userBean.userIsLoggedIn != null}">
 			<nav class="navbar navbar-inverse navbar-static-top">
 		      <div class="container">
 		        <div class="navbar-header">
@@ -98,7 +98,7 @@
 			            </div>
 			            <div class="form-group">
 			            	<h:commandButton type="submit" class="btn" value="Sign out" 
-			            			action="#{userBean.methodName()}" />
+			            			action="#{userBean.logOffUser()}" />
 			            </div>
 		          	</h:form>
 	        	</div>

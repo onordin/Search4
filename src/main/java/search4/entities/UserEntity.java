@@ -9,7 +9,7 @@ import javax.persistence.*;
  * 
  */
 @Entity
-@Table(name="user", schema = "search4")
+@Table(name="users", schema = "search4")
 @NamedQuery(name="UserEntity.getUserByEmail", query="SELECT userEntity FROM UserEntity userEntity WHERE userEntity.email = :email")
 public class UserEntity implements Serializable {
 	

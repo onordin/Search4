@@ -23,7 +23,16 @@ public class UserBean implements Serializable{
 	private String email;
 	private String password;
 	private String message;
+	private String userIsLoggedIn;
 	
+	public String getUserIsLoggedIn() {
+		return userIsLoggedIn;
+	}
+
+	public void setUserIsLoggedIn(String userIsLoggedIn) {
+		this.userIsLoggedIn = userIsLoggedIn;
+	}
+
 	private DisplayUserEntity displayUserEntity;
 	
 	@EJB
@@ -55,9 +64,11 @@ public class UserBean implements Serializable{
 		displayUserEntity = userEJB.getUser(email, password);
 		if (displayUserEntity == null) {
 			message = "Email or Password Wrong!";
+			userIsLoggedIn = null;
 			return "login"; //TODO display message
 		}
 		message = "Login Successfull";
+		userIsLoggedIn = "user is now logged in";
 		//Wiping these just to be sure //TODO this the right way to go about this?
 		firstName = "";
 		lastName = "";
@@ -65,6 +76,19 @@ public class UserBean implements Serializable{
 		password = "";
 		return "full_startpage"; //TODO create page
 	}
+	
+	public String logOffUser() {
+		message = "User logged off.";
+		userIsLoggedIn = null;
+		firstName = "";
+		lastName = "";
+		email = "";
+		password = "";
+		return "full_startpage"; //TODO create page
+		
+	}
+	
+	
 
 	public String getFirstName() {
 		return firstName;
