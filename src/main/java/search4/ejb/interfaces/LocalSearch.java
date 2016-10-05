@@ -10,11 +10,11 @@ public interface LocalSearch {
 
 	List<MovieEntity> search(String parameter);
 	
-	List<MovieEntity> searchOrderByDateAsc(String parameter);
+	List<MovieEntity> searchOrderByDateAsc(String parameter, Integer limit);
 	
-	List<MovieEntity> searchOrderByDateDesc(String parameter);
+	List<MovieEntity> searchOrderByDateDesc(String parameter, Integer limit);
 	
-	List<MovieEntity> searchOrderByTitleAsc(String parameter);
+	List<MovieEntity> searchOrderByTitleAsc(String parameter, Integer limit);
 	
-	List<MovieEntity> searchOrderByTitleDesc(String parameter);
+	List<MovieEntity> searchOrderByTitleDesc(String parameter, Integer limit);
 }

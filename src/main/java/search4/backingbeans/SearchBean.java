@@ -27,17 +27,18 @@ public class SearchBean implements Serializable {
     public String search() {
         boolean titleSort = true;
         boolean ascending = true;
+        Integer limit = 10;
         if (titleSort && ascending) {
-            movieEntities = searchEJB.searchOrderByTitleAsc(query);
+            movieEntities = searchEJB.searchOrderByTitleAsc(query, limit);
         }
         else if (titleSort && !ascending) {
-            movieEntities = searchEJB.searchOrderByTitleDesc(query);
+            movieEntities = searchEJB.searchOrderByTitleDesc(query, limit);
         }
         else if (!titleSort && ascending) {
-            movieEntities = searchEJB.searchOrderByDateAsc(query);
+            movieEntities = searchEJB.searchOrderByDateAsc(query, limit);
         }
         else {
-            movieEntities = searchEJB.searchOrderByDateDesc(query);
+            movieEntities = searchEJB.searchOrderByDateDesc(query, limit);
         }
         return "full_startpage";
     }
