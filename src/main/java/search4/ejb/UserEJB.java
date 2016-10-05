@@ -48,7 +48,6 @@ public class UserEJB implements LocalUser {
 
 	
 	public DisplayUserEntity getUser(String email, String password) {
-		System.out.println("Trying login with "+email+" "+password);
 		UserEntity userEntity = userDAOBean.getUser(email);
 		DisplayUserEntity displayUser = getDisplayUserFromDBEntity(userEntity);
 		try {
