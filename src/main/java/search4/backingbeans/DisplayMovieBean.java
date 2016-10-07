@@ -9,13 +9,15 @@ import search4.exceptions.UnregisteredProviderException;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.inject.Named;
 import java.io.Serializable;
 
-@Named(value="displayBean")
-@SessionScoped //TODO should be ViewScoped?
-//@ViewScoped
+//@Named(value="displayBean")
+//@SessionScoped //TODO should be ViewScoped?
+@ManagedBean(name="displayBean")
+@ViewScoped
 public class DisplayMovieBean implements Serializable{
 
 	private static final long serialVersionUID = -1109287815566247040L;
