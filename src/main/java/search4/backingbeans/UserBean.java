@@ -138,4 +138,8 @@ public class UserBean implements Serializable{
 	public String getMessage() {
 		return message;
 	}
+	
+	public String viewProfile() {
+		return "full_profile";
+	}
 }
