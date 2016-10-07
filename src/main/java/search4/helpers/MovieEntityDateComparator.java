@@ -6,7 +6,6 @@ import search4.entities.MovieEntity;
 
 public class MovieEntityDateComparator implements Comparator<MovieEntity>{
 
-	@Override
 	public int compare(MovieEntity o1, MovieEntity o2) {
 		String date1 = o1.getDate().toString();
 	    String date2= o2.getDate().toString();

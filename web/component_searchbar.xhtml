@@ -31,7 +31,7 @@
 		    	
 			        <h:inputText id="searchQuery" class="form-control search-field" label="search" value="#{searchBean.query}" p:placeholder="Search for a movie or TV-show" required="true">
 			            <!--<f:validateLength minimum="2" maximum="30"></f:validateLength>-->
-			            <f:ajax event="keyup" delay="500" listener="#{searchBean.ajaxListener}" render="resultInfo resultH2 movieTable" update=":resultContainer:resultH2 :resultContainer:movieTable"/>
+			            <f:ajax event="keyup" delay="500" listener="#{searchBean.ajaxListener}" render="resultInfo movieTable" update=":resultContainer:movieTable"/>
 			            <f:ajax event="valueChange" delay="500" listener="#{searchBean.ajaxListenerLargeSearch}" render="resultInfo movieTable" update=":resultContainer:movieTable"/>
 			        </h:inputText>
         			<h:commandButton class="searchBtn" action="#{searchBean.search(0)}" value="   " />
