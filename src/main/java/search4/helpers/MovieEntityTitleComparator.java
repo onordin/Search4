@@ -6,7 +6,6 @@ import search4.entities.MovieEntity;
 
 public class MovieEntityTitleComparator implements Comparator<MovieEntity> {
 
-	@Override
 	public int compare(MovieEntity o1, MovieEntity o2) {
 			
 		String title1 = o1.getTitle().toUpperCase();
