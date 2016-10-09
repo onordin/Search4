@@ -34,7 +34,6 @@ public class UserDAOBean {
 		}
 	}
 
-	//TODO this somehow breaks something?
 	public UserEntity getUser(String email) throws DataNotFoundException {
 		try {
 			return (UserEntity) entityManager.createNamedQuery("UserEntity.getUserByEmail").setParameter("email", email).getSingleResult();

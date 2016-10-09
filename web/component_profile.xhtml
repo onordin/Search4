@@ -8,12 +8,14 @@
 	xmlns:f="http://xmlns.jcp.org/jsf/core"
 	xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
 
+
 	<h:head>
 	
 		<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
     	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
     	<meta name="viewport" content="width=device-width, initial-scale=1" />	
-			
+		
+		
 		<link rel="stylesheet" href="resources/css/bootstrap.min.css" />
 		<link rel="stylesheet" href="resources/css/bootstrap-theme.min.css" />
 		<link rel="stylesheet" href="resources/css/style.css" />
@@ -21,35 +23,41 @@
 	</h:head>
 
 	<h:body>
-	    
-<!-- Search area -->
-	    <div class="jumbotron">
-	    	<h1 id="searchHeadline">Search4</h1>
-		    <h:form id="search">
-		    <h:panelGrid columns="2" columnClasses="rightAlign,leftAlign">
-		    	
-		    	
-			        <h:inputText id="searchQuery" class="form-control search-field" label="search" value="#{searchBean.query}" p:placeholder="Search for a movie or TV-show" required="true">
-			            <!--<f:validateLength minimum="2" maximum="30"></f:validateLength>-->
-			            <f:ajax event="keyup" delay="500" listener="#{searchBean.ajaxListener}" render="resultInfo movieTable" update=":resultContainer:movieTable"/>
-			            <f:ajax event="valueChange" delay="500" listener="#{searchBean.ajaxListenerLargeSearch}" render="resultInfo movieTable" update=":resultContainer:movieTable"/>
-			        </h:inputText>
-        			<h:commandButton class="searchBtn" action="#{searchBean.search(0)}" value="   " />
-		         </h:panelGrid>
-	    	</h:form>
-		   
 	
-      	</div>
-      
+		<div class="container">
+		<div class="row">
+			<div class="col-sm-6">
+			
+			<h2>Profile page for: #{userBean.displayUserEntity.firstName} #{userBean.displayUserEntity.lastName}</h2>
+			
+				<h:form id="userForm">
+					<h:panelGrid columns="2" columnClasses="rightAlign,leftAlign">
+						<h:outputLabel value="First Name:"></h:outputLabel>
+						<h:outputText id="firstName" label="First Name" value="#{userBean.displayUserEntity.firstName}" />
+						
+						<h:outputLabel value="Last Name:"></h:outputLabel>
+						<h:outputText id="lastName" label="Last Name" value="#{userBean.displayUserEntity.lastName}" />
+						
+						<h:outputLabel value="Email:"></h:outputLabel>
+						<h:outputText id="email" label="Email" value="#{userBean.displayUserEntity.email}" />
+																		
+					</h:panelGrid>
+				</h:form>
+						
+				
+			</div>
+		</div>
+		</div>
+		
+
+
+
 		<script type='text/javascript' src="https://cdn.rawgit.com/jamesallardice/Placeholders.js/master/dist/placeholders.min.js"></script>
 		<script src="resources/js/jquery-3.1.0.min.js" />
 		<script src="resources/js/bootstrap.min.js" />
 		<!-- IE10 viewport hack for Surface/desktop Windows 8 bug (TA BORT?!) -->
     	<script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
- 
-
-
-   	</h:body>
-
+    	
+    	
+	</h:body>
 </html>
-      

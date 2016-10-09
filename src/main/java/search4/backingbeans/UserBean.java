@@ -11,6 +11,7 @@ import search4.ejb.interfaces.LocalUser;
 import search4.entities.DisplayUserEntity;
 import search4.entities.UserEntity;
 import search4.exceptions.DuplicateDataException;
+import search4.exceptions.InvalidInputException;
 
 @Named(value="userBean")
 @SessionScoped
@@ -42,21 +43,25 @@ public class UserBean implements Serializable{
 		UserEntity userEntity = new UserEntity();
 		userEntity.setFirstName(firstName);
 		userEntity.setLastName(lastName);
-		userEntity.setEmail(email); //TODO check if email is already in db.
-		userEntity.setPassword(password); // TODO password security
+		userEntity.setEmail(email);
+		userEntity.setPassword(password);
 		try {
 			userEJB.createUser(userEntity);
-			message = "New user with email: " + email + "created";
-			return "login";
+			message = "New user with email: " + email + " created";
+			return "full_startpage";
 		} catch (DuplicateDataException dde) {
-			message = dde.getMessage(); //TODO is this the right way to do it?
-			return "login"; //TODO create error page
+			message = dde.getMessage();
+			return "full_startpage";
 		} catch (InternalServerErrorException isee) {
 			message = isee.getMessage();
-			return "login";
-		} catch (Exception e) {
-			message = "SOME ERROR WAT";
-			return "login";
+			return "full_startpage";
+		} catch (InvalidInputException iie) {
+			message = iie.getMessage();
+			return "full_startpage";
+		}
+		catch (Exception e) {
+			message = "Unknown Error";
+			return "full_startpage";
 		}
 	}
 	
@@ -65,26 +70,26 @@ public class UserBean implements Serializable{
 		if (displayUserEntity == null) {
 			message = "Email or Password Wrong!";
 			userIsLoggedIn = null;
-			return "login"; //TODO display message
+			return "login";
 		}
 		message = "Login Successfull";
 		userIsLoggedIn = "user is now logged in";
-		//Wiping these just to be sure //TODO this the right way to go about this?
+		//Wiping these just to be sure
 		firstName = "";
 		lastName = "";
 		email = "";
 		password = "";
-		return "full_startpage"; //TODO create page
+		return "full_startpage";
 	}
 	
 	public String logOffUser() {
-		message = "User logged off.";
+		message = "You logged out.";
 		userIsLoggedIn = null;
 		firstName = "";
 		lastName = "";
 		email = "";
 		password = "";
-		return "full_startpage"; //TODO create page
+		return "full_startpage";
 		
 	}
 	
@@ -132,5 +137,9 @@ public class UserBean implements Serializable{
 
 	public String getMessage() {
 		return message;
+	}
+	
+	public String viewProfile() {
+		return "full_profile";
 	}
 }

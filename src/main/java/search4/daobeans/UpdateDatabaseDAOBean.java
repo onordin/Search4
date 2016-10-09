@@ -18,7 +18,7 @@ public class UpdateDatabaseDAOBean {
     @PersistenceContext
     private EntityManager entityManager;
 
-    public MovieEntity getMovieWithTmdbId(Integer tmdbId) throws Exception{
+    public MovieEntity getMovieWithTmdbId(Integer tmdbId) throws DataNotFoundException{
         try {
             return (MovieEntity) entityManager.createNamedQuery("MovieEntity.getMovieByTmdbId").setParameter("tmdbId", tmdbId).getSingleResult();
         } catch (NoResultException nre) {
@@ -26,16 +26,28 @@ public class UpdateDatabaseDAOBean {
         }
     }
 
-    public boolean createMovie(MovieEntity movieEntity) throws Exception{
-        Integer tmdbId = movieEntity.getTmdbId();
-        MovieEntity result = entityManager.merge(movieEntity); //TODO try/catch? What if ONLY DB is down?
+    private boolean movieWithIdInDB(Integer tmdbId) throws DataNotFoundException{
         if (getMovieWithTmdbId(tmdbId) != null) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean createMovie(MovieEntity movieEntity) throws Exception{
+        if (movieEntity == null) { //Just to be super duper sure
+            return false;
+        }
+        Integer tmdbId = movieEntity.getTmdbId();
+        if (movieWithIdInDB(tmdbId)) {
             throw new DuplicateDataException("Already exists movie in database with that TMdB ID ("+tmdbId+")");
         }
-        else if (result == null) {
-            throw new InternalServerErrorException("Failed to insert entity in database."); //TODO identification for failed obect?
+        MovieEntity result = null;
+        try { //TODO possibly encase above if in this; if it throws DataNotFound, will it work properly? Wait for REST
+            result = entityManager.merge(movieEntity);
+            return true;
+        } catch (Exception e) {
+            throw new InternalServerErrorException("Failed to insert movie in database.");
         }
-        return true; //TODO return type?
     }
 
     public Integer getLastTmdbId() throws Exception{

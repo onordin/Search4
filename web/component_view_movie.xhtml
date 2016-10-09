@@ -21,16 +21,13 @@
 	</h:head>
 
 	<h:body>
-
-
-
 <!-- Display movie view -->
-
+<!-- TODO make ifchecks; if displayMovie == null, dont try to display anything but message -->
 <div class="container">
 		<div class="row">
 			<div class="col-xs-12" id="movieContainer">
-				
-				
+
+                <p>#{displayBean.message}</p>
     <h1>#{displayBean.displayMovieEntity.title}</h1>
     <p>#{displayBean.displayMovieEntity.description}</p>
     <p>#{displayBean.displayMovieEntity.date}</p>

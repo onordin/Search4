@@ -7,9 +7,9 @@ import search4.entities.MovieEntity;
 @Local
 public interface LocalUpdateDatabase {
 	
-	MovieEntity getMovieFromTMDB(int id);
+	MovieEntity getMovieFromTMDB(Integer id) throws Exception;
 	
-	boolean updateDatabase() throws Exception;
+	void updateDatabase() throws Exception;
 	
 	Integer getTMDBLimit(int start);
 	

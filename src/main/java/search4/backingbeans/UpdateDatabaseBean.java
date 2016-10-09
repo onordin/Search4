@@ -24,9 +24,9 @@ public class UpdateDatabaseBean implements Serializable{
             updateDatabaseEJB.updateDatabase();
         } catch (DataNotFoundException dnfe) {
             System.err.println(""+dnfe);
-        } catch (DuplicateDataException dde) { //TODO can this happen?
+        } catch (DuplicateDataException dde) {
             System.err.println(""+dde);
-        } catch (Exception e) { //TODO more specfic cases?
+        } catch (Exception e) {
             System.err.println(""+e);
         }
         return "updated";

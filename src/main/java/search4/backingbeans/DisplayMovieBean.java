@@ -9,13 +9,15 @@ import search4.exceptions.UnregisteredProviderException;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.inject.Named;
 import java.io.Serializable;
 
-@Named(value="displayBean")
-@SessionScoped //TODO should be ViewScoped?
-//@ViewScoped
+//@Named(value="displayBean")
+//@SessionScoped //TODO should be ViewScoped?
+@ManagedBean(name="displayBean")
+@ViewScoped
 public class DisplayMovieBean implements Serializable{
 
 	private static final long serialVersionUID = -1109287815566247040L;
@@ -25,6 +27,7 @@ public class DisplayMovieBean implements Serializable{
 
     private DisplayMovieEntity displayMovieEntity;
     private Integer movieId;
+    private String message;
 
     public void postInit() {
         getMovieData(movieId);
@@ -33,14 +36,22 @@ public class DisplayMovieBean implements Serializable{
     public void getMovieData(Integer id) {
         try {
             displayMovieEntity = displayMovieEJB.getDisplayMovie(id);
+            message = "";
         } catch (UnregisteredProviderException pe) {
-            System.err.println("Provider Error: "+pe); //TODO shouldnt these be exchanged for something you can see in frontend?
+            displayMovieEntity = null;
+            message = "Error: "+pe;
         } catch (DataNotFoundException de) {
-            System.err.println("Data Error: "+de);
+            displayMovieEntity = null;
+            message = "400 Bad Request: No such movie!";
         }
         catch (Exception e) {
-            System.err.println("Another Error: "+e);
+            displayMovieEntity = null;
+            message = "Error"+e;
         }
+    }
+
+    public String getMessage() {
+        return message;
     }
 
     public DisplayMovieEntity getDisplayMovieEntity() {

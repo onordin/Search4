@@ -14,7 +14,7 @@ public class DisplayMovieEntity {
     private String description;
     private Date date;
     private String posterUrl;
-    //TODO right categories?
+
     private List<ServiceProviderLink> providerListWebSubscription;
     private List<ServiceProviderLink> providerListWebPurchase;
     private List<ServiceProviderLink> providerListWebFree;

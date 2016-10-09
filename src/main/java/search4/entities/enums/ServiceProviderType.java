@@ -1,7 +1,7 @@
 package search4.entities.enums;
 
 public enum ServiceProviderType {
-    NETFLIX, //TODO not gonna work currently, we need special
+    NETFLIX, //Requires special permission
 
     SIXTY_MINUTE_ALL_ACCES,
     AE_TVEVERYWHERE,

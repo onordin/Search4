@@ -9,8 +9,9 @@ import search4.ejb.interfaces.LocalUser;
 import search4.ejb.passwordencrytion.PBKDF2;
 import search4.entities.DisplayUserEntity;
 import search4.entities.UserEntity;
-import search4.exceptions.DataNotFoundException;
 import search4.exceptions.DuplicateDataException;
+import search4.exceptions.InvalidInputException;
+import search4.validators.EmailValidator;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
@@ -23,7 +24,18 @@ public class UserEJB implements LocalUser {
 	private UserDAOBean userDAOBean;
 	
 	public void createUser(UserEntity userEntity) throws DuplicateDataException, InternalServerErrorException{
-		userEntity.setEmail(userEntity.getEmail().toLowerCase()); //Keep all email addresses in lowercase always //TODO right place to do this?
+		//Validation
+		EmailValidator emailValidator = new EmailValidator();
+		if (userEntity.getFirstName().length() > 255) {
+			throw new InvalidInputException("First name must be less than or equal to 255 characters.");
+		}
+		if (userEntity.getEmail().length() > 255 || !emailValidator.validateEmail(userEntity.getEmail())) {
+			throw new InvalidInputException("Email must be an email adress and less than or equal to 255 characters.");
+		}
+		if (userEntity.getPassword().length() < 4) {
+			throw new InvalidInputException("Password must be 4 or more characters.");
+		}
+ 		userEntity.setEmail(userEntity.getEmail().toLowerCase()); //Keep all email addresses in lowercase always //TODO right place to do this? ask teacher
 		if (emailInDb(userEntity.getEmail())) {
 			throw new DuplicateDataException("The email address already exists in the system");
 		}

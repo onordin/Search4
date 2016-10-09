@@ -1,9 +1,20 @@
-Interfaces on EJBs? yes
-Objects in DB editen in DB when object is edited.
-Unit Tests:
-    are there any point in current setup?
-BackingBeans:
-    DisplayMovieBean:
-        Should be viewscoped? How does this work?
-DisplayMovieEJB:
-    How to handle errors? Throw exceptions or send custom messages.. ?
+UpdateDatabaseDAO:
+    TODOS: unreacable (better way to structure entire method?)
+        return type in same method? void and on exception its fail?
+
+    TODO: will this explode...
+    how to handle it if database is absent
+
+PBKDF2:
+    TODO
+    what padding etc
+
+UserEJB:
+    TODO
+    should we save it as it is and only convert it when we are working with it?
+    or convert it in another place?
+
+Exceptions:
+    TODOs
+    internal or bad requests?
+            invalid input bad request?

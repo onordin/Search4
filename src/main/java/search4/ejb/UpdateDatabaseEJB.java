@@ -3,6 +3,7 @@ package search4.ejb;
 import search4.daobeans.UpdateDatabaseDAOBean;
 import search4.ejb.interfaces.LocalUpdateDatabase;
 import search4.entities.MovieEntity;
+import search4.exceptions.DataNotFoundException;
 import search4.helpers.*;
 
 import javax.ejb.EJB;
@@ -29,24 +30,24 @@ public class UpdateDatabaseEJB implements LocalUpdateDatabase{
 
         String url = urlBuilder.tmdbUrl(tmdbId);
 
-        JsonObject jsonObject = jSonHelper.getObject(url);
-        movieEntity.setTitle(jsonObject.getString("original_title"));
-        movieEntity.setTmdbId(tmdbId);
-        movieEntity.setDate(dateParser.getDateFromString(jsonObject.getString("release_date")));
-
-        //TODO catch if movie not in TMDb, make movieEntity null? throw DataNotFoundException?
-
+        try {
+            JsonObject jsonObject = jSonHelper.getObject(url);
+            movieEntity.setTitle(jsonObject.getString("original_title"));
+            movieEntity.setTmdbId(tmdbId);
+            movieEntity.setDate(dateParser.getDateFromString(jsonObject.getString("release_date")));
+        } catch (Exception e) {
+            throw new DataNotFoundException("HORRIBLE ERROR"); //TODO figure out posssible exceptions thrown, and send a proper message
+        }
         return movieEntity;
     }
 
-    //TODO returntype?
-    public boolean updateDatabase() throws Exception{
+    public void updateDatabase() throws Exception{
         Integer start;
         Integer startMod;
         Integer limit;
         List<MovieEntity> movieEntities;
 
-        //Marked methods both loops through the list of movies; combine them?
+        //Marked methods both loops through the list of movies; combine them? Bad idea from an OOP perspective, good from an computer resource perspective
         startMod = 0;
         for (int i = 0; i < 500; i++) {
             start = getLastTMDBIdFromDB()+startMod;
@@ -65,8 +66,6 @@ public class UpdateDatabaseEJB implements LocalUpdateDatabase{
                 e.printStackTrace();
             }
         }
-
-        return true;
     }
 
     public Integer getTMDBLimit(int start) {
@@ -85,11 +84,14 @@ public class UpdateDatabaseEJB implements LocalUpdateDatabase{
 
     private List<MovieEntity> getMoviesInInterval(Integer start, Integer limit) throws Exception{
         List<MovieEntity> movieInterval = new ArrayList<MovieEntity>();
-        MovieEntity currentMovie;
+        MovieEntity currentMovie = null;
         for (int i = start; i < limit; i++) {
             try {
                 currentMovie = getMovieFromTMDB(i);
-            } catch (Exception e) { //TODO proper catch
+            } catch (DataNotFoundException dnfe) {
+                System.err.println("Data not found: "+dnfe); //TODO send to admin frontend in future
+            }
+            catch (Exception e) {
                 System.err.println(""+e);
                 currentMovie = null;
             }
@@ -99,8 +101,4 @@ public class UpdateDatabaseEJB implements LocalUpdateDatabase{
         }
         return movieInterval;
     }
-    
-	public MovieEntity getMovieFromTMDB(int id) {
-		return null;
-	}
 }
