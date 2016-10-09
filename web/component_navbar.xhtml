@@ -48,10 +48,14 @@
 
 	          	<h:form class="navbar-form navbar-right">
 		            <div class="form-group">
-		              <h:inputText type="email" id="inputEmail" class="form-control" value="#{userBean.email}" p:placeholder="Email address" />
+		              <h:inputText type="email" id="inputEmail" class="form-control" 
+		              		value="#{userBean.email}" p:placeholder="Email address" 
+		              		required="true" />
 		            </div>
 		            <div class="form-group">
-		              <h:inputSecret type="password" id="inputPassword" class="form-control" value="#{userBean.password}" p:placeholder="Password" />
+		              <h:inputSecret type="password" id="inputPassword" class="form-control" 
+		              		value="#{userBean.password}" p:placeholder="Password" 
+		              		required="true" />
 		            </div>
 		            <div class="form-group">
 		            	<h:commandButton type="submit" action="#{userBean.loginUser()}" class="btn" value="Sign in" />
