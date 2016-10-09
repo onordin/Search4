@@ -39,6 +39,39 @@
 
 
 
+.log-off {
+	background-color: Transparent;
+	color: #004FFF;
+	background-repeat:no-repeat;
+    cursor:pointer;
+    overflow: hidden;
+    outline:none;
+  	margin-right: 20px;
+  	margin-top: 5px;
+    font-size: 20px;
+    border: none;
+    text-shadow:
+    -1px -1px 0 #000,
+    1px -1px 0 #000,
+    -1px 1px 0 #000,
+    1px 1px 0 #000; 
+}
+
+.log-off:hover {
+	color: white;
+}
+
+.navbar-header > .title {
+	color: #004FFF;
+    text-shadow:
+    -1px -1px 0 #000,
+    1px -1px 0 #000,
+    -1px 1px 0 #000,
+    1px 1px 0 #000; 
+}
+
+
+
 
 /* Search field */
 #search {

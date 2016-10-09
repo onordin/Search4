@@ -19,6 +19,8 @@
 		<link rel="stylesheet" href="resources/css/bootstrap.min.css" />
 		<link rel="stylesheet" href="resources/css/bootstrap-theme.min.css" />
 		<link rel="stylesheet" href="resources/css/style.css" />
+		<link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css" />
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" />
 
 	</h:head>
 
@@ -39,7 +41,8 @@
 	            <span class="icon-bar"></span>
 	          </button>
 
-	          		<a class="navbar-brand" href="full_startpage.xhtml">Search movie</a>
+	          <a class="navbar-brand title" href="full_startpage.xhtml">Search movie</a>
+	          		
           		
 	        </div>
 	        <div id="navbar" class="navbar-collapse collapse">
@@ -49,7 +52,7 @@
 		              <h:inputText type="email" id="inputEmail" class="form-control" value="#{userBean.email}" p:placeholder="Email address" />
 		            </div>
 		            <div class="form-group">
-		              <h:inputText type="password" id="inputPassword" class="form-control" value="#{userBean.password}" p:placeholder="Password" />
+		              <h:inputSecret type="password" id="inputPassword" class="form-control" value="#{userBean.password}" p:placeholder="Password" />
 		            </div>
 		            <div class="form-group">
 		            	<h:commandButton type="submit" action="#{userBean.loginUser()}" class="btn" value="Sign in" />
@@ -87,21 +90,22 @@
 		            <span class="icon-bar"></span>
 		            <span class="icon-bar"></span>
 		          </button>
-		          <a class="navbar-brand" href="search.xhtml">Search movie</a>
+		          <a class="navbar-brand title" href="full_startpage.xhtml">Search movie</a>
 		        </div>
-		        <div id="navbar" class="navbar-collapse collapse">
-		          	<h:form class="navbar-form navbar-right">
-			           
-			            <div class="form-group">
-			            	<h:commandButton type="submit" class="btn" value="Mina sidor" 
-			            			action="#{userBean.methodName()}" />
-			            </div>
-			            <div class="form-group">
-			            	<h:commandButton type="submit" class="btn" value="Sign out" 
-			            			action="#{userBean.logOffUser()}" />
-			            </div>
-		          	</h:form>
-	        	</div>
+		      
+	        	
+	        	
+	        	
+	        	
+	        	
+	        	<div id="navbar" class="navbar-collapse collapse">
+	        	<h:form class="navbar-form navbar-right">
+         			<ul class="nav navbar-nav navbar-right">
+            			<li><h:commandButton type="submit" class="log-off" action="#{userBean.logOffUser()}" value="Profile"></h:commandButton></li>
+			            <li><h:commandButton type="submit" class="log-off" action="#{userBean.logOffUser()}" value="Log off"></h:commandButton></li>
+          			</ul>
+          			</h:form>
+        		</div>
 		      </div>
 		    </nav>
 	    </ui:fragment>
