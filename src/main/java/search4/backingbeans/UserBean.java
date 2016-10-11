@@ -26,14 +26,9 @@ public class UserBean implements Serializable{
 	private String message;
 	private String userIsLoggedIn;
 	private String passwordReset;
+	private String firstNewPassword;
+	private String secondNewPassword;
 	
-	public String getUserIsLoggedIn() {
-		return userIsLoggedIn;
-	}
-
-	public void setUserIsLoggedIn(String userIsLoggedIn) {
-		this.userIsLoggedIn = userIsLoggedIn;
-	}
 
 	private DisplayUserEntity displayUserEntity;
 	
@@ -96,17 +91,23 @@ public class UserBean implements Serializable{
 	
 	public String forgotPassword() {
 		displayUserEntity = userEJB.getUserWithEmail(email);
-		passwordReset = "Instrctions sent to " +email;
+		
 		if(displayUserEntity == null) {
-			System.out.println("Email doesn't exist");
+			passwordReset = "Email doesn't exist";
 			email = "";
 			return "forgot_password";
 		}
-		//send email function
-		System.out.println("Email do exist!!!!!!");
+		// generate new random password
+		// update db
+		// send email
+		passwordReset = "Instrctions sent to " +email;
 		email = "";
 		return "forgot_password";
 	}
+	/*
+	public String resetPassword() {
+		
+	}*/
 	
 
 	public String getFirstName() {
@@ -164,5 +165,30 @@ public class UserBean implements Serializable{
 	public void setPasswordReset(String passwordReset) {
 		this.passwordReset = passwordReset;
 	}
+	
+	public String getUserIsLoggedIn() {
+		return userIsLoggedIn;
+	}
+
+	public void setUserIsLoggedIn(String userIsLoggedIn) {
+		this.userIsLoggedIn = userIsLoggedIn;
+	}
+
+	public String getFirstNewPassword() {
+		return firstNewPassword;
+	}
+
+	public void setFirstNewPassword(String firstNewPassword) {
+		this.firstNewPassword = firstNewPassword;
+	}
+
+	public String getSecondNewPassword() {
+		return secondNewPassword;
+	}
+
+	public void setSecondNewPassword(String secondNewPassword) {
+		this.secondNewPassword = secondNewPassword;
+	}
+	
 	
 }

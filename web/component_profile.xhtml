@@ -25,10 +25,10 @@
 	<h:body>
 	
 		<div class="container">
-		<div class="row">
-			<div class="col-sm-6">
+		<h2 class="h2-center">Profile page for: #{userBean.displayUserEntity.firstName} #{userBean.displayUserEntity.lastName}</h2>
+			<div class="col-lg-4 col-md-8 col-sm-12 col-centered">
 			
-			<h2>Profile page for: #{userBean.displayUserEntity.firstName} #{userBean.displayUserEntity.lastName}</h2>
+			
 			
 				<h:form id="userForm">
 					<h:panelGrid columns="2" columnClasses="rightAlign,leftAlign">
@@ -43,10 +43,39 @@
 																		
 					</h:panelGrid>
 				</h:form>
+				<br />
+				<br />
+				<h4>Reset password</h4>
+				<h:form id="userForm2">
+					<h:panelGrid columns="2" columnClasses="rightAlign,leftAlign">
+						<h:outputLabel value="Old:"></h:outputLabel>
+						<h:inputText id="oldPassword" label="Password" value="#{userBean.password}" required="true"
+								requiredMessage="Password is required">
+						</h:inputText>
 						
+						<h:outputLabel value="New"></h:outputLabel>
+						<h:inputText id="firstNewPassword" label="Password" value="#{userBean.firstNewPassword}" required="true"
+								requiredMessage="Password is required">
+							<f:validateLength minimum="6" maximum="50" for="password"></f:validateLength>
+							<f:validateRegex pattern="((?=.*[a-z]).{6,})">
+							</f:validateRegex>
+						</h:inputText>
+						
+						<h:outputLabel value="New again:"></h:outputLabel>
+						<h:inputText id="secondNewPassword" label="Password" value="#{userBean.secondNewPassword}" required="true"
+								requiredMessage="Password is required">
+							<f:validateLength minimum="6" maximum="50" for="password"></f:validateLength>
+							<f:validateRegex pattern="((?=.*[a-z]).{6,})">
+							</f:validateRegex>
+						</h:inputText>
+						
+						<h:outputLabel></h:outputLabel>
+						<h:commandButton action="#{userBean.changePassword()}" value="Save" />												
+					</h:panelGrid>
+				</h:form>		
 				
 			</div>
-		</div>
+	
 		</div>
 		
 
