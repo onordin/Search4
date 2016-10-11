@@ -84,4 +84,14 @@ public class UserEJB implements LocalUser {
 		displayUser.setLastName(userEntity.getLastName());
 		return displayUser;
 	}
+
+	@Override
+	public DisplayUserEntity getUserWithEmail(String email) {
+		if(emailInDb(email)) {
+			UserEntity userEntity = userDAOBean.getUser(email);
+			DisplayUserEntity displayUser = getDisplayUserFromDBEntity(userEntity);
+			return displayUser;
+		}
+		return null;
+	}
 }

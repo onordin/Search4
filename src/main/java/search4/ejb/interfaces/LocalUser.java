@@ -11,4 +11,6 @@ public interface LocalUser {
 	void createUser(UserEntity userEntity);
 	
 	DisplayUserEntity getUser(String email, String password);
+
+	DisplayUserEntity getUserWithEmail(String email);
 }
