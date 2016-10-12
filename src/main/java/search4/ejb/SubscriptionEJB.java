@@ -4,6 +4,7 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
 import search4.daobeans.SubscriptionDAOBean;
+import search4.ejb.interfaces.LocalSubscription;
 import search4.entities.DisplaySubscriptionEntity;
 import search4.entities.SubscriptionEntity;
 
@@ -11,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Stateless
-public class SubscriptionEJB {
+public class SubscriptionEJB implements LocalSubscription{
 
 	@EJB
 	private SubscriptionDAOBean subsctiptionDAOBean;
@@ -30,5 +31,12 @@ public class SubscriptionEJB {
 		displayEntity.setSubscribedMovieId(se.getMovieId());
 		return displayEntity;
 	}
+
+	
+	public void subscribeToMovie(Integer movieId, Integer userId) {
+		// TODO Auto-generated method stub
+	}
+	
+	
 	
 }
