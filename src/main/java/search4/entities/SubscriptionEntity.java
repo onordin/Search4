@@ -10,7 +10,10 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name="subscriptions")
-@NamedQuery(name="SubscriptionEntity.findAll", query="SELECT s FROM SubscriptionEntity s")
+@NamedQueries({
+		@NamedQuery(name = "SubscriptionEntity.findAllFor", query = "SELECT s FROM SubscriptionEntity s WHERE s.userId = :userId")
+})
+
 public class SubscriptionEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 
