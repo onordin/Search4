@@ -86,7 +86,7 @@ public class UserEJB implements LocalUser {
 		return displayUser;
 	}
 
-	@Override
+	
 	public DisplayUserEntity getUserWithEmail(String email) {
 		if(emailInDb(email)) {
 			UserEntity userEntity = userDAOBean.getUser(email);
