@@ -202,6 +202,7 @@ public enum ServiceProviderType {
     TOONSTV,
     TRAVEL,
     TRIBECA_SHORTLIST,
+    TRIBECASHORTLIST_AMAZON_PRIME,
     TUBI_TV,
     USA_TVEVERYWHERE,
     USA,

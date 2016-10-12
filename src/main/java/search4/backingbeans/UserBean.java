@@ -102,7 +102,7 @@ public class UserBean implements Serializable{
 		// send email
 		passwordReset = "Instrctions sent to " +email;
 		email = "";
-		return "forgot_password";
+		return "full_forgot_password";
 	}
 	
 	

@@ -106,24 +106,11 @@ public class DisplayMovieEJB implements LocalDisplayMovie{
         ServiceProviderLink providerLink;
         for(JsonObject jsonObject : objectList) {
             providerLink = new ServiceProviderLink();
-            providerLink.setType(getType(jsonObject.getString("source")));
+            providerLink.setName(jsonObject.getString("display_name"));
             providerLink.setUrl(jsonObject.getString("link"));
             serviceProviderLinks.add(providerLink);
         }
         return serviceProviderLinks;
-    }
-
-    private ServiceProviderType getType(String identifier) throws UnregisteredProviderException{
-        if (identifier.startsWith("60"))
-            identifier = "sixty"+identifier.substring(2);
-        identifier = identifier.toUpperCase();
-        ServiceProviderType ret = null;
-        try {
-            ret = ServiceProviderType.valueOf(identifier);
-        } catch (IllegalArgumentException iae) {
-            throw new UnregisteredProviderException("Provider not in system "+identifier);
-        }
-        return ret;
     }
 
     private void setTmdbInfo(DisplayMovieEntity displayMovieEntity, Integer tmdbId) throws DataNotFoundException{
