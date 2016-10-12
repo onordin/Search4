@@ -3,7 +3,7 @@ package search4.entities;
 import search4.entities.enums.ServiceProviderType;
 
 public class ServiceProviderLink {
-    
+
     private String name;
     private String url;
 
