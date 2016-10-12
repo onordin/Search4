@@ -1,6 +1,7 @@
 package search4.backingbeans;
 
 
+import search4.ejb.SubscriptionEJB;
 import search4.ejb.interfaces.LocalDisplayMovie;
 import search4.entities.DisplayMovieEntity;
 import search4.entities.MovieEntity;
@@ -24,6 +25,9 @@ public class DisplayMovieBean implements Serializable{
 
 	@EJB
     LocalDisplayMovie displayMovieEJB;
+	
+	@EJB
+	private SubscriptionEJB subscriptionEJB;
 
     private DisplayMovieEntity displayMovieEntity;
     private Integer movieId;
@@ -48,6 +52,15 @@ public class DisplayMovieBean implements Serializable{
             displayMovieEntity = null;
             message = "Error"+e;
         }
+    }
+    
+    public void subscribe(Integer userId){
+    	try {
+    		subscriptionEJB.subscribeToMovie(movieId, userId);
+		} catch (Exception e) {
+			message = "Error" + e;
+		}
+    	
     }
 
     public String getMessage() {
