@@ -193,4 +193,21 @@
 	padding: 20px 20px 20px 20px;
 }
 
+/* User profile page */
+
+.h2-center {
+	text-align: center;
+}
+
+/* View movie */
+
+.subscribe {
+	background-color: #004FFF;
+} 
+
+.subscribe:hover {
+	background-color: #5E90FF;
+	color: white;
+}
+
 
