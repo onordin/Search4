@@ -3,16 +3,16 @@ package search4.entities;
 import search4.entities.enums.ServiceProviderType;
 
 public class ServiceProviderLink {
-
-    private ServiceProviderType type;
+    
+    private String name;
     private String url;
 
-    public ServiceProviderType getType() {
-        return type;
+    public String getName() {
+        return name;
     }
 
-    public void setType(ServiceProviderType type) {
-        this.type = type;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getUrl() {
