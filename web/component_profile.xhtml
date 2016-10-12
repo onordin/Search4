@@ -44,6 +44,22 @@
 					</h:panelGrid>
 				</h:form>
 				
+				<br />
+				<br />
+				<h:form id="changePassword">
+					<h:panelGrid columns="2" columnClasses="rightAlign,leftAlign">
+						<h:outputLabel value="Old password:"></h:outputLabel>
+						<h:inputText id="password" value="#{userBean.password}" required="true" requiredMessage="Old password is required" />
+						<h:outputLabel value="New password:"></h:outputLabel>
+						<h:inputText id="firstPassword" value="#{userBean.firstPassword}" required="true" requiredMessage="First password is required" />
+						<h:outputLabel value="New again:"></h:outputLabel>
+						<h:inputText id="secondPassword" value="#{userBean.secondPassword}" required="true" requiredMessage="Second password is required" />
+						<h:commandButton action="#{userBean.changePassword()}" value="Save"></h:commandButton>
+					</h:panelGrid>
+					<h:messages style="color:red"></h:messages>
+					<br />
+					#{userBean.message}
+				</h:form>
 			</div>
 	
 		</div>

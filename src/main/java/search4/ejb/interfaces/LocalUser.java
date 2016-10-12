@@ -13,4 +13,6 @@ public interface LocalUser {
 	DisplayUserEntity getUser(String email, String password);
 
 	DisplayUserEntity getUserWithEmail(String email);
+
+	void changePassword(DisplayUserEntity activeUser);
 }
