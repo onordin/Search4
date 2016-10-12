@@ -43,36 +43,6 @@
 																		
 					</h:panelGrid>
 				</h:form>
-				<br />
-				<br />
-				<h4>Reset password</h4>
-				<h:form id="userForm2">
-					<h:panelGrid columns="2" columnClasses="rightAlign,leftAlign">
-						<h:outputLabel value="Old:"></h:outputLabel>
-						<h:inputText id="oldPassword" label="Password" value="#{userBean.password}" required="true"
-								requiredMessage="Password is required">
-						</h:inputText>
-						
-						<h:outputLabel value="New"></h:outputLabel>
-						<h:inputText id="firstNewPassword" label="Password" value="#{userBean.firstNewPassword}" required="true"
-								requiredMessage="Password is required">
-							<f:validateLength minimum="6" maximum="50" for="password"></f:validateLength>
-							<f:validateRegex pattern="((?=.*[a-z]).{6,})">
-							</f:validateRegex>
-						</h:inputText>
-						
-						<h:outputLabel value="New again:"></h:outputLabel>
-						<h:inputText id="secondNewPassword" label="Password" value="#{userBean.secondNewPassword}" required="true"
-								requiredMessage="Password is required">
-							<f:validateLength minimum="6" maximum="50" for="password"></f:validateLength>
-							<f:validateRegex pattern="((?=.*[a-z]).{6,})">
-							</f:validateRegex>
-						</h:inputText>
-						
-						<h:outputLabel></h:outputLabel>
-						<h:commandButton action="#{userBean.changePassword()}" value="Save" />												
-					</h:panelGrid>
-				</h:form>		
 				
 			</div>
 	

@@ -199,4 +199,15 @@
 	text-align: center;
 }
 
+/* View movie */
+
+.subscribe {
+	background-color: #004FFF;
+} 
+
+.subscribe:hover {
+	background-color: #5E90FF;
+	color: white;
+}
+
 

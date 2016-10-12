@@ -26,8 +26,6 @@ public class UserBean implements Serializable{
 	private String message;
 	private String userIsLoggedIn;
 	private String passwordReset;
-	private String firstNewPassword;
-	private String secondNewPassword;
 	
 
 	private DisplayUserEntity displayUserEntity;
@@ -106,14 +104,6 @@ public class UserBean implements Serializable{
 	}
 	
 	
-	public void changePassword() {
-		// kolla om lösenordet matcher email
-		System.out.println("email = " +(displayUserEntity = userEJB.getUserWithEmail(email)));
-		System.out.println("old = " +password);
-		System.out.println("new 1 = " +firstNewPassword);
-		System.out.println("new 2 = " +secondNewPassword);
-		
-	}
 	
 
 	public String getFirstName() {
@@ -180,21 +170,6 @@ public class UserBean implements Serializable{
 		this.userIsLoggedIn = userIsLoggedIn;
 	}
 
-	public String getFirstNewPassword() {
-		return firstNewPassword;
-	}
-
-	public void setFirstNewPassword(String firstNewPassword) {
-		this.firstNewPassword = firstNewPassword;
-	}
-
-	public String getSecondNewPassword() {
-		return secondNewPassword;
-	}
-
-	public void setSecondNewPassword(String secondNewPassword) {
-		this.secondNewPassword = secondNewPassword;
-	}
 	
 	
 }

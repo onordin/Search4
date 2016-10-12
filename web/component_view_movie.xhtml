@@ -32,7 +32,10 @@
     <p>#{displayBean.displayMovieEntity.description}</p>
     <p>#{displayBean.displayMovieEntity.date}</p>
     <img src="#{displayBean.displayMovieEntity.posterUrl}" alt="image"/>
-
+	<br />
+	<br />
+	
+	<h:commandButton class="btn subscribe" value="Subscribe" />
 
 <!-- only render if there are providers inside -->       
 <ui:fragment rendered="#{displayBean.displayMovieEntity.hasWeb}">
