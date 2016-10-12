@@ -105,7 +105,7 @@ public class UserBean implements Serializable{
 		//send email function
 		System.out.println("Email do exist!!!!!!");
 		email = "";
-		return "forgot_password";
+		return "full_forgot_password";
 	}
 	
 
