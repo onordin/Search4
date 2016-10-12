@@ -104,10 +104,16 @@ public class UserBean implements Serializable{
 		email = "";
 		return "forgot_password";
 	}
-	/*
-	public String resetPassword() {
+	
+	
+	public void changePassword() {
+		// kolla om lösenordet matcher email
+		System.out.println("email = " +(displayUserEntity = userEJB.getUserWithEmail(email)));
+		System.out.println("old = " +password);
+		System.out.println("new 1 = " +firstNewPassword);
+		System.out.println("new 2 = " +secondNewPassword);
 		
-	}*/
+	}
 	
 
 	public String getFirstName() {
