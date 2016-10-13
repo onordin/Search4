@@ -17,10 +17,23 @@ public class DisplayMovieDAOBean {
 
     public MovieEntity getMovieData(Integer id) throws Exception{
         try {
-            return (MovieEntity) entityManager.createNamedQuery("MovieEntity.getMovieById").setParameter("id", id).getSingleResult();
+            return (MovieEntity) entityManager.createNamedQuery("MovieEntity.getMovieById")
+                    .setParameter("id", id)
+                    .getSingleResult();
         }
         catch (NoResultException ne) {
             throw new DataNotFoundException("No movie in database with that ID ("+id+")");
+        }
+    }
+
+    public MovieEntity getMovieByGuideboxId(Integer guideboxId) throws Exception {
+        try {
+            return (MovieEntity) entityManager.createNamedQuery("MovieEntity.getWithGuideboxId")
+                    .setParameter("guideboxId", guideboxId)
+                    .getSingleResult();
+        }
+        catch (NoResultException ne) {
+            throw new DataNotFoundException("No movie in database with that guidebox ID ("+guideboxId+")");
         }
     }
 }

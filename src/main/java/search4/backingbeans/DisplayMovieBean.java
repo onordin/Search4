@@ -38,6 +38,7 @@ public class DisplayMovieBean implements Serializable{
     }
 
     public void getMovieData(Integer id) {
+        //TODO use getMovie
         try {
             displayMovieEntity = displayMovieEJB.getDisplayMovie(id);
             message = "";
@@ -53,14 +54,33 @@ public class DisplayMovieBean implements Serializable{
             message = "Error"+e;
         }
     }
+
+    public DisplayMovieEntity getMovie(Integer id) {
+        try {
+            message = "";
+            return displayMovieEJB.getDisplayMovie(id);
+        } catch (UnregisteredProviderException pe) {
+            displayMovieEntity = null;
+            message = "Error: "+pe;
+        } catch (DataNotFoundException de) {
+            displayMovieEntity = null;
+            message = "400 Bad Request: No such movie!";
+        }
+        catch (Exception e) {
+            displayMovieEntity = null;
+            message = "Error"+e;
+        }
+        return null;
+    }
     
-    public void subscribe(Integer userId){
-    	try {
-    		subscriptionEJB.subscribeToMovie(movieId, userId);
-		} catch (Exception e) {
-			message = "Error" + e;
-		}
-    	
+    public String subscribe(Integer userId){
+        try {
+//            subscriptionEJB.subscribeToMovie(movieId, userId);
+            System.out.println("BOB");
+        } catch (Exception e) {
+            message = "Error" + e;
+        }
+        return "bob";
     }
 
     public String getMessage() {

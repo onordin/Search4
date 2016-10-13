@@ -32,9 +32,13 @@ public class DisplayMovieEJB implements LocalDisplayMovie{
 
     //NEW METHOD: better to send the id to EJB and retrieve MovieEntity here. No point in bringing it to backing bean.
     public DisplayMovieEntity getDisplayMovie(Integer id) throws Exception{
-        DisplayMovieEntity displayMovieEntity = new DisplayMovieEntity();
         MovieEntity movieEntity = getMovieData(id);
         setGuideboxId(movieEntity); //Check if guidbox id is set. If not, set it.
+        return createDisplayMovie(movieEntity);
+    }
+
+    public DisplayMovieEntity createDisplayMovie(MovieEntity movieEntity) {
+        DisplayMovieEntity displayMovieEntity = new DisplayMovieEntity();
         setStreamingServices(displayMovieEntity, movieEntity.getGuideboxId()); //Retrieve streaming services from guidebox
         setTmdbInfo(displayMovieEntity, movieEntity.getTmdbId()); //Retrieve movie information (description, poster etc) from TMDB
         displayMovieEntity.checkAddedServices();	//populate all boolean has-properties

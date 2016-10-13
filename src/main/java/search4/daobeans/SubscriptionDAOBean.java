@@ -1,6 +1,7 @@
 package search4.daobeans;
 
 import search4.entities.SubscriptionEntity;
+import search4.entities.UserEntity;
 
 import javax.ejb.Stateful;
 import javax.persistence.EntityManager;
@@ -19,5 +20,11 @@ public class SubscriptionDAOBean {
 		return entityManager.createNamedQuery("SubscriptionEntity.findAllFor")
                 .setParameter("userId", userId)
                 .getResultList();
+	}
+
+	public List<SubscriptionEntity> getUsersSubscribedTo(Integer movieId) {
+		return entityManager.createNamedQuery("SubscriptionEntity.findAllSubscribedTo")
+				.setParameter("movieId", movieId)
+				.getResultList();
 	}
 }

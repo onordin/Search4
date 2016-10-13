@@ -5,7 +5,9 @@ import javax.ejb.Stateless;
 
 import search4.daobeans.SubscriptionDAOBean;
 import search4.entities.DisplaySubscriptionEntity;
+import search4.entities.DisplayUserEntity;
 import search4.entities.SubscriptionEntity;
+import search4.entities.UserEntity;
 
 import java.util.ArrayList;
 import java.util.List;
