@@ -66,7 +66,7 @@ public class UserBean implements Serializable{
 		if (displayUserEntity == null) {
 			message = "Email or Password Wrong!";
 			userIsLoggedIn = null;
-			return "login";
+			return "full_startpage";
 		}
 		message = "Login Successfull";
 		userIsLoggedIn = "user is now logged in";
@@ -80,6 +80,7 @@ public class UserBean implements Serializable{
 	}
 	
 	public String logOffUser() {
+		displayUserEntity = null;
 		message = "You logged out.";
 		userIsLoggedIn = null;
 		firstName = "";

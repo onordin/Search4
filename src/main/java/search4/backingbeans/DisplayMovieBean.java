@@ -55,11 +55,13 @@ public class DisplayMovieBean implements Serializable{
     }
     
     public void subscribe(Integer userId){
-    	try {
+	
+		try {
     		//subscriptionEJB.subscribeToMovie(movieId, userId);
 		} catch (Exception e) {
 			message = "Error" + e;
 		}
+    	
     	
     }
 
