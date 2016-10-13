@@ -3,6 +3,7 @@ package search4.backingbeans;
 
 import search4.ejb.SubscriptionEJB;
 import search4.ejb.interfaces.LocalDisplayMovie;
+import search4.ejb.interfaces.LocalSubscription;
 import search4.entities.DisplayMovieEntity;
 import search4.entities.MovieEntity;
 import search4.exceptions.DataNotFoundException;
@@ -24,10 +25,10 @@ public class DisplayMovieBean implements Serializable{
 	private static final long serialVersionUID = -1109287815566247040L;
 
 	@EJB
-    LocalDisplayMovie displayMovieEJB;
+    private LocalDisplayMovie displayMovieEJB;
 	
 	@EJB
-	private SubscriptionEJB subscriptionEJB;
+	private LocalSubscription subscriptionEJB;
 
     private DisplayMovieEntity displayMovieEntity;
     private Integer movieId;
@@ -55,13 +56,17 @@ public class DisplayMovieBean implements Serializable{
         }
     }
     
-    public void subscribe(Integer userId){
+
+    public String subscribe(Integer userId){
+    	System.out.println("inside subscribe");
     	try {
-    		//subscriptionEJB.subscribeToMovie(movieId, userId);
+    		subscriptionEJB.subscribeToMovie(movieId, userId);
+    		return "full_profile";
 		} catch (Exception e) {
 			message = "Error" + e;
 		}
-    	
+    	return "";
+
     }
 
     public String getMessage() {

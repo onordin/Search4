@@ -53,6 +53,7 @@ public class UserEJB implements LocalUser {
 			}
 		}
 	}
+	
 
 	private boolean emailInDb(String email) {
 		return userDAOBean.userExist(email);
@@ -60,19 +61,24 @@ public class UserEJB implements LocalUser {
 
 	
 	public DisplayUserEntity getUser(String email, String password) {
-		UserEntity userEntity = userDAOBean.getUser(email);
-		DisplayUserEntity displayUser = getDisplayUserFromDBEntity(userEntity);
-		try {
-			if (PBKDF2.validatePassword(password, displayUser.getPassword())) {
-				displayUser.setPassword("HIDDEN");
-				return displayUser;
+		if(userDAOBean.userExist(email)) {
+			UserEntity userEntity = userDAOBean.getUser(email);
+			DisplayUserEntity displayUser = getDisplayUserFromDBEntity(userEntity);
+			try {
+				if (PBKDF2.validatePassword(password, displayUser.getPassword())) {
+					displayUser.setPassword("HIDDEN");
+					return displayUser;
+				}
+			} catch (NoSuchAlgorithmException e) {
+				e.printStackTrace();
+			} catch (InvalidKeySpecException e) {
+				e.printStackTrace();
 			}
-		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
-		} catch (InvalidKeySpecException e) {
-			e.printStackTrace();
+			return null;
+		} else {
+			return null;
 		}
-		return null;
+		
 	}
 
 	private DisplayUserEntity getDisplayUserFromDBEntity(UserEntity userEntity) {
@@ -94,4 +100,33 @@ public class UserEJB implements LocalUser {
 		}
 		return null;
 	}
+	
+
+	public void changePassword(DisplayUserEntity activeUser)  throws DuplicateDataException, InternalServerErrorException {
+		try {
+			String hashedPassword = PBKDF2.generatePasswordHash(activeUser.getPassword(), 666);
+			activeUser.setPassword(hashedPassword);
+			UserEntity userEntity = new UserEntity();
+			userEntity.setId(activeUser.getId());
+			userEntity.setFirstName(activeUser.getFirstName());
+			userEntity.setLastName(activeUser.getLastName());
+			userEntity.setEmail(activeUser.getEmail());
+			userEntity.setPassword(activeUser.getPassword());
+			System.out.println("USerEJD!!!!!!!!!!!!!!!!!!!!");
+			System.out.println("ID = " +userEntity.getId());
+			System.out.println("First name = " +userEntity.getFirstName());
+			System.out.println("Last name = " +userEntity.getLastName());
+			System.out.println("Email = " +userEntity.getEmail());
+			System.out.println("Password = " +userEntity.getPassword());
+			userDAOBean.changePassword(userEntity);
+		} catch (NoSuchProviderException e) {
+			throw new InternalServerErrorException("Something went wrong internally, please try again later!");
+		} catch (NoSuchAlgorithmException e) {
+			throw new InternalServerErrorException("Something went wrong internally, please try again later!");
+		} catch (InvalidKeySpecException e) {
+			throw new InternalServerErrorException("Something went wrong internally, please try again later!");
+		}
+	}
+
+	
 }

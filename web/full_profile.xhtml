@@ -25,6 +25,12 @@
 
 	<h:body>
 	
+	<f:metadata>
+	        <f:event type="preRenderView" listener="#{subscriptionBean.postInit(userBean.displayUserEntity.id)}" />
+	        <!--  f:viewAction action="#{subscriptionBean.postInit(userBean.displayUserEntity.id)}" /-->
+  	</f:metadata>
+	
+	
 		<ui:include src="component_navbar.xhtml"/>
 		<ui:include src="component_profile.xhtml"/>
 	
