@@ -25,6 +25,7 @@
 	<h:body>
 	
 		<div class="container">
+			<div class="row">
 		<h2 class="h2-center">Profile page for: #{userBean.displayUserEntity.firstName} #{userBean.displayUserEntity.lastName}</h2>
 			<div class="col-lg-4 col-md-8 col-sm-12 col-centered">
 			
@@ -44,6 +45,19 @@
 					</h:panelGrid>
 				</h:form>
 				
+
+				<ui:fragment rendered="#{subscriptionBean.displaySubscriptionEntities != null}">
+				<h:dataTable value="#{subscriptionBean.displaySubscriptionEntities}" var="displaySubscription" id="table"
+    						styleClass="order-table"
+    						rowClasses="order-table-odd-row,order-table-even-row">
+				        <h:column headerClass="resultCol1 order-table-header">
+				            <f:facet name="header">Movie Id</f:facet>
+				            <h:outputText class="row-output" value="#{displaySubscription.subscribedMovieId}" />
+				        </h:column>
+				</h:dataTable>
+				</ui:fragment>
+				
+
 				<br />
 				<br />
 				<h:form id="changePassword">
@@ -60,8 +74,9 @@
 					<br />
 					#{userBean.message}
 				</h:form>
+
 			</div>
-	
+			</div>
 		</div>
 		
 

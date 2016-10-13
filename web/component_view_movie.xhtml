@@ -34,9 +34,13 @@
     <img src="#{displayBean.displayMovieEntity.posterUrl}" alt="image"/>
 	<br />
 	<br />
+
+	
 	<h:form>
-	<h:commandButton class="btn subscribe" value="Subscribe" action="#{displayBean.subscribe(userBean.displayUserEntity.id)}"/>
+		<h:commandButton class="btn subscribe" value="Subscribe" action="#{displayBean.subscribe(userBean.displayUserEntity.id)}"/>
 	</h:form>
+
+
 <!-- only render if there are providers inside -->       
 <ui:fragment rendered="#{displayBean.displayMovieEntity.hasWeb}">
     <h2>Web Providers</h2>
