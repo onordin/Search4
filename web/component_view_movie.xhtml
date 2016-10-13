@@ -35,7 +35,9 @@
 	<br />
 	<br />
 	
-	<h:commandButton class="btn subscribe" value="Subscribe" action="#{displayBean.subscribe(userBean.displayUserEntity.id)}"/>
+	<h:form>
+		<h:commandButton class="btn subscribe" value="Subscribe" action="#{displayBean.subscribe(userBean.displayUserEntity.id)}"/>
+	</h:form>
 
 <!-- only render if there are providers inside -->       
 <ui:fragment rendered="#{displayBean.displayMovieEntity.hasWeb}">

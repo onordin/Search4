@@ -31,7 +31,7 @@ public class UserBean implements Serializable{
 	private DisplayUserEntity displayUserEntity;
 	
 	@EJB
-	LocalUser userEJB;
+	private LocalUser userEJB;
 	
 	public String createUser(){
 		UserEntity userEntity = new UserEntity();

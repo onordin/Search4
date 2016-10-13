@@ -15,10 +15,10 @@ import java.util.List;
 public class SubscriptionEJB implements LocalSubscription{
 
 	@EJB
-	private SubscriptionDAOBean subsctiptionDAOBean;
+	private SubscriptionDAOBean subscriptionDAOBean;
 	
 	public List<DisplaySubscriptionEntity> getAllFor(Integer userId) {
-		List<SubscriptionEntity> list = subsctiptionDAOBean.getAllFor(userId);
+		List<SubscriptionEntity> list = subscriptionDAOBean.getAllFor(userId);
 		List<DisplaySubscriptionEntity> displayEntities = new ArrayList<DisplaySubscriptionEntity>();
 		for (SubscriptionEntity se : list) {
 			displayEntities.add(dbEntityToDisplayEntity(se));
@@ -34,7 +34,10 @@ public class SubscriptionEJB implements LocalSubscription{
 
 	
 	public void subscribeToMovie(Integer movieId, Integer userId) {
-		// TODO Auto-generated method stub
+		SubscriptionEntity subscriptionEntity = new SubscriptionEntity();
+		subscriptionEntity.setMovieId(movieId);
+		subscriptionEntity.setUserId(userId);
+		subscriptionDAOBean.subscribeToMovie(subscriptionEntity);
 	}
 	
 	

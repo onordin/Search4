@@ -20,4 +20,17 @@ public class SubscriptionDAOBean {
                 .setParameter("userId", userId)
                 .getResultList();
 	}
+
+
+	public boolean subscribeToMovie(SubscriptionEntity subscriptionEntity) {
+		try {
+			entityManager.merge(subscriptionEntity);
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
+	}
+	
+	
+	
 }

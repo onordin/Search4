@@ -10,8 +10,6 @@ public interface LocalSubscription {
 	public void subscribeToMovie(Integer movieId, Integer userId);
 	
 	public List<DisplaySubscriptionEntity> getAllFor(Integer userId);
-	
-	
-	
+
 	
 }
