@@ -213,10 +213,23 @@
 
 .subscribe {
 	background-color: #004FFF;
+	font-weight: bold;
+	color: black;
 } 
 
 .subscribe:hover {
 	background-color: #5E90FF;
+	color: white;
+}
+
+.unsubscribe {
+	background-color: #FF0003;
+	font-weight: bold;
+	color: black;
+} 
+
+.unsubscribe:hover {
+	background-color: #FF4B47;
 	color: white;
 }
 
