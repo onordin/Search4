@@ -168,6 +168,16 @@
 	width: 14%;
 }
 
+.sortButtonsGroup {
+	margin: 5px;
+}
+
+.sortbuttonsGroup option{
+	color: red;
+}
+
+
+
 /* Register page */
 
 .col-centered {
