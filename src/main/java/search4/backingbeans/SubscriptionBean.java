@@ -8,6 +8,7 @@ import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 
 import search4.ejb.interfaces.LocalSubscription;
+import search4.entities.DisplayMovieEntity;
 import search4.entities.DisplaySubscriptionEntity;
 
 @Named(value="subscriptionBean")
@@ -27,7 +28,12 @@ public class SubscriptionBean implements Serializable{
     }
 	
 	
+	public void removeSubscription(Integer id, Integer userId) {
+		subscriptionEJB.removeSubscription(id);
+		displaySubscriptionEntities = subscriptionEJB.getAllFor(userId);
+	}
 
+	
 	public List<DisplaySubscriptionEntity> getDisplaySubscriptionEntities() {
 		return displaySubscriptionEntities;
 	}

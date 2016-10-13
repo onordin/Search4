@@ -25,7 +25,7 @@
 	<h:body>
 	
 		<div class="container">
-			<div class="row">
+		<div class="row">
 		<h2 class="h2-center">Profile page for: #{userBean.displayUserEntity.firstName} #{userBean.displayUserEntity.lastName}</h2>
 			<div class="col-lg-4 col-md-8 col-sm-12 col-centered">
 			
@@ -44,20 +44,7 @@
 																		
 					</h:panelGrid>
 				</h:form>
-				
-
-				<ui:fragment rendered="#{subscriptionBean.displaySubscriptionEntities != null}">
-				<h:dataTable value="#{subscriptionBean.displaySubscriptionEntities}" var="displaySubscription" id="table"
-    						styleClass="order-table"
-    						rowClasses="order-table-odd-row,order-table-even-row">
-				        <h:column headerClass="resultCol1 order-table-header">
-				            <f:facet name="header">Movie Id</f:facet>
-				            <h:outputText class="row-output" value="#{displaySubscription.subscribedMovieId}" />
-				        </h:column>
-				</h:dataTable>
-				</ui:fragment>
-				
-
+			
 				<br />
 				<br />
 				<h:form id="changePassword">
@@ -76,7 +63,33 @@
 				</h:form>
 
 			</div>
+		</div>
+			
+		
+		<div class="row">
+				<div class="col-xs-8 col-centered" id="subscriptionContainer">
+				<ui:fragment rendered="#{subscriptionBean.displaySubscriptionEntities != null}" id="middle">
+				<h:dataTable value="#{subscriptionBean.displaySubscriptionEntities}" var="displaySubscription" id="subscriptionTable"
+    						styleClass="order-table"
+    						rowClasses="order-table-odd-row,order-table-even-row">
+				        <h:column headerClass="resultCol1 order-table-header">
+				            <f:facet name="header">Movie Title</f:facet>
+				            <a href="full_view_movie.xhtml?id=#{displaySubscription.subscribedMovieId}"><h:outputText class="row-output" value="#{displaySubscription.title}" /></a>
+				        </h:column>
+				         <h:column headerClass="resultCol2 order-table-header">
+				            <f:facet name="header"></f:facet>
+				            <h:outputLabel class="row-output" value="Remove" styleClass="removeSubscription">
+				            	<f:ajax event="click" execute="@all" listener="#{subscriptionBean.removeSubscription(displaySubscription.id, userBean.displayUserEntity.id)}" update="subscriptionContainer middle subscriptionTable" render=":subscriptionContainer:middle:subscriptionTable"/>
+							</h:outputLabel>
+				        </h:column>
+				</h:dataTable>
+				</ui:fragment>
 			</div>
+		</div>	
+		
+			
+			
+			
 		</div>
 		
 

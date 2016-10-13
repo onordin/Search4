@@ -210,4 +210,10 @@
 	color: white;
 }
 
+.removeSubscription {
+	color: red; 
+}
 
+.removeSubscription:hover {
+	color: purple;	
+}
