@@ -41,4 +41,14 @@ public class UserDAOBean {
 			throw new DataNotFoundException("No such email ("+email+") in database.");
 		}
 	}
+
+	public boolean changePassword(UserEntity userEntity) {
+		try {
+			entityManager.merge(userEntity);
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
+		
+	}
 }
