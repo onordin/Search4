@@ -55,6 +55,7 @@ public class DisplayMovieBean implements Serializable{
         }
     }
     
+
     public String subscribe(Integer userId){
     	System.out.println("inside subscribe");
     	try {
@@ -64,6 +65,7 @@ public class DisplayMovieBean implements Serializable{
 			message = "Error" + e;
 		}
     	return "";
+
     }
 
     public String getMessage() {

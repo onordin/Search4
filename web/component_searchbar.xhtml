@@ -29,7 +29,7 @@
 		    <h:panelGrid columns="2" columnClasses="rightAlign,leftAlign">
 		    	
 		    	
-			        <h:inputText id="searchQuery" class="form-control search-field" label="search" value="#{searchBean.query}" p:placeholder="Search for a movie or TV-show" required="true">
+			        <h:inputText autocomplete="off" id="searchQuery" class="form-control search-field" label="search" value="#{searchBean.query}" p:placeholder="Search for a movie or TV-show" required="true">
 			            <!--<f:validateLength minimum="2" maximum="30"></f:validateLength>-->
 			            <f:ajax event="keyup" delay="500" listener="#{searchBean.ajaxListener}" render="resultInfo movieTable" update=":resultContainer:movieTable"/>
 			            <f:ajax event="valueChange" delay="500" listener="#{searchBean.ajaxListenerLargeSearch}" render="resultInfo movieTable" update=":resultContainer:movieTable"/>
@@ -47,7 +47,6 @@
 		<!-- IE10 viewport hack for Surface/desktop Windows 8 bug (TA BORT?!) -->
     	<script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
  
-
 
    	</h:body>
 
