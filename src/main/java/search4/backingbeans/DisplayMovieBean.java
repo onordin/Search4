@@ -32,6 +32,7 @@ public class DisplayMovieBean implements Serializable{
     private DisplayMovieEntity displayMovieEntity;
     private Integer movieId;
     private String message;
+    private long popup;
 
     public void postInit() {
         getMovieData(movieId);
@@ -56,7 +57,7 @@ public class DisplayMovieBean implements Serializable{
     
     public void subscribe(Integer userId){
     	try {
-    		subscriptionEJB.subscribeToMovie(movieId, userId);
+    		//subscriptionEJB.subscribeToMovie(movieId, userId);
 		} catch (Exception e) {
 			message = "Error" + e;
 		}
@@ -78,4 +79,12 @@ public class DisplayMovieBean implements Serializable{
     public void setMovieId(Integer movieId) {
         this.movieId = movieId;
     }
+
+	public long getPopup() {
+		return popup;
+	}
+
+	public void setPopup(long popup) {
+		this.popup = popup;
+	}
 }
