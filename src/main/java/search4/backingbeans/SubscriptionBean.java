@@ -16,30 +16,29 @@ public class SubscriptionBean implements Serializable{
 
 	
 	private static final long serialVersionUID = -7246771514304788402L;
-	public List<DisplaySubscriptionEntity> displaySubscriptionEntities;
+	private List<DisplaySubscriptionEntity> displaySubscriptionEntities;
 	
 	@EJB
 	private LocalSubscription subscriptionEJB;
 	
 	
 	public void postInit(Integer userId) {
-		System.out.println("setting up postInit for user id: " + userId);
 		displaySubscriptionEntities = subscriptionEJB.getAllFor(userId);
-		System.out.println("List size: " + displaySubscriptionEntities.size());
     }
 	
 	
 
-	public List<DisplaySubscriptionEntity> getSubscriptionEntities() {
+	public List<DisplaySubscriptionEntity> getDisplaySubscriptionEntities() {
 		return displaySubscriptionEntities;
 	}
-	
-	public void setSubscriptionEntities(List<DisplaySubscriptionEntity> displaySubscriptionEntities) {
+
+
+
+	public void setDisplaySubscriptionEntities(List<DisplaySubscriptionEntity> displaySubscriptionEntities) {
 		this.displaySubscriptionEntities = displaySubscriptionEntities;
 	}
-	
-	
-	
+
+
 	
 	
 }
