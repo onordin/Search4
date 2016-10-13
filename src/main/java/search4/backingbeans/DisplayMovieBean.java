@@ -33,7 +33,7 @@ public class DisplayMovieBean implements Serializable{
     private DisplayMovieEntity displayMovieEntity;
     private Integer movieId;
     private String message;
-    private long popup;
+    private String popup;
 
     public void postInit() {
         getMovieData(movieId);
@@ -85,11 +85,11 @@ public class DisplayMovieBean implements Serializable{
         this.movieId = movieId;
     }
 
-	public long getPopup() {
+	public String getPopup() {
 		return popup;
 	}
 
-	public void setPopup(long popup) {
+	public void setPopup(String popup) {
 		this.popup = popup;
 	}
 }

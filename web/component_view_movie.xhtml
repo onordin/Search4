@@ -18,9 +18,16 @@
 		<link rel="stylesheet" href="resources/css/bootstrap-theme.min.css" />
 		<link rel="stylesheet" href="resources/css/style.css" />
 
+		<script type="text/javascript">
+				function showDiv() {
+		document.getElementById('greyArea').style.display = "block";
+	}
+</script>
 	</h:head>
 
 	<h:body>
+	<div id="greyArea" style="display:none;" class="grey"> JOSEF TEST</div>
+	<div id="loginDiv"></div>
 <!-- Display movie view -->
 <!-- TODO make ifchecks; if displayMovie == null, dont try to display anything but message -->
 <div class="container">
@@ -36,7 +43,8 @@
 	<br />
 
 	<h:form>
-		<h:commandButton class="btn subscribe" value="Subscribe" action="#{displayBean.subscribe(userBean.displayUserEntity.id)}"/>
+		<h:commandButton class="btn subscribe" value="Subscribe" onclick="showDiv()">
+		</h:commandButton>
 	</h:form>
 
 <!-- only render if there are providers inside -->       
