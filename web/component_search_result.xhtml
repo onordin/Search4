@@ -30,8 +30,8 @@
 			<div class="pull-right">
 			<h:form>
 			<h:panelGrid columns="2">
-			<outputText>Sort by: </outputText>
-		  <h:selectOneRadio value="#{searchBean.sortByParameter}">
+			<h:outputLabel>Sort by: </h:outputLabel>
+		  <h:selectOneRadio class="sortButtonsGroup" value="#{searchBean.sortByParameter}">
 			   	<f:selectItem itemValue="title" itemLabel="Title" />
 			   	<f:selectItem itemValue="date" itemLabel="Date" />
 				<f:ajax listener="#{searchBean.updateListSortByParameter}" render="resultInfo movieTable" update=":resultContainer:movieTable"/>
@@ -45,10 +45,10 @@
 			<div class="pull-right">
 			<h:form>
 			<h:panelGrid columns="2">
-			<outputText> in this order: </outputText>
-			<h:selectOneRadio value="#{searchBean.sortHow}">
-			   	<f:selectItem itemValue="ascending" itemLabel="increasing" />
-			   	<f:selectItem itemValue="descending" itemLabel="decreasing" />
+			<h:outputLabel value="In this order:" />
+			<h:selectOneRadio class="sortButtonsGroup" value="#{searchBean.sortHow}">
+			   	<f:selectItem itemValue="ascending" itemLabel="Increasing" />
+			   	<f:selectItem itemValue="descending" itemLabel="Decreasing" />
 				<f:ajax listener="#{searchBean.updateListSortByParameter}" render="resultInfo movieTable" update=":resultContainer:movieTable"/>
 			</h:selectOneRadio>
 			</h:panelGrid>

@@ -42,10 +42,29 @@
 	<br />
 	<br />
 
-	<h:form>
-		<h:commandButton class="btn subscribe" value="Subscribe" onclick="showDiv()">
-		</h:commandButton>
-	</h:form>
+<!-- Inloggad -->
+	<ui:fragment rendered="#{userBean.userIsLoggedIn != null}">
+	
+	<!-- Lägg in en till frament rendered som kollar ifall användare redan prenumererar på filmen och isf visas knappen 'Unsubscribe' med rätt action -->
+		<h:form>
+			<h:commandButton class="btn subscribe" value="Subscribe" action="#{displayBean.subscribe(userBean.displayUserEntity.id)}"/>
+		</h:form>
+		
+		<h:form>
+			<h:commandButton class="btn unsubscribe" value="Unsubscribe" action="#{displayBean.subscribe(userBean.displayUserEntity.id)}"/>
+		</h:form>
+		
+	</ui:fragment>
+	
+<!-- inte inloggad -->
+	<ui:fragment rendered="#{userBean.userIsLoggedIn == null}">
+	
+	<!-- - Här kommer josef pop up ruta om man trycker på subscribe -->
+		
+			<h:commandButton class="btn subscribe" value="Josef pop up" onclick="showDiv()" />
+		
+	</ui:fragment>
+
 
 <!-- only render if there are providers inside -->       
 <ui:fragment rendered="#{displayBean.displayMovieEntity.hasWeb}">
