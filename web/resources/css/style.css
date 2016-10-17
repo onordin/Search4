@@ -223,6 +223,7 @@
 }
 
 .removeSubscription {
+	cursor: pointer;
 	color: red; 
 }
 
@@ -241,4 +242,5 @@
 
 .removeSubscription:hover {
 	color: purple;	
+	cursor: pointer;
 }

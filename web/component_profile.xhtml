@@ -24,7 +24,7 @@
 
 	<h:body>
 	
-		<div class="container">
+	<div class="container" id="wrapContainer">
 		<div class="row">
 		<h2 class="h2-center">Profile page for: #{userBean.displayUserEntity.firstName} #{userBean.displayUserEntity.lastName}</h2>
 			<div class="col-lg-4 col-md-8 col-sm-12 col-centered">
@@ -69,6 +69,7 @@
 		<div class="row">
 				<div class="col-xs-8 col-centered" id="subscriptionContainer">
 				<ui:fragment rendered="#{subscriptionBean.displaySubscriptionEntities != null}" id="middle">
+				<h:form>
 				<h:dataTable value="#{subscriptionBean.displaySubscriptionEntities}" var="displaySubscription" id="subscriptionTable"
     						styleClass="order-table"
     						rowClasses="order-table-odd-row,order-table-even-row">
@@ -79,10 +80,11 @@
 				         <h:column headerClass="resultCol2 order-table-header">
 				            <f:facet name="header"></f:facet>
 				            <h:outputLabel class="row-output" value="Remove" styleClass="removeSubscription">
-				            	<f:ajax event="click" execute="@all" listener="#{subscriptionBean.removeSubscription(displaySubscription.id, userBean.displayUserEntity.id)}" update="subscriptionContainer middle subscriptionTable" render=":subscriptionContainer:middle:subscriptionTable"/>
+				            	<f:ajax event="click" listener="#{subscriptionBean.removeSubscription(displaySubscription.id, userBean.displayUserEntity.id)}" render="@form"/>
 							</h:outputLabel>
 				        </h:column>
 				</h:dataTable>
+				</h:form>
 				</ui:fragment>
 			</div>
 		</div>	
@@ -90,7 +92,7 @@
 			
 			
 			
-		</div>
+	</div>
 		
 
 
