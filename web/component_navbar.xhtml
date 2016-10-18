@@ -18,9 +18,9 @@
 		
 		<link rel="stylesheet" href="resources/css/bootstrap.min.css" />
 		<link rel="stylesheet" href="resources/css/bootstrap-theme.min.css" />
-		<link rel="stylesheet" href="resources/css/style.css" />
 		<link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css" />
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" />
+		<link rel="stylesheet" href="resources/css/style.css" />
 
 	</h:head>
 
@@ -31,7 +31,7 @@
 		
 		<!-- Static navbar -->
 
-	    <nav class="navbar navbar-inverse navbar-static-top">
+	    <div class="navbar navbar-inverse navbar-static-top">
 	      <div class="container">
 	        <div class="navbar-header">
 	          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -77,13 +77,13 @@
 	          	</h:form>
         	</div><!--/.nav-collapse -->
 	      </div>
-	    </nav>
+	    </div>
 	    
 	    </ui:fragment>
 	    
 	<!-- If user are logged in -->
 		<ui:fragment rendered="#{userBean.userIsLoggedIn != null}">
-			<nav class="navbar navbar-inverse navbar-static-top">
+			<div class="navbar navbar-inverse navbar-static-top">
 		      <div class="container">
 		        <div class="navbar-header">
 		        
@@ -107,7 +107,7 @@
         		</div>
 
 		      </div>
-		    </nav>
+		    </div>
 	    </ui:fragment>
 
 		<script type='text/javascript' src="https://cdn.rawgit.com/jamesallardice/Placeholders.js/master/dist/placeholders.min.js"></script>

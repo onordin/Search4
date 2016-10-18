@@ -10,7 +10,11 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name="users", schema = "search4")
-@NamedQuery(name="UserEntity.getUserByEmail", query="SELECT userEntity FROM UserEntity userEntity WHERE userEntity.email = :email")
+@NamedQueries({
+		@NamedQuery(name="UserEntity.getUserByEmail", query="SELECT userEntity FROM UserEntity userEntity WHERE userEntity.email = :email"),
+		@NamedQuery(name="UserEntity.getUserById", query="SELECT userEntity FROM UserEntity userEntity WHERE userEntity.id = :id"),
+		@NamedQuery(name="UserEntity.deleteUserById", query="DELETE FROM UserEntity userEntity WHERE userEntity.id = :id")
+})
 public class UserEntity implements Serializable {
 	
 	private static final long serialVersionUID = -798718815627738402L;
