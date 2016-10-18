@@ -61,8 +61,12 @@
 					<h:messages style="color:red"></h:messages>
 					<br />
 					#{userBean.message}
+					
 				</h:form>
-
+				<h:form>
+					<h:commandButton action="#{userBean.deleteUser()}" value="dÄLLiT"> Delete meeeeeee!</h:commandButton>
+				</h:form>
+				<br />
 			</div>
 
 			
@@ -80,7 +84,7 @@
     						rowClasses="order-table-odd-row,order-table-even-row">
 				        <h:column headerClass="resultCol1 order-table-header">
 				            <f:facet name="header">Movie Title</f:facet>
-				            <a href="full_view_movie.xhtml?id=#{displaySubscription.subscribedMovieId}"><h:outputText class="row-output" value="#{displaySubscription.title}" /></a>
+				            <a href="full_view_movie.xhtml?id=#{displaySubscription.subscribedMovieId}" class="link-result"><h:outputText class="row-output" value="#{displaySubscription.title}" /></a>
 				        </h:column>
 				         <h:column headerClass="resultCol2 order-table-header">
 				            <f:facet name="header"></f:facet>
