@@ -236,6 +236,11 @@
 	color: white;
 }
 
+.removeSubscription {
+	cursor: pointer;
+	color: red; 
+}
+
 .unsubscribe {
 	background-color: #FF0003;
 	font-weight: bold;
@@ -248,3 +253,8 @@
 }
 
 
+
+.removeSubscription:hover {
+	color: purple;	
+	cursor: pointer;
+}

@@ -30,6 +30,39 @@ public class SubscriptionDAOBean {
 			return false;
 		}
 	}
+
+
+	/*
+	public boolean removeSubscription(Integer id) {
+		try{
+			entityManager.createNamedQuery("SubscriptionEntity.removeSubscription")
+			.setParameter("id", id);
+			System.out.println("deleted??");
+			return true;
+		}catch (Exception e){
+			e.printStackTrace();
+			return false;
+		}
+		
+	}
+	*/
+	
+	
+	public boolean removeSubscription(Integer id) {
+		
+		try{
+			SubscriptionEntity entity = (SubscriptionEntity) entityManager.createNamedQuery("SubscriptionEntity.getOneSubscription")
+			.setParameter("id", id)
+			.getSingleResult();
+			System.out.println(entity.toString());
+			entityManager.remove(entity);
+			return true;
+		}catch(Exception ex) {
+			ex.printStackTrace();
+			return false;			
+		}
+	
+	}
 	
 	
 	
