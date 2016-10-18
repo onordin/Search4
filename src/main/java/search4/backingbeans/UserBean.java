@@ -1,6 +1,7 @@
 package search4.backingbeans;
 
 import java.io.Serializable;
+import java.util.Arrays;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
@@ -29,11 +30,15 @@ public class UserBean implements Serializable{
 	private String firstPassword;
 	private String secondPassword;
 	
+	
+	
 
 	private DisplayUserEntity displayUserEntity;
 	
 	@EJB
 	private LocalUser userEJB;
+	
+	
 	
 	public String createUser(){
 		UserEntity userEntity = new UserEntity();

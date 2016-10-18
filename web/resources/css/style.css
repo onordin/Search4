@@ -9,6 +9,7 @@
 }
 
 /* Navbar */
+
 .navbar-static-top {
   margin-bottom: 0px;
 }
@@ -22,7 +23,7 @@
 
 .navbar-form > .form-group > .btn:hover {
 	
-    background-color: #5E90FF; /* Green */
+    background-color: #5E90FF; 
     color: white;
 }
 
@@ -36,8 +37,6 @@
 	margin-top: 3px;
 	font-size: 30px;
 }
-
-
 
 .log-off {
 	background-color: Transparent;
@@ -125,6 +124,14 @@
 
 /* Result */
 
+.link-result:link {
+	color: black;
+}
+
+.link-result:visited {
+	color: black; 
+}
+
 .order-table{
 	border-collapse:collapse;
 	margin: auto;
@@ -202,12 +209,19 @@
 	background-color: red;
 	padding: 20px 20px 20px 20px;
 }
-
 /* User profile page */
+
+
+.selectManyCheckbox {
+	color: red;
+	padding: 10px;
+}
+
 
 .h2-center {
 	text-align: center;
 }
+
 
 /* View movie */
 
