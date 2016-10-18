@@ -44,18 +44,6 @@
 																		
 					</h:panelGrid>
 				</h:form>
-
-
-				<ui:fragment rendered="#{subscriptionBean.displaySubscriptionEntities != null}">
-				<h:dataTable value="#{subscriptionBean.displaySubscriptionEntities}" var="displaySubscription" id="table"
-    						styleClass="order-table"
-    						rowClasses="order-table-odd-row,order-table-even-row">
-				        <h:column headerClass="resultCol1 order-table-header">
-				            <f:facet name="header">Movie Id</f:facet>
-				            <h:outputText class="row-output" value="#{displaySubscription.subscribedMovieId}" />
-				        </h:column>
-				</h:dataTable>
-				</ui:fragment>
 				
 
 				<br />
@@ -109,7 +97,7 @@
 			
 			
 			
-	</div>
+	
 		
 
 
