@@ -26,11 +26,21 @@ public class SubscriptionBean implements Serializable{
 	public void postInit(Integer userId) {
 		displaySubscriptionEntities = subscriptionEJB.getAllFor(userId);
     }
+
 	
+    public void subscribe(Integer id, Integer userId){
+    	try {
+    		subscriptionEJB.subscribeToMovie(id, userId);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+    	displaySubscriptionEntities = subscriptionEJB.getAllFor(userId);	//to update subscribebutton
+    }
+    
 	
 	public void removeSubscription(Integer id, Integer userId) {
 		subscriptionEJB.removeSubscription(id);
-		displaySubscriptionEntities = subscriptionEJB.getAllFor(userId);
+		displaySubscriptionEntities = subscriptionEJB.getAllFor(userId);	//to update subscribebutton
 	}
 
 	

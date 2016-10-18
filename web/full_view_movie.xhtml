@@ -30,6 +30,7 @@
 	<f:metadata>
 	        <f:viewParam name="id" value="#{displayBean.movieId}" />
 	        <f:event type="preRenderView" listener="#{displayBean.postInit()}" />
+	        <f:event type="preRenderView" listener="#{displayBean.checkIfUserSubscribes(subscriptionBean.displaySubscriptionEntities)}" />
   	</f:metadata>
 
 

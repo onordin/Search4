@@ -38,14 +38,18 @@
 <!-- Inloggad -->
 	<ui:fragment rendered="#{userBean.userIsLoggedIn != null}">
 	
-	<!-- Lägg in en till frament rendered som kollar ifall användare redan prenumererar på filmen och isf visas knappen 'Unsubscribe' med rätt action -->
-		<h:form>
-			<h:commandButton class="btn subscribe" value="Subscribe" action="#{displayBean.subscribe(userBean.displayUserEntity.id)}"/>
-		</h:form>
+	
+		<ui:fragment rendered="#{!displayBean.userSubscribesToMovie}">
+			<h:form>
+				<h:commandButton class="btn subscribe" value="Subscribe" action="#{subscriptionBean.subscribe(displayBean.movieId, userBean.displayUserEntity.id)}"/>
+			</h:form>
+		</ui:fragment>
 		
-		<h:form>
-			<h:commandButton class="btn unsubscribe" value="Unsubscribe" action="#{displayBean.subscribe(userBean.displayUserEntity.id)}"/>
-		</h:form>
+		<ui:fragment rendered="#{displayBean.userSubscribesToMovie}">
+			<h:form>
+				<h:commandButton class="btn unsubscribe" value="Unsubscribe" action="#{subscriptionBean.removeSubscription(displayBean.movieId, userBean.displayUserEntity.id)}"/>
+			</h:form>
+		</ui:fragment>
 		
 	</ui:fragment>
 	
