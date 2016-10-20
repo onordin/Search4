@@ -98,6 +98,26 @@
 			</div>
 		</div>	
 		
+		<br/>	
+		<br/>	
+			
+			<div class="row">
+				<div class="col-xs-8 col-centered" id="providerContainer">
+				<ui:fragment rendered="#{providerBean.displayProviderEntities != null}">
+				<h:form>
+				<h:dataTable value="#{providerBean.displayProviderEntities}" var="displayProvider" id="providerTable"
+    						styleClass="order-table"
+    						rowClasses="order-table-odd-row,order-table-even-row">
+				        <h:column headerClass="resultCol1 order-table-header">
+				            <f:facet name="header">Provider</f:facet>
+				            <h:outputText class="row-output" value="#{displayProvider.provider}" />
+				        </h:column>
+				</h:dataTable>
+				</h:form>
+				</ui:fragment>
+			</div>
+		</div>	
+		
 			
 			
 			

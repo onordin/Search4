@@ -32,21 +32,6 @@ public class SubscriptionDAOBean {
 	}
 
 
-	/*
-	public boolean removeSubscription(Integer id) {
-		try{
-			entityManager.createNamedQuery("SubscriptionEntity.removeSubscription")
-			.setParameter("id", id);
-			System.out.println("deleted??");
-			return true;
-		}catch (Exception e){
-			e.printStackTrace();
-			return false;
-		}
-		
-	}
-	*/
-	
 	
 	public boolean removeSubscription(Integer id) {
 		
