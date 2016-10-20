@@ -14,6 +14,7 @@ import javax.enterprise.context.SessionScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.inject.Named;
+
 import java.io.Serializable;
 
 //@Named(value="displayBean")
@@ -33,9 +34,9 @@ public class DisplayMovieBean implements Serializable{
     private DisplayMovieEntity displayMovieEntity;
     private Integer movieId;
     private String message;
-    private String popup;
-
+    
     public void postInit() {
+    	System.out.println("DISPLAYMOVIEBEAN: " + movieId);
         getMovieData(movieId);
     }
 
@@ -84,12 +85,4 @@ public class DisplayMovieBean implements Serializable{
     public void setMovieId(Integer movieId) {
         this.movieId = movieId;
     }
-
-	public String getPopup() {
-		return popup;
-	}
-
-	public void setPopup(String popup) {
-		this.popup = popup;
-	}
 }

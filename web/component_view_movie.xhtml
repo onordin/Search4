@@ -18,16 +18,23 @@
 		<link rel="stylesheet" href="resources/css/bootstrap-theme.min.css" />
 		<link rel="stylesheet" href="resources/css/style.css" />
 
-		<script type="text/javascript">
-				function showDiv() {
-		document.getElementById('greyArea').style.display = "block";
-	}
-</script>
+		
 	</h:head>
 
 	<h:body>
-	<div id="greyArea" style="display:none;" class="grey"> JOSEF TEST</div>
-	<div id="loginDiv"></div>
+	<div id="greyModal" style="display:none;" class="modal">
+		<div class ="popupNotLoggedInDiv">
+			<h:form id="modalForm">
+				<h:commandButton  id="popupRegister" class="btn register" action="full_register.xhtml" value="Register a new account to subscribe" >
+					<f:setPropertyActionListener value="#{view.viewId}" target="#{userBean.viewId}"></f:setPropertyActionListener>
+					<f:setPropertyActionListener value="#{displayBean.movieId}" target="#{userBean.id}"></f:setPropertyActionListener>	
+				</h:commandButton>
+			</h:form>
+			<button id="popupLogin" class="btn register">Login</button>	
+			<span id="closeSpan" class="close">Cancel</span> 
+		</div>
+	</div>
+	
 <!-- Display movie view -->
 <!-- TODO make ifchecks; if displayMovie == null, dont try to display anything but message -->
 <div class="container">
@@ -61,8 +68,8 @@
 	
 	<!-- - Här kommer josef pop up ruta om man trycker på subscribe -->
 		
-			<h:commandButton class="btn subscribe" value="Josef pop up" onclick="showDiv()" />
-		
+			<button id="popupSubscribe" class="btn subscribe">Subscribe</button>
+			
 	</ui:fragment>
 
 
@@ -206,6 +213,53 @@
 	</div>
 </div>
 
+<script >
+		
+		var modal = document.getElementById('greyModal');
+
+		var btnSubscribe = document.getElementById("popupSubscribe");
+		
+		var btnRegister = document.getElementById("popupRegister");
+		
+		var btnLogin = document.getElementById("popupLogin");
+
+		var span = document.getElementsByClassName("close")[0];
+		
+		var form = document.getElementById("modalForm");
+		
+		var email = document.getElementById("j_idt13:inputEmail");
+		
+		btnSubscribe.onclick = function() {
+		    modal.style.display = "block";
+		}
+		
+		btnRegister.onclick = function() {
+			modal.style.display = "none";
+		    modalRegister.style.display = "block";
+		}
+		
+		btnLogin.onclick = function() {
+			modal.style.display = "none";
+			email.focus();
+			email.select();
+			email.style.borderColor = "red";
+		}
+
+		span.onclick = function() {
+			form.hide();
+			modal.style.display = "none";
+		}
+		
+		window.onclick = function(event) {
+		    if (event.target == modal) {
+		    	form.hide();
+		    	modal.style.display = "none";
+		    }
+		}
+		
+		
+		
+		</script>
 
 </h:body>
 

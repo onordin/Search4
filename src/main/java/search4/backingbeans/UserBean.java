@@ -29,7 +29,9 @@ public class UserBean implements Serializable{
 	private String firstPassword;
 	private String secondPassword;
 	
-
+	private String viewId;
+	private Integer id;
+	
 	private DisplayUserEntity displayUserEntity;
 	
 	@EJB
@@ -44,7 +46,17 @@ public class UserBean implements Serializable{
 		try {
 			userEJB.createUser(userEntity);
 			message = "New user with email: " + email + " created";
-			return "full_startpage";
+			//System.out.println("USERBEAN VIEWID: " + viewId);
+			//System.out.println("USERBEAN DISPLAYBEANID: " + displayBeanId);
+			
+			String returnView = viewId.replace("/", "");
+			String returnView2 = returnView.replace(".xhtml", "");
+			System.out.println("USERBEAN RETURNVIEW: " + returnView2);
+			System.out.println("Complete String: "+returnView + "?id="+ getId());
+			//return "full_view_movie.xhtml?id="+id;
+			return returnView + "?id=" + id;
+			//full_view_movie.xhtml?id=#{movie.id}
+			
 		} catch (DuplicateDataException dde) {
 			message = dde.getMessage();
 			return "full_startpage";
@@ -221,6 +233,20 @@ public class UserBean implements Serializable{
 		this.secondPassword = secondPassword;
 	}
 
-	
-	
+	public String getViewId() {
+		return viewId;
+	}
+
+	public void setViewId(String viewId) {
+		this.viewId = viewId;
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
 }
