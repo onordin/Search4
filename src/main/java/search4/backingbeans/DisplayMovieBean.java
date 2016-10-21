@@ -36,7 +36,6 @@ public class DisplayMovieBean implements Serializable{
     private String message;
     
     public void postInit() {
-    	System.out.println("DISPLAYMOVIEBEAN: " + movieId);
         getMovieData(movieId);
     }
 
@@ -59,7 +58,6 @@ public class DisplayMovieBean implements Serializable{
     
 
     public String subscribe(Integer userId){
-    	System.out.println("inside subscribe");
     	try {
     		subscriptionEJB.subscribeToMovie(movieId, userId);
     		return "full_profile";

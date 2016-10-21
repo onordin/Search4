@@ -1,9 +1,12 @@
 package search4.backingbeans;
 
+import java.io.IOException;
 import java.io.Serializable;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.ws.rs.InternalServerErrorException;
 
@@ -37,7 +40,7 @@ public class UserBean implements Serializable{
 	@EJB
 	private LocalUser userEJB;
 	
-	public String createUser(){
+	public void createUser(){
 		UserEntity userEntity = new UserEntity();
 		userEntity.setFirstName(firstName);
 		userEntity.setLastName(lastName);
@@ -46,39 +49,33 @@ public class UserBean implements Serializable{
 		try {
 			userEJB.createUser(userEntity);
 			message = "New user with email: " + email + " created";
-			//System.out.println("USERBEAN VIEWID: " + viewId);
-			//System.out.println("USERBEAN DISPLAYBEANID: " + displayBeanId);
-			
 			String returnView = viewId.replace("/", "");
-			String returnView2 = returnView.replace(".xhtml", "");
-			System.out.println("USERBEAN RETURNVIEW: " + returnView2);
-			System.out.println("Complete String: "+returnView + "?id="+ getId());
-			//return "full_view_movie.xhtml?id="+id;
-			return returnView + "?id=" + id;
-			//full_view_movie.xhtml?id=#{movie.id}
+			ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+			externalContext.redirect(returnView+"?id="+id);
 			
 		} catch (DuplicateDataException dde) {
 			message = dde.getMessage();
-			return "full_startpage";
+			//return "full_startpage";
 		} catch (InternalServerErrorException isee) {
 			message = isee.getMessage();
-			return "full_startpage";
+			//return "full_startpage";
 		} catch (InvalidInputException iie) {
 			message = iie.getMessage();
-			return "full_startpage";
+			//return "full_startpage";
 		}
 		catch (Exception e) {
 			message = "Unknown Error";
-			return "full_startpage";
+			//return "full_startpage";
 		}
 	}
 	
-	public String loginUser(){
+	public void loginUser(){
 		displayUserEntity = userEJB.getUser(email, password);
+		String returnView = viewId.replace("/", "");
 		if (displayUserEntity == null) {
 			message = "Email or Password Wrong!";
 			userIsLoggedIn = null;
-			return "full_startpage";
+			//return "full_startpage";
 		}
 		message = "Login Successfull";
 		userIsLoggedIn = "user is now logged in";
@@ -88,7 +85,15 @@ public class UserBean implements Serializable{
 		email = "";
 		password = "";
 		message = "";
-		return "full_startpage";
+		
+		ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+		try {
+			externalContext.redirect(returnView+"?id="+id);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			message = e.getMessage();
+		}
+		//return "full_startpage";
 	}
 	
 	public String logOffUser() {

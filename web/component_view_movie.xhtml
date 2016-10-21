@@ -25,9 +25,10 @@
 	<div id="greyModal" style="display:none;" class="modal">
 		<div class ="popupNotLoggedInDiv">
 			<h:form id="modalForm">
-				<h:commandButton  id="popupRegister" class="btn register" action="full_register.xhtml" value="Register a new account to subscribe" >
+				<h:commandButton  id="popupRegister" class="btn register" action="full_register.xhtml?" value="Register a new account to subscribe" >
 					<f:setPropertyActionListener value="#{view.viewId}" target="#{userBean.viewId}"></f:setPropertyActionListener>
 					<f:setPropertyActionListener value="#{displayBean.movieId}" target="#{userBean.id}"></f:setPropertyActionListener>	
+					<f:event listener="#{displayBean.postInit()}" type="preRenderView"></f:event>
 				</h:commandButton>
 			</h:form>
 			<button id="popupLogin" class="btn register">Login</button>	
