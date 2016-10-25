@@ -25,14 +25,18 @@
 	<div id="greyModal" style="display:none;" class="modal">
 		<div class ="popupNotLoggedInDiv">
 			<h:form id="modalForm">
-				<h:commandButton  id="popupRegister" class="btn register" action="full_register.xhtml?" value="Register a new account to subscribe" >
+				<h:commandButton  id="registerBtn" class="btn register" action="full_register.xhtml?" value="Register a new account to subscribe" >
 					<f:setPropertyActionListener value="#{view.viewId}" target="#{userBean.viewId}"></f:setPropertyActionListener>
 					<f:setPropertyActionListener value="#{displayBean.movieId}" target="#{userBean.id}"></f:setPropertyActionListener>	
 					<f:event listener="#{displayBean.postInit()}" type="preRenderView"></f:event>
 				</h:commandButton>
+				<h:commandButton id="loginBtn" class="btn register" onclick="loginFunction()" value="Login">
+					<f:ajax execute="@form" render="@none"/>
+				</h:commandButton>
+				<h:commandButton id="cancelBtn" class="btn register" onclick="cancelModal()" value="Cancel">
+					<f:ajax execute="@form" render="@none"/>
+				</h:commandButton>
 			</h:form>
-			<button id="popupLogin" class="btn register">Login</button>	
-			<span id="closeSpan" class="close">Cancel</span> 
 		</div>
 	</div>
 	
@@ -224,7 +228,7 @@
 		
 		var btnLogin = document.getElementById("popupLogin");
 
-		var span = document.getElementsByClassName("close")[0];
+		var span = document.getElementsByClassName('close')[0];
 		
 		var form = document.getElementById("modalForm");
 		
@@ -236,7 +240,6 @@
 		
 		btnRegister.onclick = function() {
 			modal.style.display = "none";
-		    modalRegister.style.display = "block";
 		}
 		
 		btnLogin.onclick = function() {
@@ -247,17 +250,27 @@
 		}
 
 		span.onclick = function() {
-			form.hide();
 			modal.style.display = "none";
+			form.hide();
 		}
 		
 		window.onclick = function(event) {
 		    if (event.target == modal) {
-		    	form.hide();
 		    	modal.style.display = "none";
+		    	form.hide();
 		    }
 		}
 		
+		function cancelModal(){
+			modal.style.display = "none";
+		}
+		
+		function loginFunction(){
+			modal.style.display = "none";
+			email.focus();
+			email.select();
+			email.style.borderColor = "red";
+		}
 		
 		
 		</script>

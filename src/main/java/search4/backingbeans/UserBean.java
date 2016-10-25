@@ -2,9 +2,11 @@ package search4.backingbeans;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.Map;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.application.NavigationHandler;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
@@ -70,30 +72,30 @@ public class UserBean implements Serializable{
 	}
 	
 	public void loginUser(){
-		displayUserEntity = userEJB.getUser(email, password);
-		String returnView = viewId.replace("/", "");
-		if (displayUserEntity == null) {
-			message = "Email or Password Wrong!";
-			userIsLoggedIn = null;
-			//return "full_startpage";
-		}
-		message = "Login Successfull";
-		userIsLoggedIn = "user is now logged in";
-		//Wiping these just to be sure
-		firstName = "";
-		lastName = "";
-		email = "";
-		password = "";
-		message = "";
-		
 		ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
 		try {
-			externalContext.redirect(returnView+"?id="+id);
+			displayUserEntity = userEJB.getUser(email, password);
+			String returnView = viewId.replace("/", "");
+			if (displayUserEntity == null) {
+				message = "Email or Password Wrong!";
+				userIsLoggedIn = null;
+				System.out.println("Log in error, userIsLoggedIn: " + userIsLoggedIn );
+				externalContext.redirect(externalContext.getRequestContextPath() + viewId+"?id="+id);
+			}else{
+			message = "Login Successfull";
+			userIsLoggedIn = "user is now logged in";
+			//Wiping these just to be sure
+			firstName = "";
+			lastName = "";
+			email = "";
+			password = "";
+			message = "";
+			externalContext.redirect(externalContext.getRequestContextPath() + viewId+"?id="+id);
+			}
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			message = e.getMessage();
 		}
-		//return "full_startpage";
+		
 	}
 	
 	public String logOffUser() {
