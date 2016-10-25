@@ -1,6 +1,6 @@
 package search4.backingbeans;
 
-import search4.email.EmailEJB;
+import search4.ejb.EmailEJB;
 import search4.entities.DisplayMovieEntity;
 import search4.entities.DisplayUserEntity;
 import search4.entities.ServiceProviderLink;
@@ -39,6 +39,6 @@ public class EmailBean implements Serializable{
         for (ServiceProviderLink spl : links) {
             link += spl.getName()+": "+spl.getUrl()+"\n";
         }
-        emailEJB.sendNotificationMail(user, link, movie.getTitle());
+//        emailEJB.sendNotificationMail(user, link, movie);
     }
 }

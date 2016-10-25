@@ -1,11 +1,15 @@
-package search4.email;
+package search4.ejb;
 
 
+import search4.entities.DisplayMovieEntity;
 import search4.entities.DisplayUserEntity;
+import search4.entities.MovieEntity;
+import search4.entities.ServiceProviderLink;
 
 import java.util.List;
 import java.util.Properties;
 
+import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.mail.Message;
@@ -19,6 +23,9 @@ import javax.mail.internet.MimeMessage;
 @Stateless
 @LocalBean
 public class EmailEJB {
+
+    @EJB
+    private DisplayMovieEJB displayMovieEJB;
 
     private final String USERNAME = "searchfourmail@gmail.com";
 
@@ -41,10 +48,11 @@ public class EmailEJB {
         return session;
     }
 
-    public void sendNotificationMail(DisplayUserEntity user, String link, String movieTitle) {
+    public void sendNotificationMail(DisplayUserEntity user, MovieEntity movie) {
         String recipent = user.getEmail();
-        String subject = movieTitle+" avaliable";
-        String message = "Hello "+user.getFirstName()+", the movie "+movieTitle+
+        String subject = movie.getTitle()+" avaliable";
+        String link = linkFactory(displayMovieEJB.createDisplayMovie(movie));
+        String message = "Hello "+user.getFirstName()+", the movie "+movie.getTitle()+
                 " which you subscribed to has become available on a streaming service.\n"+
                 "Please use the link(s) below to watch it.\n\n"+
                 "Regards, Search4.\n\n"+
@@ -65,25 +73,27 @@ public class EmailEJB {
         }
     }
 
-//    public boolean controlUserMail(String email) {
-//        boolean validMail;
-//        try {
-//            Message message = new MimeMessage(setUpMail());
-//            message.setFrom(new InternetAddress("fiskenaetet@gmail.com"));
-//            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(email));
-//            message.setSubject("Välkommen till Fiskenätet");
-//            message.setText("Tack för din registrering hos Fiskenätet!"
-//                    + "\n" + "Detta är ett verifikationsmejl."
-//                    + "\n" + "Lycka till med dina framtida auktioner."
-//                    + "\n" + ""
-//                    + "\n" + "Hälsningar Fiskenätet!");
-//            Transport.send(message);
-//            validMail = true;
-//            log.info("Called method 'controlUserMail' that sent a welcome mail to " +email);
-//        } catch(MessagingException e){
-//            log.warning("Warning in method 'controlUserMail'. MessagingException: " +e);
-//            validMail = false;
-//        }
-//        return validMail;
-//    }
+    //TODO in helper or factory file/package? feels like the wrong place -- HELPER
+    public String linkFactory(DisplayMovieEntity movie) {
+        String link = "";
+        List<ServiceProviderLink> links = movie.getProviderListAndroidFree();
+        links.addAll(movie.getProviderListAndroidPurchase());
+        links.addAll(movie.getProviderListAndroidSubscription());
+        links.addAll(movie.getProviderListAndroidTvEverywhere());
+        links.addAll(movie.getProviderListAndroidFree());
+        links.addAll(movie.getProviderListIOSPurchase());
+        links.addAll(movie.getProviderListIOSFree());
+        links.addAll(movie.getProviderListIOSSubscription());
+        links.addAll(movie.getProviderListIOSTvEverywhere());
+        links.addAll(movie.getProviderListIOSTvEverywhere());
+        links.addAll(movie.getProviderListOther());
+        links.addAll(movie.getProviderListWebFree());
+        links.addAll(movie.getProviderListWebPurchase());
+        links.addAll(movie.getProviderListWebSubscription());
+        links.addAll(movie.getProviderListWebTvEverywhere());
+        for (ServiceProviderLink spl : links) {
+            link += spl.getName()+": "+spl.getUrl()+"\n";
+        }
+        return link;
+    }
 }

@@ -7,7 +7,7 @@ import javax.ws.rs.InternalServerErrorException;
 import search4.daobeans.SubscriptionDAOBean;
 import search4.daobeans.UserDAOBean;
 import search4.ejb.interfaces.LocalUser;
-import search4.ejb.passwordencrytion.PBKDF2;
+import search4.ejb.passwordencryption.PBKDF2;
 import search4.entities.DisplayUserEntity;
 import search4.entities.SubscriptionEntity;
 import search4.entities.UserEntity;
@@ -41,7 +41,7 @@ public class UserEJB implements LocalUser {
 		if (userEntity.getPassword().length() < 4) {
 			throw new InvalidInputException("Password must be 4 or more characters.");
 		}
- 		userEntity.setEmail(userEntity.getEmail().toLowerCase()); //Keep all email addresses in lowercase always //TODO right place to do this? ask teacher
+ 		userEntity.setEmail(userEntity.getEmail().toLowerCase()); //Keep all email addresses in lowercase always
 		if (emailInDb(userEntity.getEmail())) {
 			throw new DuplicateDataException("The email address already exists in the system");
 		}

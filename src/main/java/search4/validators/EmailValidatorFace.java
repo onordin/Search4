@@ -17,7 +17,7 @@ public class EmailValidatorFace implements Validator {
         EmailValidator emailValidator = new EmailValidator();
         if (!emailValidator.validateEmail(value)) {
             FacesMessage facesMessage = new FacesMessage(htmlInputText.getLabel() + ": email format is not valid");
-            throw new ValidatorException(facesMessage); //TODO figure out how to send this to and properly use in frontend?
+            throw new ValidatorException(facesMessage);
         }
     }
 }

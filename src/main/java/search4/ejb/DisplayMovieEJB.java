@@ -37,6 +37,7 @@ public class DisplayMovieEJB implements LocalDisplayMovie{
         return createDisplayMovie(movieEntity);
     }
 
+    //TODO buisness logic or belongs in a helper/factory class?
     public DisplayMovieEntity createDisplayMovie(MovieEntity movieEntity) {
         DisplayMovieEntity displayMovieEntity = new DisplayMovieEntity();
         setStreamingServices(displayMovieEntity, movieEntity.getGuideboxId()); //Retrieve streaming services from guidebox

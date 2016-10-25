@@ -3,8 +3,6 @@ package search4.ejb;
 import search4.daobeans.DisplayMovieDAOBean;
 import search4.daobeans.UpdateDatabaseDAOBean;
 import search4.ejb.interfaces.LocalUpdateDatabase;
-import search4.email.EmailEJB;
-import search4.entities.DisplayMovieEntity;
 import search4.entities.DisplayUserEntity;
 import search4.entities.MovieEntity;
 import search4.exceptions.DataNotFoundException;
@@ -12,12 +10,7 @@ import search4.helpers.*;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
-import javax.json.Json;
-import javax.json.JsonArray;
 import javax.json.JsonObject;
-import javax.json.JsonReader;
-import java.io.InputStream;
-import java.net.URL;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,34 +32,46 @@ public class UpdateDatabaseEJB implements LocalUpdateDatabase{
     public void getMovieChanges() throws Exception {
         URLBuilder urlBuilder = new URLBuilder();
         JSonHelper jSonHelper = new JSonHelper();
-        Date currentDate = new Date(new java.util.Date().getTime());
-        Date lastUpdate = new Date(new java.util.Date().getTime()-604800000);
-        Long current = currentDate.getTime();
-        Long last = lastUpdate.getTime();
+        Long lastUpdate = getLastChanges();
 
         String path = "updates/movies/changes/";
         String endQuery = "?limit=100&page=1";
-        String url = urlBuilder.guideboxUpdateUrl(path, last, endQuery);
+        String url = urlBuilder.guideboxUpdateUrl(path, lastUpdate, endQuery);
 
         JsonObject jsonObject = jSonHelper.getObject(url);
-        List<JsonObject> movies = jSonHelper.getObjectList(jsonObject, "results");
+        List<JsonObject> jsonMovies = jSonHelper.getObjectList(jsonObject, "results");
 
-        List<MovieEntity> movieEntities = new ArrayList<MovieEntity>();
-        for (JsonObject obj : movies) {
-            movieEntities.add(displayMovieDAOBean.getMovieByGuideboxId(obj.getInt("id")));
-        }
-        List<DisplayMovieEntity> displayMovies = new ArrayList<DisplayMovieEntity>();
-        for (MovieEntity movieEntity : movieEntities) {
-            displayMovies.add(displayMovieEJB.createDisplayMovie(movieEntity));
-        }
-        DisplayMovieEntity displayMovie;
-        MovieEntity movie;
-        for (int i = 0; i < displayMovies.size(); i++) {
-            List<DisplayUserEntity> displayUsers = userEJB.getDisplayUsersSubscribedTo(movieEntities.get(i).getId());
+        List<MovieEntity> movieEntities = getMovieEntitiesByGuideboxId(jsonMovies);
+
+        for (MovieEntity movie : movieEntities) {
+            List<DisplayUserEntity> displayUsers = userEJB.getDisplayUsersSubscribedTo(movie.getId());
             for (DisplayUserEntity userEntity : displayUsers) {
-                emailEJB.sendNotificationMail(userEntity, "LINK TO MOVIE", movieEntities.get(i).getTitle());
+                emailEJB.sendNotificationMail(userEntity, movie);
             }
         }
+        setLastChanges(new java.util.Date().getTime()); //TODO may want to get this from guidebox.. sout both?
+    }
+
+    private List<MovieEntity> getMovieEntitiesByGuideboxId(List<JsonObject> jsonMovies) {
+        List<MovieEntity> movieEntities = new ArrayList<MovieEntity>();
+        try {
+            for (JsonObject obj : jsonMovies) {
+                movieEntities.add(displayMovieDAOBean.getMovieByGuideboxId(obj.getInt("id")));
+            }
+        } catch (Exception e) {
+            System.err.println("Error retrieving: "+e);
+        }
+        return movieEntities;
+    }
+
+    private void setLastChanges(Long date) {
+        SingleFileReaderAndWriter fileWriter = new SingleFileReaderAndWriter();
+        fileWriter.writeDate(date);
+    }
+
+    private Long getLastChanges() {
+        SingleFileReaderAndWriter fileReader = new SingleFileReaderAndWriter();
+        return fileReader.readDate();
     }
 
     public MovieEntity getMovieFromTMDB(Integer tmdbId) throws Exception{
