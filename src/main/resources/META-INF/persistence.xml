@@ -6,5 +6,6 @@
         <class>search4.entities.MovieEntity</class>
         <class>search4.entities.UserEntity</class>
         <class>search4.entities.SubscriptionEntity</class>
+        <class>search4.entities.ProviderEntity</class>
     </persistence-unit>
 </persistence>

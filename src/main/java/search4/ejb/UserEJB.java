@@ -128,5 +128,22 @@ public class UserEJB implements LocalUser {
 		}
 	}
 
+
+	public boolean deleteUser(int id) {
+		if(userDAOBean.userExist(id)) {
+			System.out.println("User exist!!! with Id = " +id);
+			if(userDAOBean.deleteUser(id)) {
+				return true;
+			} else {
+				return false;
+			}
+			
+		} else {
+			System.out.println("User does not exist with id = " +id);
+			return false;
+		}
+		
+	}
+
 	
 }

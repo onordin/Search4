@@ -15,4 +15,6 @@ public interface LocalUser {
 	DisplayUserEntity getUserWithEmail(String email);
 
 	void changePassword(DisplayUserEntity activeUser);
+
+	boolean deleteUser(int id);
 }

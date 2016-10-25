@@ -2,7 +2,11 @@ package search4.backingbeans;
 
 import java.io.IOException;
 import java.io.Serializable;
+
 import java.util.Map;
+
+import java.util.Arrays;
+
 
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
@@ -12,6 +16,7 @@ import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.ws.rs.InternalServerErrorException;
 
+import search4.ejb.UserEJB;
 import search4.ejb.interfaces.LocalUser;
 import search4.entities.DisplayUserEntity;
 import search4.entities.UserEntity;
@@ -36,7 +41,7 @@ public class UserBean implements Serializable{
 	
 	private String viewId;
 	private Integer id;
-	
+
 	private DisplayUserEntity displayUserEntity;
 	
 	@EJB
@@ -71,6 +76,7 @@ public class UserBean implements Serializable{
 		}
 	}
 	
+
 	public void loginUser(){
 		ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
 		try {
@@ -95,8 +101,17 @@ public class UserBean implements Serializable{
 		} catch (IOException e) {
 			message = e.getMessage();
 		}
-		
 	}
+	public String deleteUser() {
+		if(userEJB.deleteUser(displayUserEntity.getId())) {
+			System.out.println("User is deleted.");
+			logOffUser();
+		} else {
+			System.out.println("User is not deleted.");
+		}
+		return "full_startpage";
+	}
+	
 	
 	public String logOffUser() {
 		displayUserEntity = null;
