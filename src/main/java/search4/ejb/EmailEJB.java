@@ -6,6 +6,7 @@ import search4.entities.DisplayUserEntity;
 import search4.entities.MovieEntity;
 import search4.entities.ServiceProviderLink;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Properties;
 
@@ -22,7 +23,7 @@ import javax.mail.internet.MimeMessage;
 
 @Stateless
 @LocalBean
-public class EmailEJB {
+public class EmailEJB implements Serializable{
 
     @EJB
     private DisplayMovieEJB displayMovieEJB;

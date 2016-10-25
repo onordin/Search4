@@ -10,10 +10,11 @@ import search4.entities.UserEntity;
 import search4.exceptions.DataNotFoundException;
 import search4.exceptions.DuplicateDataException;
 
+import java.io.Serializable;
 import java.util.List;
 
 @Stateful
-public class UserDAOBean {
+public class UserDAOBean implements Serializable{
 
 	@PersistenceContext
 	private EntityManager entityManager;

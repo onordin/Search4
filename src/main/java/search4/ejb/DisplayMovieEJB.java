@@ -17,11 +17,12 @@ import javax.ejb.EJBTransactionRolledbackException;
 import javax.ejb.Stateless;
 import javax.json.JsonObject;
 import javax.ws.rs.BadRequestException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 @Stateless
-public class DisplayMovieEJB implements LocalDisplayMovie{
+public class DisplayMovieEJB implements LocalDisplayMovie, Serializable{
 
     @EJB
     private DisplayMovieDAOBean displayMovieDAOBean;

@@ -15,6 +15,7 @@ import search4.exceptions.DuplicateDataException;
 import search4.exceptions.InvalidInputException;
 import search4.validators.EmailValidator;
 
+import java.io.Serializable;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.spec.InvalidKeySpecException;
@@ -22,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Stateless
-public class UserEJB implements LocalUser {
+public class UserEJB implements LocalUser, Serializable {
 
 	@EJB
 	private UserDAOBean userDAOBean;

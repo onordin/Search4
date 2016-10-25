@@ -5,6 +5,8 @@ import javax.ejb.Local;
 import search4.entities.DisplayUserEntity;
 import search4.entities.UserEntity;
 
+import java.util.List;
+
 @Local
 public interface LocalUser {
 
@@ -13,4 +15,8 @@ public interface LocalUser {
 	DisplayUserEntity getUser(String email, String password);
 
 	DisplayUserEntity getUserWithEmail(String email);
+
+	List<DisplayUserEntity> getDisplayUsersSubscribedTo(Integer movieId);
+
+
 }

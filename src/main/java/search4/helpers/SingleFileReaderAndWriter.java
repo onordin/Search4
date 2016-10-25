@@ -10,6 +10,7 @@ public class SingleFileReaderAndWriter {
         Long date = null;
         try {
             File file = new File(getClass().getResource("../../guidebox_date.date").getFile());
+            System.out.println("Reading from file "+file.toString());
             Scanner scanner = new Scanner(file);
             String dateString = scanner.nextLine();
             date = Long.parseLong(dateString);
@@ -22,7 +23,9 @@ public class SingleFileReaderAndWriter {
     public void writeDate(Long date) {
         try {
             String dateString = date.toString();
-            PrintWriter writer = new PrintWriter(getClass().getResource("../../guidebox_date.date").toString(), "UTF-8");
+            File file = new File(getClass().getResource("../../guidebox_date.date").getFile());
+            System.out.println("Writing to "+file.toString());
+            PrintWriter writer = new PrintWriter(file, "UTF-8");
             writer.println(dateString);
             writer.close();
         } catch (Exception e) {

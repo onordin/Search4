@@ -16,6 +16,13 @@ public class URLBuilder {
         return guideBoxUrl+guideBoxAPIKey+endQuery+id;
     }
 
+    public String guideboxDateUrl() {
+        APIKeyReader apiKeyReader = new APIKeyReader();
+        String guideBoxUrl = "https://api-public.guidebox.com/v1.43/US/";
+        String guideBoxAPIKey = apiKeyReader.getKey("guidebox");
+        return guideBoxUrl+guideBoxAPIKey+"/updates/get_current_time";
+    }
+
     public String guideboxUpdateUrl(String path, Long time, String endQuery) {
         APIKeyReader apiKeyReader = new APIKeyReader();
         String guideBoxUrl = "https://api-public.guidebox.com/v1.43/US/";

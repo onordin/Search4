@@ -10,10 +10,11 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.ws.rs.InternalServerErrorException;
+import java.io.Serializable;
 import java.util.List;
 
 @Stateful
-public class UpdateDatabaseDAOBean {
+public class UpdateDatabaseDAOBean implements Serializable{
 
     @PersistenceContext
     private EntityManager entityManager;

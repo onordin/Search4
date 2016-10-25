@@ -6,10 +6,11 @@ import search4.entities.UserEntity;
 import javax.ejb.Stateful;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.io.Serializable;
 import java.util.List;
 
 @Stateful
-public class SubscriptionDAOBean {
+public class SubscriptionDAOBean implements Serializable{
 
 	
 	@PersistenceContext

@@ -8,9 +8,10 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
+import java.io.Serializable;
 
 @Stateless
-public class DisplayMovieDAOBean {
+public class DisplayMovieDAOBean implements Serializable{
 
     @PersistenceContext
     private EntityManager entityManager;
