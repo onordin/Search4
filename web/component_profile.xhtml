@@ -24,7 +24,8 @@
 
 	<h:body>
 	
-		<div class="container">
+	<div class="container" id="wrapContainer">
+		<div class="row">
 		<h2 class="h2-center">Profile page for: #{userBean.displayUserEntity.firstName} #{userBean.displayUserEntity.lastName}</h2>
 			<div class="col-lg-4 col-md-8 col-sm-12 col-centered">
 			
@@ -44,9 +45,83 @@
 					</h:panelGrid>
 				</h:form>
 				
+
+				<br />
+				<br />
+				<h:form id="changePassword">
+					<h:panelGrid columns="2" columnClasses="rightAlign,leftAlign">
+						<h:outputLabel value="Old password:"></h:outputLabel>
+						<h:inputText id="password" value="#{userBean.password}" required="true" requiredMessage="Old password is required" />
+						<h:outputLabel value="New password:"></h:outputLabel>
+						<h:inputText id="firstPassword" value="#{userBean.firstPassword}" required="true" requiredMessage="First password is required" />
+						<h:outputLabel value="New again:"></h:outputLabel>
+						<h:inputText id="secondPassword" value="#{userBean.secondPassword}" required="true" requiredMessage="Second password is required" />
+						<h:commandButton action="#{userBean.changePassword()}" value="Save"></h:commandButton>
+					</h:panelGrid>
+					<h:messages style="color:red"></h:messages>
+					<br />
+					#{userBean.message}
+					
+				</h:form>
+				<h:form>
+					<h:commandButton action="#{userBean.deleteUser()}" value="dÄLLiT"> Delete meeeeeee!</h:commandButton>
+				</h:form>
+				<br />
 			</div>
-	
+
+			
+			</div>
+
 		</div>
+			
+		
+		<div class="row">
+				<div class="col-xs-8 col-centered" id="subscriptionContainer">
+				<ui:fragment rendered="#{subscriptionBean.displaySubscriptionEntities != null}" id="middle">
+				<h:form>
+				<h:dataTable value="#{subscriptionBean.displaySubscriptionEntities}" var="displaySubscription" id="subscriptionTable"
+    						styleClass="order-table"
+    						rowClasses="order-table-odd-row,order-table-even-row">
+				        <h:column headerClass="resultCol1 order-table-header">
+				            <f:facet name="header">Movie Title</f:facet>
+				            <a href="full_view_movie.xhtml?id=#{displaySubscription.subscribedMovieId}" class="link-result"><h:outputText class="row-output" value="#{displaySubscription.title}" /></a>
+				        </h:column>
+				         <h:column headerClass="resultCol2 order-table-header">
+				            <f:facet name="header"></f:facet>
+				            <h:outputLabel class="row-output" value="Remove" styleClass="removeSubscription">
+				            	<f:ajax event="click" listener="#{subscriptionBean.removeSubscription(displaySubscription.id, userBean.displayUserEntity.id)}" render="@form"/>
+							</h:outputLabel>
+				        </h:column>
+				</h:dataTable>
+				</h:form>
+				</ui:fragment>
+			</div>
+		</div>	
+		
+		<br/>	
+		<br/>	
+			
+			<div class="row">
+				<div class="col-xs-8 col-centered" id="providerContainer">
+				<ui:fragment rendered="#{providerBean.displayProviderEntities != null}">
+				<h:form>
+				<h:dataTable value="#{providerBean.displayProviderEntities}" var="displayProvider" id="providerTable"
+    						styleClass="order-table"
+    						rowClasses="order-table-odd-row,order-table-even-row">
+				        <h:column headerClass="resultCol1 order-table-header">
+				            <f:facet name="header">Provider</f:facet>
+				            <h:outputText class="row-output" value="#{displayProvider.provider}" />
+				        </h:column>
+				</h:dataTable>
+				</h:form>
+				</ui:fragment>
+			</div>
+		</div>	
+		
+			
+			
+			
+	
 		
 
 

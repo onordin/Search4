@@ -28,4 +28,35 @@ public class SubscriptionDAOBean implements Serializable{
 				.setParameter("movieId", movieId)
 				.getResultList();
 	}
+
+
+	public boolean subscribeToMovie(SubscriptionEntity subscriptionEntity) {
+		try {
+			entityManager.merge(subscriptionEntity);
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
+	}
+
+
+
+	public boolean removeSubscription(Integer id) {
+
+		try{
+			SubscriptionEntity entity = (SubscriptionEntity) entityManager.createNamedQuery("SubscriptionEntity.getOneSubscription")
+			.setParameter("id", id)
+			.getSingleResult();
+			System.out.println(entity.toString());
+			entityManager.remove(entity);
+			return true;
+		}catch(Exception ex) {
+			ex.printStackTrace();
+			return false;
+		}
+
+	}
+
+
+
 }

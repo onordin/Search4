@@ -9,6 +9,7 @@
 }
 
 /* Navbar */
+
 .navbar-static-top {
   margin-bottom: 0px;
 }
@@ -22,7 +23,7 @@
 
 .navbar-form > .form-group > .btn:hover {
 	
-    background-color: #5E90FF; /* Green */
+    background-color: #5E90FF; 
     color: white;
 }
 
@@ -36,8 +37,6 @@
 	margin-top: 3px;
 	font-size: 30px;
 }
-
-
 
 .log-off {
 	background-color: Transparent;
@@ -125,6 +124,14 @@
 
 /* Result */
 
+.link-result:link {
+	color: black;
+}
+
+.link-result:visited {
+	color: black; 
+}
+
 .order-table{
 	border-collapse:collapse;
 	margin: auto;
@@ -168,6 +175,16 @@
 	width: 14%;
 }
 
+.sortButtonsGroup {
+	margin: 5px;
+}
+
+.sortbuttonsGroup option{
+	color: red;
+}
+
+
+
 /* Register page */
 
 .col-centered {
@@ -192,17 +209,26 @@
 	background-color: red;
 	padding: 20px 20px 20px 20px;
 }
-
 /* User profile page */
+
+
+.selectManyCheckbox {
+	color: red;
+	padding: 10px;
+}
+
 
 .h2-center {
 	text-align: center;
 }
 
+
 /* View movie */
 
 .subscribe {
 	background-color: #004FFF;
+	font-weight: bold;
+	color: black;
 } 
 
 .subscribe:hover {
@@ -210,4 +236,25 @@
 	color: white;
 }
 
+.removeSubscription {
+	cursor: pointer;
+	color: red; 
+}
 
+.unsubscribe {
+	background-color: #FF0003;
+	font-weight: bold;
+	color: black;
+} 
+
+.unsubscribe:hover {
+	background-color: #FF4B47;
+	color: white;
+}
+
+
+
+.removeSubscription:hover {
+	color: purple;	
+	cursor: pointer;
+}

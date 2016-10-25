@@ -35,7 +35,32 @@
 	<br />
 	<br />
 	
-	<h:commandButton class="btn subscribe" value="Subscribe" action="#{displayBean.subscribe(userBean.displayUserEntity.id)}"/>
+<!-- Inloggad -->
+	<ui:fragment rendered="#{userBean.userIsLoggedIn != null}">
+	
+	
+		<ui:fragment rendered="#{!displayBean.userSubscribesToMovie}">
+			<h:form>
+				<h:commandButton class="btn subscribe" value="Subscribe" action="#{subscriptionBean.subscribe(displayBean.movieId, userBean.displayUserEntity.id)}"/>
+			</h:form>
+		</ui:fragment>
+		
+		<ui:fragment rendered="#{displayBean.userSubscribesToMovie}">
+			<h:form>
+				<h:commandButton class="btn unsubscribe" value="Unsubscribe" action="#{subscriptionBean.removeSubscription(displayBean.movieId, userBean.displayUserEntity.id)}"/>
+			</h:form>
+		</ui:fragment>
+		
+	</ui:fragment>
+	
+<!-- inte inloggad -->
+	<ui:fragment rendered="#{userBean.userIsLoggedIn == null}">
+	
+	<!-- - Här kommer josef pop up ruta om man trycker på subscribe -->
+		<h:form>
+			<h:commandButton class="btn subscribe" value="Josef pop up" />
+		</h:form>
+	</ui:fragment>
 
 <!-- only render if there are providers inside -->       
 <ui:fragment rendered="#{displayBean.displayMovieEntity.hasWeb}">
@@ -165,7 +190,7 @@
 
 <!-- only render if there are NO providers at all -->       
 <ui:fragment rendered="#{displayBean.displayMovieEntity.hasNone}">
-    <h2>There are no current providers for this film, click here to subscribe (TODO for team Search4)</h2>
+    <h5>There are currently no providers for this film but you can always subscribe for changes</h5>
 </ui:fragment>
 
 

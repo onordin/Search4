@@ -1,12 +1,14 @@
 package search4.backingbeans;
 
 import java.io.Serializable;
+import java.util.Arrays;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 import javax.ws.rs.InternalServerErrorException;
 
+import search4.ejb.UserEJB;
 import search4.ejb.interfaces.LocalUser;
 import search4.entities.DisplayUserEntity;
 import search4.entities.UserEntity;
@@ -26,12 +28,18 @@ public class UserBean implements Serializable{
 	private String message;
 	private String userIsLoggedIn;
 	private String passwordReset;
+	private String firstPassword;
+	private String secondPassword;
+	
+	
 	
 
 	private DisplayUserEntity displayUserEntity;
 	
 	@EJB
-	LocalUser userEJB;
+	private LocalUser userEJB;
+	
+	
 	
 	public String createUser(){
 		UserEntity userEntity = new UserEntity();
@@ -59,12 +67,22 @@ public class UserBean implements Serializable{
 		}
 	}
 	
+	public String deleteUser() {
+		if(userEJB.deleteUser(displayUserEntity.getId())) {
+			System.out.println("User is deleted.");
+			logOffUser();
+		} else {
+			System.out.println("User is not deleted.");
+		}
+		return "full_startpage";
+	}
+	
 	public String loginUser(){
 		displayUserEntity = userEJB.getUser(email, password);
 		if (displayUserEntity == null) {
 			message = "Email or Password Wrong!";
 			userIsLoggedIn = null;
-			return "login";
+			return "full_startpage";
 		}
 		message = "Login Successfull";
 		userIsLoggedIn = "user is now logged in";
@@ -73,10 +91,12 @@ public class UserBean implements Serializable{
 		lastName = "";
 		email = "";
 		password = "";
+		message = "";
 		return "full_startpage";
 	}
 	
 	public String logOffUser() {
+		displayUserEntity = null;
 		message = "You logged out.";
 		userIsLoggedIn = null;
 		firstName = "";
@@ -103,7 +123,38 @@ public class UserBean implements Serializable{
 		return "full_forgot_password";
 	}
 	
-	
+	public String changePassword() {
+		String pattern = "((?=.*[a-z]).{6,})";
+		// 1. kolla om gamla lösenordet är rätt
+		// 2. kolla om first o second är samma
+		// 3. uppdatera db med nya lösen
+		DisplayUserEntity activeUser = userEJB.getUser(displayUserEntity.getEmail(), password);
+		if(activeUser != null) {
+			if(firstPassword.equals(secondPassword)) {
+				if(firstPassword.matches(pattern)) {
+					activeUser.setPassword(firstPassword);
+					System.out.println("USerBEAN!!!!!!!!!!!!!!!!!!!!");
+					System.out.println("ID = " +activeUser.getId());
+					System.out.println("First name = " +activeUser.getFirstName());
+					System.out.println("Last name = " +activeUser.getLastName());
+					System.out.println("Email = " +activeUser.getEmail());
+					System.out.println("Password = " +activeUser.getPassword());
+					userEJB.changePassword(activeUser);
+					message = "New password saved!";
+				} else {
+					message = "New password needs to be at least 6 charecters long (plus en liten bokstav...)";
+				}
+			} else {
+				message = "Both new passwords have to match. New password was not changed.";
+			}
+		} else {
+			message = "Old password is wrong. New password was not changed.";
+		}
+		password = "";
+		firstPassword = "";
+		secondPassword = "";
+		return "full_profile";
+	}
 	
 
 	public String getFirstName() {
@@ -168,6 +219,22 @@ public class UserBean implements Serializable{
 
 	public void setUserIsLoggedIn(String userIsLoggedIn) {
 		this.userIsLoggedIn = userIsLoggedIn;
+	}
+
+	public String getFirstPassword() {
+		return firstPassword;
+	}
+
+	public void setFirstPassword(String firstPassword) {
+		this.firstPassword = firstPassword;
+	}
+
+	public String getSecondPassword() {
+		return secondPassword;
+	}
+
+	public void setSecondPassword(String secondPassword) {
+		this.secondPassword = secondPassword;
 	}
 
 	

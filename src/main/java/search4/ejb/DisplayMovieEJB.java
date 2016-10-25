@@ -30,7 +30,15 @@ public class DisplayMovieEJB implements LocalDisplayMovie, Serializable{
     private MovieEntity getMovieData(Integer id) throws Exception{
         return displayMovieDAOBean.getMovieData(id);
     }
+    
 
+    public void getSimpleDisplayMovieEntity(Integer id) throws Exception {
+    	DisplayMovieEntity displayMovieEntity = new DisplayMovieEntity();
+    	MovieEntity movieEntity = getMovieData(id);
+    	displayMovieEntity.setTitle(movieEntity.getTitle());
+    	
+    }
+    
     //NEW METHOD: better to send the id to EJB and retrieve MovieEntity here. No point in bringing it to backing bean.
     public DisplayMovieEntity getDisplayMovie(Integer id) throws Exception{
         MovieEntity movieEntity = getMovieData(id);

@@ -12,6 +12,9 @@ import javax.persistence.*;
 @Table(name="subscriptions")
 @NamedQueries({
 		@NamedQuery(name = "SubscriptionEntity.findAllFor", query = "SELECT s FROM SubscriptionEntity s WHERE s.userId = :userId"),
+		@NamedQuery(name="SubscriptionEntity.removeSubscription", query="DELETE FROM SubscriptionEntity s WHERE s.id = :id"),
+		@NamedQuery(name="SubscriptionEntity.getOneSubscription", query="SELECT s FROM SubscriptionEntity s WHERE s.id = :id"),
+		@NamedQuery(name="SubscriptionEntity.deleteUser", query="DELETE FROM SubscriptionEntity s WHERE s.userId = :userId"),
 		@NamedQuery(name = "SubscriptionEntity.findAllSubscribedTo", query = "SELECT s FROM SubscriptionEntity s WHERE s.movieId = :movieId")
 })
 
