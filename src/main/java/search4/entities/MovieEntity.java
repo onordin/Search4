@@ -23,7 +23,9 @@ import java.sql.Date;
     @NamedQuery(name = "MovieEntity.getMovieById", query = "SELECT movieEntity FROM MovieEntity movieEntity" +
             " WHERE movieEntity.id = :id"),
     @NamedQuery(name = "MovieEntity.getMovieByTmdbId", query = "SELECT movieEntity FROM MovieEntity movieEntity " +
-            "WHERE movieEntity.tmdbId = :tmdbId")
+            "WHERE movieEntity.tmdbId = :tmdbId"),
+    @NamedQuery(name = "MovieEntity.getWithGuideboxId", query = "SELECT movieEntity FROM MovieEntity movieEntity " +
+            "WHERE movieEntity.guideboxId = :guideboxId")
 })
 
 public class MovieEntity implements Serializable {

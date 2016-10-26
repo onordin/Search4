@@ -10,8 +10,11 @@ import search4.entities.UserEntity;
 import search4.exceptions.DataNotFoundException;
 import search4.exceptions.DuplicateDataException;
 
+import java.io.Serializable;
+import java.util.List;
+
 @Stateful
-public class UserDAOBean {
+public class UserDAOBean implements Serializable{
 
 	@PersistenceContext
 	private EntityManager entityManager;
@@ -36,9 +39,21 @@ public class UserDAOBean {
 
 	public UserEntity getUser(String email) throws DataNotFoundException {
 		try {
-			return (UserEntity) entityManager.createNamedQuery("UserEntity.getUserByEmail").setParameter("email", email).getSingleResult();
+			return (UserEntity) entityManager.createNamedQuery("UserEntity.getUserByEmail")
+					.setParameter("email", email)
+					.getSingleResult();
 		} catch (NoResultException nre) {
 			throw new DataNotFoundException("No such email ("+email+") in database.");
+		}
+	}
+
+	public UserEntity getUser(Integer id) throws DataNotFoundException {
+		try {
+			return (UserEntity) entityManager.createNamedQuery("UserEntity.getUserById")
+					.setParameter("id", id)
+					.getSingleResult();
+		} catch (NoResultException nre) {
+			throw new DataNotFoundException("No such id ("+id+") in database.");
 		}
 	}
 
@@ -49,7 +64,7 @@ public class UserDAOBean {
 		} catch (Exception e) {
 			return false;
 		}
-		
+
 	}
 
 	public boolean userExist(int id) {
@@ -69,6 +84,6 @@ public class UserDAOBean {
 		} catch (Exception e) {
 			return false;
 		}
-		
+
 	}
 }

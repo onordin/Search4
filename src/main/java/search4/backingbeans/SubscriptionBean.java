@@ -34,13 +34,13 @@ public class SubscriptionBean implements Serializable{
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-    	displaySubscriptionEntities = subscriptionEJB.getAllFor(userId);	//to update subscribebutton
+    	displaySubscriptionEntities = subscriptionEJB.getAllFor(userId);	//to update subscribebutton with displayBean.checkIfUserSubscribes()
     }
     
 	
 	public void removeSubscription(Integer id, Integer userId) {
 		subscriptionEJB.removeSubscription(id);
-		displaySubscriptionEntities = subscriptionEJB.getAllFor(userId);	//to update subscribebutton
+		displaySubscriptionEntities = subscriptionEJB.getAllFor(userId);	//to update subscribebutton with displayBean.checkIfUserSubscribes()
 	}
 
 	

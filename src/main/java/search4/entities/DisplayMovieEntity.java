@@ -31,8 +31,11 @@ public class DisplayMovieEntity {
     private List<ServiceProviderLink> providerListIOSTvEverywhere;
 
     private List<ServiceProviderLink> providerListOther;
+    
+    private List<String> currentProviders;
 
-    private boolean hasWeb;
+
+	private boolean hasWeb;
     private boolean hasWebSubscription;
     private boolean hasWebPurchase;
     private boolean hasWebFree;
@@ -331,6 +334,16 @@ public class DisplayMovieEntity {
 		this.hasNone = hasNone;
 	}
 
+	
+    public List<String> getCurrentProviders() {
+		return currentProviders;
+	}
+
+	public void setCurrentProviders(List<String> currentProviders) {
+		this.currentProviders = currentProviders;
+	}
+
+	
 	public void checkAddedServices () {
     	hasWebSubscription = (providerListWebSubscription.size() > 0 ? true : false);
     	hasWebPurchase = (providerListWebPurchase.size() > 0 ? true : false);

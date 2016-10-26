@@ -2,6 +2,8 @@ UpdateDatabaseDAO:
     TODOS: unreacable (better way to structure entire method?)
         return type in same method? void and on exception its fail?
 
+    getMovieChanges() last checked date, how to store? a table with only one value seems bad
+
     TODO: will this explode...
     how to handle it if database is absent
 

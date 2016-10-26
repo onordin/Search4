@@ -57,7 +57,14 @@
 <!-- Inloggad -->
 	<ui:fragment rendered="#{userBean.userIsLoggedIn != null}">
 	
-	
+	<ui:fragment rendered="#{displayBean.matchingProviders.size() > 0}">
+		<div style="color:red;">
+		<h6>It seems you don't need to subscribe since you are already</h6>
+		<h6>able to watch this movie from a selected provider:</h6>
+		<h6>#{displayBean.matchingProviders}</h6>
+		</div>
+	</ui:fragment>
+
 		<ui:fragment rendered="#{!displayBean.userSubscribesToMovie}">
 			<h:form>
 				<h:commandButton class="btn subscribe" value="Subscribe" action="#{subscriptionBean.subscribe(displayBean.movieId, userBean.displayUserEntity.id)}"/>
@@ -66,7 +73,7 @@
 		
 		<ui:fragment rendered="#{displayBean.userSubscribesToMovie}">
 			<h:form>
-				<h:commandButton class="btn unsubscribe" value="Unsubscribe" action="#{subscriptionBean.removeSubscription(displayBean.movieId, userBean.displayUserEntity.id)}"/>
+				<h:commandButton class="btn unsubscribe" value="Unsubscribe" action="#{subscriptionBean.removeSubscription(displayBean.subscriptionId, userBean.displayUserEntity.id)}"/>
 			</h:form>
 		</ui:fragment>
 		
