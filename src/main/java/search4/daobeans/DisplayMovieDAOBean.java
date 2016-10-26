@@ -27,14 +27,20 @@ public class DisplayMovieDAOBean implements Serializable{
         }
     }
 
-    public MovieEntity getMovieByGuideboxId(Integer guideboxId) throws Exception {
+    public MovieEntity getMovieByGuideboxId(Long guideboxId) throws DataNotFoundException {
+        MovieEntity m = null;
         try {
-            return (MovieEntity) entityManager.createNamedQuery("MovieEntity.getWithGuideboxId")
+//            System.out.println("Try get movie");
+            m = (MovieEntity) entityManager.createNamedQuery("MovieEntity.getWithGuideboxId")
                     .setParameter("guideboxId", guideboxId)
                     .getSingleResult();
+//            System.out.println("Got it, returning");
+            return m;
         }
         catch (NoResultException ne) {
-            throw new DataNotFoundException("No movie in database with that guidebox ID ("+guideboxId+")");
+//            System.err.println("Throwing datanotfound");
+//            throw new DataNotFoundException("No movie in database with that guidebox ID ("+guideboxId+")");
         }
+        return m;
     }
 }

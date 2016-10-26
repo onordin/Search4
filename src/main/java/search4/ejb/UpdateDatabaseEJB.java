@@ -29,34 +29,34 @@ public class UpdateDatabaseEJB implements LocalUpdateDatabase, Serializable{
     private LocalUser userEJB;
     @EJB
     private EmailEJB emailEJB;
-//    @EJB
-//    private UserEJB userEJB;
-//    @EJB
-//    private EmailEJB emailEJB;
 
     public void getMovieChanges() throws Exception {
         URLBuilder urlBuilder = new URLBuilder();
         JSonHelper jSonHelper = new JSonHelper();
         Long lastUpdate = getLastChanges();
 
-        if (lastUpdate == null) {
+        if (lastUpdate == null) { //TODO fix
             throw new Exception("NO NO NO NONO");
         }
 
-        String path = "/updates/movies/changes/";
+//        String path = "/updates/movies/changes/"; //TODO shows returns correctly for test, but is it properly?
+        String path = "/updates/shows/changes/";
         String endQuery = "?limit=100&page=1";
         String url = urlBuilder.guideboxUpdateUrl(path, lastUpdate, endQuery);
-
         JsonObject jsonObject = jSonHelper.getObject(url);
+
         List<JsonObject> jsonMovies = jSonHelper.getObjectList(jsonObject, "results");
 
+        //TODO currently this always returns 0 with a bunch of transactionRollbacks
         List<MovieEntity> movieEntities = getMovieEntitiesByGuideboxId(jsonMovies);
-
+        System.out.println(movieEntities);
+        System.out.println("l: "+movieEntities.size());
+        System.out.println("TEST");
         for (MovieEntity movie : movieEntities) {
             List<DisplayUserEntity> displayUsers = userEJB.getDisplayUsersSubscribedTo(movie.getId());
             for (DisplayUserEntity userEntity : displayUsers) {
-                System.out.println("SENDING MAIL");
-                emailEJB.sendNotificationMail(userEntity, movie);
+                System.out.println("Send mail to "+userEntity.getEmail()+" that "+movie.getTitle()+" is available");
+//                emailEJB.sendNotificationMail(userEntity, movie);
             }
         }
         setLastChanges(getCurrentDate());
@@ -64,13 +64,31 @@ public class UpdateDatabaseEJB implements LocalUpdateDatabase, Serializable{
 
     private List<MovieEntity> getMovieEntitiesByGuideboxId(List<JsonObject> jsonMovies) {
         List<MovieEntity> movieEntities = new ArrayList<MovieEntity>();
-        try {
-            for (JsonObject obj : jsonMovies) {
-                movieEntities.add(displayMovieDAOBean.getMovieByGuideboxId(obj.getInt("id")));
+        MovieEntity movieEntity = null;
+        String tried = "";
+        for (JsonObject obj : jsonMovies) {
+//            System.out.println("Another try for "+obj);
+            try {
+//                System.out.println("This happens");
+                Long gid = Long.parseLong(obj.get("id").toString());
+//                System.out.println("Id: "+gid);
+                tried += ""+gid+", ";
+                movieEntity = displayMovieDAOBean.getMovieByGuideboxId(gid);
+//                movieEntity = displayMovieDAOBean.getMovieData(100);
+//                System.out.println("Got movie: "+movieEntity);
+                if (movieEntity != null) {
+                    movieEntities.add(movieEntity);
+                }
+            } catch (DataNotFoundException dnfe) {
+//                System.err.println(dnfe);
+//                System.err.println("DNFE");
             }
-        } catch (Exception e) {
-            System.err.println("Error retrieving: "+e);
+            catch (Exception e) {
+//                System.err.println("Error retrieving: "+e);
+//                System.err.println("OTHER11");
+            }
         }
+        System.out.println("TRIDE: "+tried);
         return movieEntities;
     }
 
