@@ -25,13 +25,7 @@ public class MovieSoap {
 	}
 	
 	public List<MovieEntity> getAllMovies(){
-		List<MovieEntity> allMovies = new ArrayList<MovieEntity>();
-		allMovies = searchEJB.searchOrderByTitleDesc("", 0);
-		System.out.println("Get all movies");
-		for (int i = 0; i < allMovies.size(); i++) {
-			System.out.println(allMovies.get(i));
-		}
-		return allMovies;
+		return searchEJB.searchOrderByTitleDesc("", 0);
 	}
 	
 	public List<MovieEntity> getMovieByTitleAscending(String title){
