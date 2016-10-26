@@ -45,7 +45,7 @@ public class DisplayMovieEJB implements LocalDisplayMovie, Serializable{
     public DisplayMovieEntity getDisplayMovie(Integer id) throws Exception{
         MovieEntity movieEntity = getMovieData(id);
         setGuideboxId(movieEntity); //Check if guidbox id is set. If not, set it.
-        tempProviders = new ArrayList<>();
+        tempProviders = new ArrayList<String>();
         return createDisplayMovie(movieEntity);
     }
 
@@ -154,7 +154,7 @@ public class DisplayMovieEJB implements LocalDisplayMovie, Serializable{
 
     public List<String> getMatchingProviders(List<String> requestedProviders, DisplayMovieEntity displayMovieEntity) {
 
-    	List<String> resultList = new ArrayList<>();
+    	List<String> resultList = new ArrayList<String>();
 
     	if(requestedProviders.contains("All")) {
     		resultList = displayMovieEntity.getCurrentProviders();

@@ -46,7 +46,7 @@ public class DisplayMovieBean implements Serializable{
 
     public void postInit() {
         getMovieData(movieId);
-        matchingProviders = new ArrayList<>();
+        matchingProviders = new ArrayList<String>();
     }
 
 
