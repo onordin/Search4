@@ -24,6 +24,8 @@ import java.util.List;
 @Stateless
 public class DisplayMovieEJB implements LocalDisplayMovie, Serializable{
 
+	private List<String> tempProviders;
+
     @EJB
     private DisplayMovieDAOBean displayMovieDAOBean;
 
@@ -43,6 +45,7 @@ public class DisplayMovieEJB implements LocalDisplayMovie, Serializable{
     public DisplayMovieEntity getDisplayMovie(Integer id) throws Exception{
         MovieEntity movieEntity = getMovieData(id);
         setGuideboxId(movieEntity); //Check if guidbox id is set. If not, set it.
+        tempProviders = new ArrayList<>();
         return createDisplayMovie(movieEntity);
     }
 
@@ -50,6 +53,7 @@ public class DisplayMovieEJB implements LocalDisplayMovie, Serializable{
     public DisplayMovieEntity createDisplayMovie(MovieEntity movieEntity) {
         DisplayMovieEntity displayMovieEntity = new DisplayMovieEntity();
         setStreamingServices(displayMovieEntity, movieEntity.getGuideboxId()); //Retrieve streaming services from guidebox
+        displayMovieEntity.setCurrentProviders(tempProviders);
         setTmdbInfo(displayMovieEntity, movieEntity.getTmdbId()); //Retrieve movie information (description, poster etc) from TMDB
         displayMovieEntity.checkAddedServices();	//populate all boolean has-properties
         return displayMovieEntity;
@@ -121,6 +125,7 @@ public class DisplayMovieEJB implements LocalDisplayMovie, Serializable{
         for(JsonObject jsonObject : objectList) {
             providerLink = new ServiceProviderLink();
             providerLink.setName(jsonObject.getString("display_name"));
+            tempProviders.add(jsonObject.getString("display_name"));//sparar i listan f�r att spara alla providers
             providerLink.setUrl(jsonObject.getString("link"));
             serviceProviderLinks.add(providerLink);
         }
@@ -145,4 +150,26 @@ public class DisplayMovieEJB implements LocalDisplayMovie, Serializable{
             throw new DataNotFoundException("Invalid TMdB Id ("+tmdbId+")");
         }
     }
+
+
+    public List<String> getMatchingProviders(List<String> requestedProviders, DisplayMovieEntity displayMovieEntity) {
+
+    	List<String> resultList = new ArrayList<>();
+
+    	if(requestedProviders.contains("All")) {
+    		resultList = displayMovieEntity.getCurrentProviders();
+    	}else {
+	    	for(String requestedProvider : requestedProviders) {
+	    		for(String movieProvider : displayMovieEntity.getCurrentProviders()) {
+	    			if(requestedProvider.equalsIgnoreCase(movieProvider)) {
+	    				if(!resultList.contains(requestedProvider)) {
+	    					resultList.add(requestedProvider);
+	    				}
+	    			}
+	    		}
+	    	}
+    	}
+    	return resultList;
+    }
+
 }

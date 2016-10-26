@@ -1,10 +1,18 @@
 package search4.backingbeans;
 
+import java.io.IOException;
 import java.io.Serializable;
+
+import java.util.Map;
+
 import java.util.Arrays;
+
 
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.application.NavigationHandler;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.ws.rs.InternalServerErrorException;
 
@@ -31,17 +39,15 @@ public class UserBean implements Serializable{
 	private String firstPassword;
 	private String secondPassword;
 	
-	
-	
+	private String viewId;
+	private Integer id;
 
 	private DisplayUserEntity displayUserEntity;
 	
 	@EJB
 	private LocalUser userEJB;
 	
-	
-	
-	public String createUser(){
+	public void createUser(){
 		UserEntity userEntity = new UserEntity();
 		userEntity.setFirstName(firstName);
 		userEntity.setLastName(lastName);
@@ -50,23 +56,52 @@ public class UserBean implements Serializable{
 		try {
 			userEJB.createUser(userEntity);
 			message = "New user with email: " + email + " created";
-			return "full_startpage";
+			String returnView = viewId.replace("/", "");
+			ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+			externalContext.redirect(returnView+"?id="+id);
+			
 		} catch (DuplicateDataException dde) {
 			message = dde.getMessage();
-			return "full_startpage";
+			//return "full_startpage";
 		} catch (InternalServerErrorException isee) {
 			message = isee.getMessage();
-			return "full_startpage";
+			//return "full_startpage";
 		} catch (InvalidInputException iie) {
 			message = iie.getMessage();
-			return "full_startpage";
+			//return "full_startpage";
 		}
 		catch (Exception e) {
 			message = "Unknown Error";
-			return "full_startpage";
+			//return "full_startpage";
 		}
 	}
 	
+
+	public void loginUser(){
+		ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+		try {
+			displayUserEntity = userEJB.getUser(email, password);
+			String returnView = viewId.replace("/", "");
+			if (displayUserEntity == null) {
+				message = "Email or Password Wrong!";
+				userIsLoggedIn = null;
+				System.out.println("Log in error, userIsLoggedIn: " + userIsLoggedIn );
+				externalContext.redirect(externalContext.getRequestContextPath() + viewId+"?id="+id);
+			}else{
+			message = "Login Successfull";
+			userIsLoggedIn = "user is now logged in";
+			//Wiping these just to be sure
+			firstName = "";
+			lastName = "";
+			email = "";
+			password = "";
+			message = "";
+			externalContext.redirect(externalContext.getRequestContextPath() + viewId+"?id="+id);
+			}
+		} catch (IOException e) {
+			message = e.getMessage();
+		}
+	}
 	public String deleteUser() {
 		if(userEJB.deleteUser(displayUserEntity.getId())) {
 			System.out.println("User is deleted.");
@@ -77,23 +112,6 @@ public class UserBean implements Serializable{
 		return "full_startpage";
 	}
 	
-	public String loginUser(){
-		displayUserEntity = userEJB.getUser(email, password);
-		if (displayUserEntity == null) {
-			message = "Email or Password Wrong!";
-			userIsLoggedIn = null;
-			return "full_startpage";
-		}
-		message = "Login Successfull";
-		userIsLoggedIn = "user is now logged in";
-		//Wiping these just to be sure
-		firstName = "";
-		lastName = "";
-		email = "";
-		password = "";
-		message = "";
-		return "full_startpage";
-	}
 	
 	public String logOffUser() {
 		displayUserEntity = null;
@@ -237,6 +255,20 @@ public class UserBean implements Serializable{
 		this.secondPassword = secondPassword;
 	}
 
-	
-	
+	public String getViewId() {
+		return viewId;
+	}
+
+	public void setViewId(String viewId) {
+		this.viewId = viewId;
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
 }

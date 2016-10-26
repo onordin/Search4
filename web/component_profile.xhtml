@@ -51,11 +51,11 @@
 				<h:form id="changePassword">
 					<h:panelGrid columns="2" columnClasses="rightAlign,leftAlign">
 						<h:outputLabel value="Old password:"></h:outputLabel>
-						<h:inputText id="password" value="#{userBean.password}" required="true" requiredMessage="Old password is required" />
+						<h:inputSecret id="password" value="#{userBean.password}" required="true" requiredMessage="Old password is required" />
 						<h:outputLabel value="New password:"></h:outputLabel>
-						<h:inputText id="firstPassword" value="#{userBean.firstPassword}" required="true" requiredMessage="First password is required" />
+						<h:inputSecret id="firstPassword" value="#{userBean.firstPassword}" required="true" requiredMessage="First password is required" />
 						<h:outputLabel value="New again:"></h:outputLabel>
-						<h:inputText id="secondPassword" value="#{userBean.secondPassword}" required="true" requiredMessage="Second password is required" />
+						<h:inputSecret id="secondPassword" value="#{userBean.secondPassword}" required="true" requiredMessage="Second password is required" />
 						<h:commandButton action="#{userBean.changePassword()}" value="Save"></h:commandButton>
 					</h:panelGrid>
 					<h:messages style="color:red"></h:messages>
@@ -104,22 +104,30 @@
 			<div class="row">
 				<div class="col-xs-8 col-centered" id="providerContainer">
 				<ui:fragment rendered="#{providerBean.displayProviderEntities != null}">
+							
 				<h:form>
-				<h:dataTable value="#{providerBean.displayProviderEntities}" var="displayProvider" id="providerTable"
-    						styleClass="order-table"
-    						rowClasses="order-table-odd-row,order-table-even-row">
-				        <h:column headerClass="resultCol1 order-table-header">
-				            <f:facet name="header">Provider</f:facet>
-				            <h:outputText class="row-output" value="#{displayProvider.provider}" />
-				        </h:column>
-				</h:dataTable>
-				</h:form>
+				<h3 class="order-table-header">I would like to know when my subscribed movies are available on:</h3>
+					<h:selectManyCheckbox id="checkProviders" layout="pageDirection" value="#{providerBean.providers}">
+						
+						<f:selectItem itemValue="All" itemLabel="***ALL PROVIDERS***"/>
+						
+						<f:selectItem itemValue="Amazon" itemLabel="Amazon" />
+						<f:selectItem itemValue="Bravo" itemLabel="Bravo" />
+						<f:selectItem itemValue="Google Play" itemLabel="Google Play" />
+						<f:selectItem itemValue="Hulu" itemLabel="Hulu" />
+						<f:selectItem itemValue="iTunes" itemLabel="iTunes" />
+						<f:selectItem itemValue="Vimeo" itemLabel="Vimeo" />
+						<f:selectItem itemValue="VUDU" itemLabel="VUDU" />						
+						<f:selectItem itemValue="YouTube" itemLabel="YouTube" />						
+
+					</h:selectManyCheckbox>
+					<h:commandButton action="#{providerBean.updateProviders(userBean.displayUserEntity.id)}" value="Update my Selection"></h:commandButton>
+				</h:form>							
 				</ui:fragment>
 			</div>
 		</div>	
 		
-			
-			
+
 			
 	
 		

@@ -15,7 +15,9 @@ import javax.enterprise.context.SessionScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.inject.Named;
+
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 //@Named(value="displayBean")
@@ -36,11 +38,15 @@ public class DisplayMovieBean implements Serializable{
     private DisplayMovieEntity displayMovieEntity;
     private Integer movieId;
     private String message;
+
     private boolean userSubscribesToMovie;
 
+    private Integer subscriptionId;
+    private List<String> matchingProviders;
 
     public void postInit() {
         getMovieData(movieId);
+        matchingProviders = new ArrayList<>();
     }
 
 
@@ -51,11 +57,16 @@ public class DisplayMovieBean implements Serializable{
 			for(DisplaySubscriptionEntity displaySubscriptionEntity : displaySubscriptionEntities) {
 				if(movieId.equals(displaySubscriptionEntity.getSubscribedMovieId())) {
 					userSubscribesToMovie = true;
+					subscriptionId = displaySubscriptionEntity.getId();
+					break;
 				}
 			}
 		}
     }
 
+	public void checkForMatchingSubscriptions(List<String> requestedProviders) {
+		matchingProviders = displayMovieEJB.getMatchingProviders(requestedProviders, displayMovieEntity);
+	}
 
     public void getMovieData(Integer id) {
         //TODO use getMovie
@@ -128,5 +139,25 @@ public class DisplayMovieBean implements Serializable{
 	}
 
 
+	public Integer getSubscriptionId() {
+		return subscriptionId;
+	}
 
+
+	public void setSubscriptionId(Integer subscriptionId) {
+		this.subscriptionId = subscriptionId;
+	}
+
+
+	public List<String> getMatchingProviders() {
+		return matchingProviders;
+	}
+
+
+	public void setMatchingProviders(List<String> matchingProviders) {
+		this.matchingProviders = matchingProviders;
+	}
+
+    
+    
 }

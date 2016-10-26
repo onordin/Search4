@@ -29,8 +29,6 @@ public class ProviderEJB implements LocalProvider{
 				listOfDisplayEntities.add(dbEntityToDisplayEntity(providerEntity));
 			}
 		}
-		System.out.println("user id: " + userId);
-		System.out.println("inside get all Providers in EJB, list size: " + listOfDisplayEntities.size());
 		return listOfDisplayEntities;
 	}
 
