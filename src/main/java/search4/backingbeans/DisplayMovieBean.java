@@ -15,6 +15,7 @@ import javax.enterprise.context.SessionScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.inject.Named;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +38,7 @@ public class DisplayMovieBean implements Serializable{
     private DisplayMovieEntity displayMovieEntity;
     private Integer movieId;
     private String message;
+
     private boolean userSubscribesToMovie;
     private Integer subscriptionId;
     private List<String> matchingProviders;
@@ -87,7 +89,6 @@ public class DisplayMovieBean implements Serializable{
     
 /*
     public String subscribe(Integer userId){
-    	System.out.println("inside subscribe");
     	try {
     		subscriptionEJB.subscribeToMovie(movieId, userId);
     		return "full_profile";

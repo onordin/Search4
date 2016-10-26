@@ -6,7 +6,7 @@
 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
 	xmlns:h="http://xmlns.jcp.org/jsf/html"
 	xmlns:f="http://xmlns.jcp.org/jsf/core"
-	xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
+	xmlns:p="http://xmlns.jcp.org/jsf/passthrough"> 
 
 	<h:head>
 	
@@ -18,9 +18,28 @@
 		<link rel="stylesheet" href="resources/css/bootstrap-theme.min.css" />
 		<link rel="stylesheet" href="resources/css/style.css" />
 
+		
 	</h:head>
 
 	<h:body>
+	<div id="greyModal" style="display:none;" class="modal">
+		<div class ="popupNotLoggedInDiv">
+			<h:form id="modalForm">
+				<h:commandButton  id="registerBtn" class="btn register" action="full_register.xhtml?" value="Register a new account to subscribe" >
+					<f:setPropertyActionListener value="#{view.viewId}" target="#{userBean.viewId}"></f:setPropertyActionListener>
+					<f:setPropertyActionListener value="#{displayBean.movieId}" target="#{userBean.id}"></f:setPropertyActionListener>	
+					<f:event listener="#{displayBean.postInit()}" type="preRenderView"></f:event>
+				</h:commandButton>
+				<h:commandButton id="loginBtn" class="btn register" onclick="loginFunction()" value="Login">
+					<f:ajax execute="@form" render="@none"/>
+				</h:commandButton>
+				<h:commandButton id="cancelBtn" class="btn register" onclick="cancelModal()" value="Cancel">
+					<f:ajax execute="@form" render="@none"/>
+				</h:commandButton>
+			</h:form>
+		</div>
+	</div>
+	
 <!-- Display movie view -->
 <!-- TODO make ifchecks; if displayMovie == null, dont try to display anything but message -->
 <div class="container">
@@ -34,7 +53,7 @@
     <img src="#{displayBean.displayMovieEntity.posterUrl}" alt="image"/>
 	<br />
 	<br />
-	
+
 <!-- Inloggad -->
 	<ui:fragment rendered="#{userBean.userIsLoggedIn != null}">
 	
@@ -64,10 +83,11 @@
 	<ui:fragment rendered="#{userBean.userIsLoggedIn == null}">
 	
 	<!-- - Här kommer josef pop up ruta om man trycker på subscribe -->
-		<h:form>
-			<h:commandButton class="btn subscribe" value="Josef pop up" />
-		</h:form>
+		
+			<button id="popupSubscribe" class="btn subscribe">Subscribe</button>
+			
 	</ui:fragment>
+
 
 <!-- only render if there are providers inside -->       
 <ui:fragment rendered="#{displayBean.displayMovieEntity.hasWeb}">
@@ -209,6 +229,62 @@
 	</div>
 </div>
 
+<script >
+		
+		var modal = document.getElementById('greyModal');
+
+		var btnSubscribe = document.getElementById("popupSubscribe");
+		
+		var btnRegister = document.getElementById("popupRegister");
+		
+		var btnLogin = document.getElementById("popupLogin");
+
+		var span = document.getElementsByClassName('close')[0];
+		
+		var form = document.getElementById("modalForm");
+		
+		var email = document.getElementById("j_idt13:inputEmail");
+		
+		btnSubscribe.onclick = function() {
+		    modal.style.display = "block";
+		}
+		
+		btnRegister.onclick = function() {
+			modal.style.display = "none";
+		}
+		
+		btnLogin.onclick = function() {
+			modal.style.display = "none";
+			email.focus();
+			email.select();
+			email.style.borderColor = "red";
+		}
+
+		span.onclick = function() {
+			modal.style.display = "none";
+			form.hide();
+		}
+		
+		window.onclick = function(event) {
+		    if (event.target == modal) {
+		    	modal.style.display = "none";
+		    	form.hide();
+		    }
+		}
+		
+		function cancelModal(){
+			modal.style.display = "none";
+		}
+		
+		function loginFunction(){
+			modal.style.display = "none";
+			email.focus();
+			email.select();
+			email.style.borderColor = "red";
+		}
+		
+		
+		</script>
 
 </h:body>
 

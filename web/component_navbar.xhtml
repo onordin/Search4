@@ -58,7 +58,11 @@
 		              		required="true" />
 		            </div>
 		            <div class="form-group">
-		            	<h:commandButton type="submit" action="#{userBean.loginUser()}" class="btn" value="Sign in" />
+		            	<h:commandButton type="submit" action="#{userBean.loginUser()}" class="btn" value="Sign in">
+		            		<f:setPropertyActionListener value="#{view.viewId}" target="#{userBean.viewId}"></f:setPropertyActionListener>
+							<f:setPropertyActionListener value="#{displayBean.movieId}" target="#{userBean.id}"></f:setPropertyActionListener>	
+							<f:event listener="#{displayBean.postInit()}" type="preRenderView"></f:event>
+		            	</h:commandButton>
 		            </div>
 		            <div class="form-group">
 			            <table class="navbar-right">
