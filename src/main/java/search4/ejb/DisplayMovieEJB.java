@@ -119,7 +119,7 @@ public class DisplayMovieEJB implements LocalDisplayMovie{
         for(JsonObject jsonObject : objectList) {
             providerLink = new ServiceProviderLink();
             providerLink.setName(jsonObject.getString("display_name"));
-            tempProviders.add(jsonObject.getString("display_name"));//sparar i listan för att spara alla providers
+            tempProviders.add(jsonObject.getString("display_name"));//sparar i listan fï¿½r att spara alla providers
             providerLink.setUrl(jsonObject.getString("link"));
             serviceProviderLinks.add(providerLink);
         }
@@ -165,5 +165,7 @@ public class DisplayMovieEJB implements LocalDisplayMovie{
     	}
     	return resultList;
     }
+
+
     
 }
