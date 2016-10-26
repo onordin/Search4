@@ -1,6 +1,7 @@
 package search4.ejb;
 
 
+import search4.ejb.interfaces.LocalEmail;
 import search4.entities.DisplayMovieEntity;
 import search4.entities.DisplayUserEntity;
 import search4.entities.MovieEntity;
@@ -21,9 +22,9 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
+//@LocalBean
 @Stateless
-@LocalBean
-public class EmailEJB implements Serializable{
+public class EmailEJB implements LocalEmail, Serializable{
 
     @EJB
     private DisplayMovieEJB displayMovieEJB;

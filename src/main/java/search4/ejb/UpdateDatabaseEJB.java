@@ -2,6 +2,7 @@ package search4.ejb;
 
 import search4.daobeans.DisplayMovieDAOBean;
 import search4.daobeans.UpdateDatabaseDAOBean;
+import search4.ejb.interfaces.LocalEmail;
 import search4.ejb.interfaces.LocalUpdateDatabase;
 import search4.ejb.interfaces.LocalUser;
 import search4.entities.DisplayUserEntity;
@@ -28,7 +29,7 @@ public class UpdateDatabaseEJB implements LocalUpdateDatabase, Serializable{
     @EJB
     private LocalUser userEJB;
     @EJB
-    private EmailEJB emailEJB;
+    private LocalEmail emailEJB;
 
     public void getMovieChanges() throws Exception {
         URLBuilder urlBuilder = new URLBuilder();
@@ -56,7 +57,7 @@ public class UpdateDatabaseEJB implements LocalUpdateDatabase, Serializable{
             List<DisplayUserEntity> displayUsers = userEJB.getDisplayUsersSubscribedTo(movie.getId());
             for (DisplayUserEntity userEntity : displayUsers) {
                 System.out.println("Send mail to "+userEntity.getEmail()+" that "+movie.getTitle()+" is available");
-//                emailEJB.sendNotificationMail(userEntity, movie);
+                emailEJB.sendNotificationMail(userEntity, movie);
             }
         }
         setLastChanges(getCurrentDate());
