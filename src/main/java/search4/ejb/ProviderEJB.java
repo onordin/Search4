@@ -23,14 +23,11 @@ public class ProviderEJB implements LocalProvider{
 		
 		List<ProviderEntity> listOfEntities = providerDOABean.getAllFor(userId);
 		List<DisplayProviderEntity> listOfDisplayEntities = new ArrayList<>();
-		System.out.println("list form DAOBean : " + listOfEntities);
-		if(listOfEntities != null && !listOfEntities.isEmpty()) {
+	if(listOfEntities != null && !listOfEntities.isEmpty()) {
 			for(ProviderEntity providerEntity : listOfEntities) {
 				listOfDisplayEntities.add(dbEntityToDisplayEntity(providerEntity));
 			}
 		}
-		System.out.println("user id: " + userId);
-		System.out.println("inside get all Providers in EJB, list size: " + listOfDisplayEntities.size());
 		return listOfDisplayEntities;
 	}
 
