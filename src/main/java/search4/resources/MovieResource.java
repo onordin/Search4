@@ -8,6 +8,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 import search4.ejb.DisplayMovieEJB;
 import search4.ejb.interfaces.LocalDisplayMovie;
@@ -26,11 +27,17 @@ public class MovieResource {
 	@GET
 	@Path("/{movieId}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public DisplayMovieEntity getMovieById(@PathParam("movieId") Integer movieId) throws Exception {
-		return displayMovieEJB.getDisplayMovie(movieId);
+	public Response getMovieById(@PathParam("movieId") Integer movieId) {
+		try {
+			DisplayMovieEntity displayMovieEntity = displayMovieEJB.getDisplayMovie(movieId);
+			return Response.status(Response.Status.OK).entity(displayMovieEntity).build();
+		} catch (Exception e) {
+			return Response.status(Response.Status.NOT_FOUND).build();
+		}
 	}
 	
 	@GET
+	@Path("/getallmovies")
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<MovieEntity> getAllMovies() throws Exception {
 		List<MovieEntity> allMovies = searchEJB.searchOrderByTitleAsc("", 0);
