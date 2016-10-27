@@ -46,6 +46,10 @@ public class ProviderDOABean {
                 .getResultList();
 	}
 	
-	
+	public ProviderEntity getProvider(Integer providerId) {
+		return (ProviderEntity)entityManager.createNamedQuery("ProviderEntity.getOne")
+				.setParameter("id", providerId)
+				.getSingleResult();
+	}
 	
 }

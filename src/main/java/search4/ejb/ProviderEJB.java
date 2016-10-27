@@ -85,7 +85,7 @@ public class ProviderEJB implements LocalProvider{
 
 
 
-	private void addProvider(String provider, Integer userId) {
+	public void addProvider(String provider, Integer userId) {
 		ProviderEntity providerEntity = new ProviderEntity();
 		providerEntity.setUserId(userId);
 		providerEntity.setProvider(provider);
@@ -94,9 +94,12 @@ public class ProviderEJB implements LocalProvider{
 	
 
 	
-	private void removeProvider(Integer id) {
+	public void removeProvider(Integer id) {
 		providerDOABean.removeProvider(id);
 	}
 	
+	public DisplayProviderEntity getProviderById(Integer providerId){
+		return dbEntityToDisplayEntity(providerDOABean.getProvider(providerId));
+	}
 
 }
