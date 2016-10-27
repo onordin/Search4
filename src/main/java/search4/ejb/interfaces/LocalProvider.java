@@ -11,8 +11,8 @@ public interface LocalProvider {
 	
 	public void updateForUser(Integer id, List<String> providers);
 	public List<DisplayProviderEntity> getAllForUser(Integer id);
-	public void addProvider(String provider, Integer userId);
-	public void removeProvider(Integer id);
+	public boolean addProvider(String provider, Integer userId);
+	public boolean removeProvider(Integer id);
 	public DisplayProviderEntity getProviderById(Integer providerId);
 	public List<DisplayProviderEntity> getAllProviders(String search);
 }
