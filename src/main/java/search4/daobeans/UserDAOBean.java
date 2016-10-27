@@ -27,6 +27,13 @@ public class UserDAOBean implements Serializable{
 			return false;
 		}
 	}
+	
+	
+	public List<UserEntity> getAll() {
+		return entityManager.createNamedQuery("UserEntity.getAll")
+                .getResultList();
+	}
+
 
 	public boolean userExist(String email) {
 		try {

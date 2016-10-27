@@ -11,6 +11,7 @@ import search4.ejb.passwordencryption.PBKDF2;
 import search4.entities.DisplayUserEntity;
 import search4.entities.SubscriptionEntity;
 import search4.entities.UserEntity;
+import search4.exceptions.DataNotFoundException;
 import search4.exceptions.DuplicateDataException;
 import search4.exceptions.InvalidInputException;
 import search4.validators.EmailValidator;
@@ -66,6 +67,7 @@ public class UserEJB implements LocalUser, Serializable {
 		return userDAOBean.userExist(email);
 	}
 
+	
 	
 	public DisplayUserEntity getUser(String email, String password) {
 		if(userDAOBean.userExist(email)) {
@@ -128,7 +130,27 @@ public class UserEJB implements LocalUser, Serializable {
 		return null;
 	}
 	
+	
+	public DisplayUserEntity getUserByID(Integer id) throws DataNotFoundException{
+		UserEntity userEntity = userDAOBean.getUser(id);
+		DisplayUserEntity displayUserEntity = getDisplayUserFromDBEntity(userEntity);
+		return displayUserEntity;
+	}
+	
+	
+	public List<DisplayUserEntity> getAllUsers() {
+		List<DisplayUserEntity> result = new ArrayList<>();
+		List<UserEntity> userEntities = userDAOBean.getAll();
+		for(UserEntity userEntity : userEntities) {
+			DisplayUserEntity displayUserEntity = getDisplayUserFromDBEntity(userEntity);
+			displayUserEntity.setPassword("");
+			result.add(displayUserEntity);
+		}
+		return result;
+	}
 
+
+	
 	public void changePassword(DisplayUserEntity activeUser)  throws DuplicateDataException, InternalServerErrorException {
 		try {
 			String hashedPassword = PBKDF2.generatePasswordHash(activeUser.getPassword(), 666);
@@ -171,6 +193,8 @@ public class UserEJB implements LocalUser, Serializable {
 		}
 		
 	}
+
+
 
 	
 }

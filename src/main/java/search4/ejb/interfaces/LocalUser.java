@@ -4,6 +4,7 @@ import javax.ejb.Local;
 
 import search4.entities.DisplayUserEntity;
 import search4.entities.UserEntity;
+import search4.exceptions.DataNotFoundException;
 
 import java.util.List;
 
@@ -15,6 +16,8 @@ public interface LocalUser {
 	DisplayUserEntity getUser(String email, String password);
 
 	DisplayUserEntity getUserWithEmail(String email);
+	
+	DisplayUserEntity getUserByID(Integer id) throws DataNotFoundException;
 
 	void changePassword(DisplayUserEntity activeUser);
 
@@ -22,5 +25,6 @@ public interface LocalUser {
 
 	List<DisplayUserEntity> getDisplayUsersSubscribedTo(Integer movieId);
 
+	List<DisplayUserEntity> getAllUsers();
 
 }
