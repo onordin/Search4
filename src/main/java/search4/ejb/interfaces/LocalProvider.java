@@ -14,4 +14,5 @@ public interface LocalProvider {
 	public void addProvider(String provider, Integer userId);
 	public void removeProvider(Integer id);
 	public DisplayProviderEntity getProviderById(Integer providerId);
+	public List<DisplayProviderEntity> getAllProviders(String search);
 }

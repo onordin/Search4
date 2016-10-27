@@ -101,5 +101,15 @@ public class ProviderEJB implements LocalProvider{
 	public DisplayProviderEntity getProviderById(Integer providerId){
 		return dbEntityToDisplayEntity(providerDOABean.getProvider(providerId));
 	}
-
+	
+	public List<DisplayProviderEntity> getAllProviders(String search){
+		List<ProviderEntity> providerEntities = providerDOABean.getAll(search);
+		List<DisplayProviderEntity> displayProviderEntities = new ArrayList<DisplayProviderEntity>();
+		if (providerEntities != null && !providerEntities.isEmpty()) {
+			for (ProviderEntity providerEntity : providerEntities) {
+				displayProviderEntities.add(dbEntityToDisplayEntity(providerEntity));
+			}
+		}
+		return displayProviderEntities;
+	}
 }

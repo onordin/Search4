@@ -52,4 +52,11 @@ public class ProviderDOABean {
 				.getSingleResult();
 	}
 	
+	public List<ProviderEntity> getAll(String input){
+		return entityManager.createNamedQuery("ProviderEntity.search")
+				.setParameter("input", input+"%")
+				.setParameter("inputWithSpace","% "+input+"%")
+				.getResultList();
+	}
+	
 }

@@ -24,12 +24,6 @@ import search4.entities.ProviderEntity;
 @Stateless
 @Path("/providers")
 public class ProviderResource {
-
-	/*get by userid
-	get by providerID
-	getAll providers
-	add provider
-	delete provider*/
 	
 	@EJB
 	private LocalProvider providerEJB;
@@ -42,7 +36,7 @@ public class ProviderResource {
 	}
 	
 	@GET
-	@Path("/providerId/{providerId}")
+	@Path("/providerid/{providerId}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getProviderByProviderId(@PathParam("providerId") Integer providerId){
 		DisplayProviderEntity displayProviderEntity = providerEJB.getProviderById(providerId);
@@ -51,22 +45,25 @@ public class ProviderResource {
 				.build();
 	}
 	
-	public Response getAllProviders(){
-		return null;
+	@GET
+	@Path("/getallproviders")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<DisplayProviderEntity> getAllProviders(){
+		return providerEJB.getAllProviders("");
 	}
 	
 	@POST
 	@Path("/addprovider/{userId}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response addProvider(String provider,@PathParam("userId") Integer userId){
-		providerEJB.addProvider(provider, userId);
+	public Response addProvider(String provider,@PathParam("userId")Integer userId){
+		ProviderEntity providerEntity = new ProviderEntity();
+		providerEntity.setProvider(provider);
+		providerEntity.setUserId(userId);
+		providerEJB.addProvider(providerEntity.getProvider(),providerEntity.getUserId());
 		return Response.status(OK)
+				.entity(providerEntity)
 				.build();
-	}
-	
-	public Response updateProvider(){
-		return null;
 	}
 	
 	@DELETE

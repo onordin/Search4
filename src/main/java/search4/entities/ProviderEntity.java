@@ -13,7 +13,7 @@ import javax.persistence.*;
 @NamedQueries({
 	@NamedQuery(name="ProviderEntity.getAllFor", query="SELECT p FROM ProviderEntity p where p.userId = :userId"),
 	@NamedQuery(name="ProviderEntity.getOne", query="SELECT p FROM ProviderEntity p WHERE p.id = :id"),
-	//@NamedQuery(name="ProviderEntity.getAll", query="SELECT p FROM ProviderEntity p WHERE p")
+	@NamedQuery(name="ProviderEntity.search", query="SELECT p FROM ProviderEntity p WHERE p.provider LIKE :input OR p.provider LIKE :inputWithSpace")
 })
 public class ProviderEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
