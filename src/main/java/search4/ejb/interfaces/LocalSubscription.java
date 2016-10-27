@@ -5,15 +5,18 @@ import javax.ejb.Local;
 
 import search4.entities.DisplayMovieEntity;
 import search4.entities.DisplaySubscriptionEntity;
+import search4.entities.SubscriptionEntity;
 
 @Local
 public interface LocalSubscription {
 
-	public void subscribeToMovie(Integer movieId, Integer userId);
-	
-	public List<DisplaySubscriptionEntity> getAllFor(Integer userId);
+	List<SubscriptionEntity> getAll();
 
-	public boolean removeSubscription(Integer id);
+	void subscribeToMovie(Integer movieId, Integer userId);
+	
+	List<DisplaySubscriptionEntity> getAllFor(Integer userId) throws Exception;
+
+	boolean removeSubscription(Integer id);
 
 	
 }

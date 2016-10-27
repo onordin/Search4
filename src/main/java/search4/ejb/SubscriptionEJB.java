@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.ws.rs.BadRequestException;
 
 import search4.daobeans.DisplayMovieDAOBean;
 import search4.daobeans.SubscriptionDAOBean;
@@ -23,12 +24,14 @@ public class SubscriptionEJB implements LocalSubscription{
 
 	@EJB
 	private SubscriptionDAOBean subscriptionDAOBean;
-
 	@EJB
 	private DisplayMovieDAOBean displayMovieDAOBean;
 
-	
-	public List<DisplaySubscriptionEntity> getAllFor(Integer userId) {
+    public List<SubscriptionEntity> getAll() {
+        return subscriptionDAOBean.getAll();
+    }
+
+	public List<DisplaySubscriptionEntity> getAllFor(Integer userId) throws Exception { //TODO right place to do this?
 		List<SubscriptionEntity> list = subscriptionDAOBean.getAllFor(userId);
 		List<DisplaySubscriptionEntity> displayEntities = new ArrayList<DisplaySubscriptionEntity>();
 		for (SubscriptionEntity se : list) {
@@ -36,8 +39,6 @@ public class SubscriptionEJB implements LocalSubscription{
 		}
 		return displayEntities;
 	}
-
-
 
 	private DisplaySubscriptionEntity dbEntityToDisplayEntity(SubscriptionEntity se) {
 		DisplaySubscriptionEntity displayEntity = new DisplaySubscriptionEntity();
@@ -52,23 +53,17 @@ public class SubscriptionEJB implements LocalSubscription{
 		return displayEntity;
 	}
 
-
-	public void subscribeToMovie(Integer movieId, Integer userId) {
+	public void subscribeToMovie(Integer movieId, Integer userId) throws BadRequestException{
 		SubscriptionEntity subscriptionEntity = new SubscriptionEntity();
 		subscriptionEntity.setMovieId(movieId);
 		subscriptionEntity.setUserId(userId);
-		subscriptionDAOBean.subscribeToMovie(subscriptionEntity);
+		if (!subscriptionDAOBean.subscribeToMovie(subscriptionEntity)) {
+            throw new BadRequestException("Bad bad bad"); //TODO make better
+        }
 	}
-
-
-
 
 	public boolean removeSubscription(Integer id) {
 		return subscriptionDAOBean.removeSubscription(id);
 	}
-
-
-
-
 
 }

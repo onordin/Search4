@@ -11,6 +11,7 @@ import javax.persistence.*;
 @Entity
 @Table(name="subscriptions")
 @NamedQueries({
+		@NamedQuery(name = "SubscriptionEntity.findAll", query = "SELECT s FROM SubscriptionEntity s"),
 		@NamedQuery(name = "SubscriptionEntity.findAllFor", query = "SELECT s FROM SubscriptionEntity s WHERE s.userId = :userId"),
 		@NamedQuery(name="SubscriptionEntity.removeSubscription", query="DELETE FROM SubscriptionEntity s WHERE s.id = :id"),
 		@NamedQuery(name="SubscriptionEntity.getOneSubscription", query="SELECT s FROM SubscriptionEntity s WHERE s.id = :id"),

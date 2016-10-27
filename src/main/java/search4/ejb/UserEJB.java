@@ -60,13 +60,11 @@ public class UserEJB implements LocalUser, Serializable {
 			}
 		}
 	}
-	
 
 	private boolean emailInDb(String email) {
 		return userDAOBean.userExist(email);
 	}
 
-	
 	public DisplayUserEntity getUser(String email, String password) {
 		if(userDAOBean.userExist(email)) {
 			UserEntity userEntity = userDAOBean.getUser(email);
@@ -85,7 +83,6 @@ public class UserEJB implements LocalUser, Serializable {
 		} else {
 			return null;
 		}
-		
 	}
 
 	private DisplayUserEntity getDisplayUserFromDBEntity(UserEntity userEntity) {
