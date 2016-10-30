@@ -5,10 +5,10 @@ import javax.jws.WebService;
 import search4.ejb.interfaces.LocalProvider;
 import search4.entities.DisplayProviderEntity;
 import search4.entities.ProviderEntity;
+
 @WebService(serviceName="providerSoap")
 public class ProviderSoap {
-	
-	
+		
 	@EJB
 	private LocalProvider providerEJB;
 	
@@ -27,17 +27,17 @@ public class ProviderSoap {
 	
 	public String addProvider(String provider, Integer userId) {
 		if (providerEJB.addProvider(provider, userId)) {
-			return "Provider added.";
+			return "Provider added";
 		}else {
-			return "Failed to add provider.";
+			return "failed to add provider";
 		}
 	}
 	
 	public String removeProvider(Integer id) {
 		if (providerEJB.removeProvider(id) == true) {
-			return "Provider removed.";
+			return "Provider removed";
 		}
-		return "Failed to remove provider.";
+		return "failed to remove provider";
 	}
 	
 }
