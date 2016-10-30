@@ -22,8 +22,9 @@ public class ProviderEJB implements LocalProvider{
 	public List<DisplayProviderEntity> getAllForUser(Integer userId) {
 		
 		List<ProviderEntity> listOfEntities = providerDOABean.getAllFor(userId);
-		List<DisplayProviderEntity> listOfDisplayEntities = new ArrayList<>();
-	if(listOfEntities != null && !listOfEntities.isEmpty()) {
+		List<DisplayProviderEntity> listOfDisplayEntities = new ArrayList<DisplayProviderEntity>();
+		System.out.println("list form DAOBean : " + listOfEntities);
+		if(listOfEntities != null && !listOfEntities.isEmpty()) {
 			for(ProviderEntity providerEntity : listOfEntities) {
 				listOfDisplayEntities.add(dbEntityToDisplayEntity(providerEntity));
 			}
@@ -84,18 +85,39 @@ public class ProviderEJB implements LocalProvider{
 
 
 
-	private void addProvider(String provider, Integer userId) {
+	public boolean addProvider(String provider, Integer userId) {
 		ProviderEntity providerEntity = new ProviderEntity();
 		providerEntity.setUserId(userId);
 		providerEntity.setProvider(provider);
-		providerDOABean.addProvider(providerEntity);
+		if (providerDOABean.addProvider(providerEntity) == true) {
+			return true;
+		}else {
+			return false;
+		}
 	}
 	
-
 	
-	private void removeProvider(Integer id) {
-		providerDOABean.removeProvider(id);
+	public boolean removeProvider(Integer id) {
+		if (providerDOABean.removeProvider(id) == true) {
+			return true;
+		}else {
+			return false;
+		}
+		
 	}
 	
-
+	public DisplayProviderEntity getProviderById(Integer providerId){
+		return dbEntityToDisplayEntity(providerDOABean.getProvider(providerId));
+	}
+	
+	public List<DisplayProviderEntity> getAllProviders(String search){
+		List<ProviderEntity> providerEntities = providerDOABean.getAll(search);
+		List<DisplayProviderEntity> displayProviderEntities = new ArrayList<DisplayProviderEntity>();
+		if (providerEntities != null && !providerEntities.isEmpty()) {
+			for (ProviderEntity providerEntity : providerEntities) {
+				displayProviderEntities.add(dbEntityToDisplayEntity(providerEntity));
+			}
+		}
+		return displayProviderEntities;
+	}
 }

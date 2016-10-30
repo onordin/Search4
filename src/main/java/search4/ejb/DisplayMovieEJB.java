@@ -17,14 +17,15 @@ import javax.ejb.EJBTransactionRolledbackException;
 import javax.ejb.Stateless;
 import javax.json.JsonObject;
 import javax.ws.rs.BadRequestException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 @Stateless
-public class DisplayMovieEJB implements LocalDisplayMovie{
+public class DisplayMovieEJB implements LocalDisplayMovie, Serializable{
 
 	private List<String> tempProviders;
-	
+
     @EJB
     private DisplayMovieDAOBean displayMovieDAOBean;
 
@@ -42,10 +43,15 @@ public class DisplayMovieEJB implements LocalDisplayMovie{
     
     //NEW METHOD: better to send the id to EJB and retrieve MovieEntity here. No point in bringing it to backing bean.
     public DisplayMovieEntity getDisplayMovie(Integer id) throws Exception{
-        DisplayMovieEntity displayMovieEntity = new DisplayMovieEntity();
         MovieEntity movieEntity = getMovieData(id);
         setGuideboxId(movieEntity); //Check if guidbox id is set. If not, set it.
-        tempProviders = new ArrayList<>();
+        tempProviders = new ArrayList<String>();
+        return createDisplayMovie(movieEntity);
+    }
+
+    //TODO buisness logic or belongs in a helper/factory class?
+    public DisplayMovieEntity createDisplayMovie(MovieEntity movieEntity) {
+        DisplayMovieEntity displayMovieEntity = new DisplayMovieEntity();
         setStreamingServices(displayMovieEntity, movieEntity.getGuideboxId()); //Retrieve streaming services from guidebox
         displayMovieEntity.setCurrentProviders(tempProviders);
         setTmdbInfo(displayMovieEntity, movieEntity.getTmdbId()); //Retrieve movie information (description, poster etc) from TMDB
@@ -144,12 +150,12 @@ public class DisplayMovieEJB implements LocalDisplayMovie{
             throw new DataNotFoundException("Invalid TMdB Id ("+tmdbId+")");
         }
     }
-    
-    
+
+
     public List<String> getMatchingProviders(List<String> requestedProviders, DisplayMovieEntity displayMovieEntity) {
-    	
-    	List<String> resultList = new ArrayList<>();
-    	
+
+    	List<String> resultList = new ArrayList<String>();
+
     	if(requestedProviders.contains("All")) {
     		resultList = displayMovieEntity.getCurrentProviders();
     	}else {
@@ -167,5 +173,4 @@ public class DisplayMovieEJB implements LocalDisplayMovie{
     }
 
 
-    
 }

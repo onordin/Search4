@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://xmlns.jcp.org/jsf/html ">
+
+<h:head>
+    <title>Admin Panel</title>
+</h:head>
+<h:body>
+    <h2 style="color: red;">#{updateDatabaseBean.message}</h2>
+    <h1>Update local database from TMDB</h1>
+    <h:form id="update">
+        <h:commandButton action="#{updateDatabaseBean.updateDatabase(1)}" value="Update 40 from current"></h:commandButton><br></br>
+        <h:commandButton action="#{updateDatabaseBean.updateDatabase(10)}" value="Update 400 from current"></h:commandButton><br></br>
+        <h:commandButton action="#{updateDatabaseBean.updateDatabase(100)}" value="Update 4000 from current"></h:commandButton><br></br>
+        <h:commandButton action="#{updateDatabaseBean.updateDatabase(0)}" value="Update All"></h:commandButton>
+    </h:form>
+    <h1>Synchronize Subscriptions With Database</h1>
+    <h:form id="sync">
+        <h:commandButton action="#{updateDatabaseBean.synchronizeSubscriptions()}" value="Synchronize Subscriptions"></h:commandButton><br></br>
+    </h:form>
+</h:body>
+</html>

@@ -46,6 +46,17 @@ public class ProviderDOABean {
                 .getResultList();
 	}
 	
+	public ProviderEntity getProvider(Integer providerId) {
+		return (ProviderEntity)entityManager.createNamedQuery("ProviderEntity.getOne")
+				.setParameter("id", providerId)
+				.getSingleResult();
+	}
 	
+	public List<ProviderEntity> getAll(String input){
+		return entityManager.createNamedQuery("ProviderEntity.search")
+				.setParameter("input", input+"%")
+				.setParameter("inputWithSpace","% "+input+"%")
+				.getResultList();
+	}
 	
 }

@@ -4,24 +4,31 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ws.rs.InternalServerErrorException;
 
+import search4.daobeans.SubscriptionDAOBean;
 import search4.daobeans.UserDAOBean;
 import search4.ejb.interfaces.LocalUser;
-import search4.ejb.passwordencrytion.PBKDF2;
+import search4.ejb.passwordencryption.PBKDF2;
 import search4.entities.DisplayUserEntity;
+import search4.entities.SubscriptionEntity;
 import search4.entities.UserEntity;
 import search4.exceptions.DuplicateDataException;
 import search4.exceptions.InvalidInputException;
 import search4.validators.EmailValidator;
 
+import java.io.Serializable;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.spec.InvalidKeySpecException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Stateless
-public class UserEJB implements LocalUser {
+public class UserEJB implements LocalUser, Serializable {
 
 	@EJB
 	private UserDAOBean userDAOBean;
+    @EJB
+    private SubscriptionDAOBean subscriptionDAOBean;
 	
 	public void createUser(UserEntity userEntity) throws DuplicateDataException, InternalServerErrorException{
 		//Validation
@@ -35,7 +42,7 @@ public class UserEJB implements LocalUser {
 		if (userEntity.getPassword().length() < 4) {
 			throw new InvalidInputException("Password must be 4 or more characters.");
 		}
- 		userEntity.setEmail(userEntity.getEmail().toLowerCase()); //Keep all email addresses in lowercase always //TODO right place to do this? ask teacher
+ 		userEntity.setEmail(userEntity.getEmail().toLowerCase()); //Keep all email addresses in lowercase always
 		if (emailInDb(userEntity.getEmail())) {
 			throw new DuplicateDataException("The email address already exists in the system");
 		}
@@ -91,7 +98,27 @@ public class UserEJB implements LocalUser {
 		return displayUser;
 	}
 
-	
+	public List<DisplayUserEntity> getDisplayUsersSubscribedTo(Integer movieId) {
+        List<UserEntity> userEntities = getUsersSubscribedTo(movieId);
+        List<DisplayUserEntity> displayUserEntities = new ArrayList<DisplayUserEntity>();
+        DisplayUserEntity current;
+        for (UserEntity userEntity : userEntities) {
+            current = getDisplayUserFromDBEntity(userEntity);
+            current.setPassword("HIDDEN");
+            displayUserEntities.add(current);
+        }
+        return displayUserEntities;
+	}
+
+	private List<UserEntity> getUsersSubscribedTo(Integer movieId) {
+        List<SubscriptionEntity> subscriptionEntities = subscriptionDAOBean.getUsersSubscribedTo(movieId);
+        List<UserEntity> userEntities = new ArrayList<UserEntity>();
+        for (SubscriptionEntity subscriptionEntity : subscriptionEntities) {
+            userEntities.add(userDAOBean.getUser(subscriptionEntity.getId()));
+        }
+        return userEntities;
+    }
+
 	public DisplayUserEntity getUserWithEmail(String email) {
 		if(emailInDb(email)) {
 			UserEntity userEntity = userDAOBean.getUser(email);

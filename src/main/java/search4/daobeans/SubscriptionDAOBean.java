@@ -1,14 +1,16 @@
 package search4.daobeans;
 
 import search4.entities.SubscriptionEntity;
+import search4.entities.UserEntity;
 
 import javax.ejb.Stateful;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.io.Serializable;
 import java.util.List;
 
 @Stateful
-public class SubscriptionDAOBean {
+public class SubscriptionDAOBean implements Serializable{
 
 	
 	@PersistenceContext
@@ -19,6 +21,12 @@ public class SubscriptionDAOBean {
 		return entityManager.createNamedQuery("SubscriptionEntity.findAllFor")
                 .setParameter("userId", userId)
                 .getResultList();
+	}
+
+	public List<SubscriptionEntity> getUsersSubscribedTo(Integer movieId) {
+		return entityManager.createNamedQuery("SubscriptionEntity.findAllSubscribedTo")
+				.setParameter("movieId", movieId)
+				.getResultList();
 	}
 
 
@@ -32,9 +40,9 @@ public class SubscriptionDAOBean {
 	}
 
 
-	
+
 	public boolean removeSubscription(Integer id) {
-		
+
 		try{
 			SubscriptionEntity entity = (SubscriptionEntity) entityManager.createNamedQuery("SubscriptionEntity.getOneSubscription")
 			.setParameter("id", id)
@@ -44,11 +52,11 @@ public class SubscriptionDAOBean {
 			return true;
 		}catch(Exception ex) {
 			ex.printStackTrace();
-			return false;			
+			return false;
 		}
-	
+
 	}
-	
-	
-	
+
+
+
 }

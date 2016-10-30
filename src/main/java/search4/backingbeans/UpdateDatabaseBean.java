@@ -19,16 +19,37 @@ public class UpdateDatabaseBean implements Serializable{
 	@EJB
     private LocalUpdateDatabase updateDatabaseEJB;
 
-    public String updateDatabase() {
+    private String message;
+
+    public String updateDatabase(Integer limit) {
         try {
-            updateDatabaseEJB.updateDatabase();
+            updateDatabaseEJB.updateDatabase(limit);
+            message = "Database updated";
         } catch (DataNotFoundException dnfe) {
+            message = "Something went wrong!";
             System.err.println(""+dnfe);
         } catch (DuplicateDataException dde) {
+            message = "Something went wrong!";
             System.err.println(""+dde);
         } catch (Exception e) {
+            message = "Something went wrong!";
             System.err.println(""+e);
         }
-        return "updated";
+        return "admin_panel";
+    }
+
+    public String synchronizeSubscriptions() {
+        try {
+            updateDatabaseEJB.getMovieChanges();
+            message = "Subscriptions Synchronized";
+        } catch (Exception e) {
+            message = "Something went wrong!";
+            System.err.println(""+e);
+        }
+        return "admin_panel";
+    }
+
+    public String getMessage() {
+        return message;
     }
 }

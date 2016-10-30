@@ -5,6 +5,8 @@ import javax.ejb.Local;
 import search4.entities.DisplayUserEntity;
 import search4.entities.UserEntity;
 
+import java.util.List;
+
 @Local
 public interface LocalUser {
 
@@ -17,4 +19,8 @@ public interface LocalUser {
 	void changePassword(DisplayUserEntity activeUser);
 
 	boolean deleteUser(int id);
+
+	List<DisplayUserEntity> getDisplayUsersSubscribedTo(Integer movieId);
+
+
 }

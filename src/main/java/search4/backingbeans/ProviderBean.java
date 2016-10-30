@@ -26,7 +26,7 @@ public class ProviderBean implements Serializable{
 	
 
 	public void postInit(Integer userId) {
-		providers = new ArrayList<>();
+		providers = new ArrayList<String>();
 		updateProvidersFromDatabase(userId);
 	}	
 	

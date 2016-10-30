@@ -37,7 +37,6 @@ public class SearchBean implements Serializable {
 		sortHow = "ascending";
 	}
 
-    //TODO choose order by from frontend?
     public String search(Integer setLimit) {
     	limit = setLimit;
     	movieEntities = searchEJB.searchOrderByTitleAsc(query, limit);
