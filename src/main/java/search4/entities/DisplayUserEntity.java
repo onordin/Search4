@@ -1,12 +1,18 @@
 package search4.entities;
 
-public class DisplayUserEntity {
+import java.util.List;
+
+import search4.helpers.Link;
+
+
+public class DisplayUserEntity{
 
     private int id;
     private String email;
     private String firstName;
     private String lastName;
     private String password;
+    private List<Link> links; 
 
     public int getId() {
         return id;
@@ -47,4 +53,14 @@ public class DisplayUserEntity {
     public void setPassword(String password) {
         this.password = password;
     }
+
+	public List<Link> getLinks() {
+		return links;
+	}
+
+	public void setLinks(List<Link> links) {
+		this.links = links;
+	}
+
+
 }
