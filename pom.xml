@@ -64,20 +64,20 @@
 	    	<scope>provided</scope>
 		</dependency>
 
-
-<!-- For Jersey --> 
-<dependency>
-        <groupId>org.glassfish.jersey.containers</groupId>
-        <artifactId>jersey-container-servlet-core</artifactId>
-        <version>2.15</version>
-</dependency>
-
-<!-- For JSON --> 
-<dependency>
-        <groupId>org.glassfish.jersey.media</groupId>
-        <artifactId>jersey-media-json-jackson</artifactId>
-        <version>2.15</version>    
-</dependency>	
+ 
+<!--
+		<dependency>
+		        <groupId>org.glassfish.jersey.containers</groupId>
+		        <artifactId>jersey-container-servlet-core</artifactId>
+		        <version>2.15</version>
+		</dependency>
+		
+		
+		<dependency>
+		        <groupId>org.glassfish.jersey.media</groupId>
+		        <artifactId>jersey-media-json-jackson</artifactId>
+		        <version>2.15</version>    
+		</dependency>	
 
 		<dependency>
             <groupId>org.glassfish.jersey.containers</groupId>
@@ -85,8 +85,6 @@
             <version>2.6</version>
             <scope>provided</scope>
         </dependency>
-        <!-- if you are using Jersey client specific features -->
- 
  
         <dependency>
             <groupId>org.glassfish.jersey.core</groupId>
@@ -96,11 +94,12 @@
         </dependency>
  
  
- <dependency>
-    <groupId>org.glassfish.jersey.media</groupId>
-    <artifactId>jersey-media-moxy</artifactId>
-     <version>2.24</version>
-</dependency>
+		 <dependency>
+		    <groupId>org.glassfish.jersey.media</groupId>
+		    <artifactId>jersey-media-moxy</artifactId>
+		     <version>2.24</version>
+		</dependency>
+-->
 
     </dependencies>
 

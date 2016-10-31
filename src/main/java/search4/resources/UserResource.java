@@ -2,7 +2,9 @@ package search4.resources;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -66,19 +68,18 @@ public class UserResource implements Serializable{
 		try{
 			allUsers = userEJB.getAllUsers();
 			
-			
 			for(DisplayUserEntity displayUserEntity : allUsers) {
-				//List<ResourceLink> links = new ArrayList<ResourceLink>();
-				ResourceLink link = new ResourceLink("self", uriInfo.getAbsolutePath() + "/" + displayUserEntity.getId());
-				//links.add(link);
-				displayUserEntity.setLink(link);
+				List<ResourceLink> links = new ArrayList<ResourceLink>();
+				ResourceLink self = new ResourceLink("self", uriInfo.getAbsolutePath() + "/" + displayUserEntity.getId());
+				links.add(self);
+				displayUserEntity.setLinks(links);
 			}
 			
 			entity = new GenericEntity< List <DisplayUserEntity> > (allUsers){};
 			
 			return Response
 					.status(Response.Status.OK)
-					.entity(allUsers)
+					.entity(entity)
 					.build();
 		}catch(Exception ex) {
 			System.out.println("Inne i catch");
