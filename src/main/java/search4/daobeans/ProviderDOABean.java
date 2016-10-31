@@ -14,7 +14,6 @@ public class ProviderDOABean {
 	@PersistenceContext
 	private EntityManager entityManager;
 
-	
 	public boolean addProvider(ProviderEntity providerEntity) {
 		try {
 			entityManager.merge(providerEntity);
@@ -23,7 +22,6 @@ public class ProviderDOABean {
 			return false;
 		}
 	}
-	
 	
 	public boolean removeProvider(Integer id) {
 		try{
@@ -38,7 +36,6 @@ public class ProviderDOABean {
 		}
 	
 	}	
-	
 	
 	public List<ProviderEntity> getAllFor(Integer userId) {
 		return entityManager.createNamedQuery("ProviderEntity.getAllFor")

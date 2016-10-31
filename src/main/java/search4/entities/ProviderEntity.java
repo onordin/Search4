@@ -52,5 +52,5 @@ public class ProviderEntity implements Serializable {
 	public void setUserId(int userId) {
 		this.userId = userId;
 	}
-
+	
 }
