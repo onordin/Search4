@@ -1,9 +1,11 @@
 package search4.resources;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.EJB;
+import javax.ejb.Stateless;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -17,13 +19,16 @@ import javax.ws.rs.core.UriInfo;
 import search4.ejb.interfaces.LocalUser;
 import search4.entities.DisplayUserEntity;
 import search4.exceptions.DataNotFoundException;
-import search4.helpers.Link;
+import search4.helpers.ResourceLink;
 
 
-
+@Stateless
 @Path("/users")
-public class UserResource{
+public class UserResource implements Serializable{
 
+	
+	private static final long serialVersionUID = 5432349798883745096L;
+	
 	
 	@EJB
 	private LocalUser userEJB;
@@ -39,10 +44,12 @@ public class UserResource{
 			displayUserEntity = userEJB.getUserByID(userId);
 			displayUserEntity.setPassword("");
 			
+			
 			return Response
 					.status(Response.Status.OK)
 					.entity(displayUserEntity)
 					.build();
+					
 		}catch(DataNotFoundException dE) {
 			return Response.status(Response.Status.NOT_FOUND).build();
 		}
@@ -59,18 +66,19 @@ public class UserResource{
 		try{
 			allUsers = userEJB.getAllUsers();
 			
+			
 			for(DisplayUserEntity displayUserEntity : allUsers) {
-				List<Link> links = new ArrayList<Link>();
-				Link link = new Link("self", uriInfo.getAbsolutePath() + "/" + displayUserEntity.getId());
-				links.add(link);
-				displayUserEntity.setLinks(links);
+				//List<ResourceLink> links = new ArrayList<ResourceLink>();
+				ResourceLink link = new ResourceLink("self", uriInfo.getAbsolutePath() + "/" + displayUserEntity.getId());
+				//links.add(link);
+				displayUserEntity.setLink(link);
 			}
-
+			
 			entity = new GenericEntity< List <DisplayUserEntity> > (allUsers){};
 			
 			return Response
 					.status(Response.Status.OK)
-					.entity(entity)
+					.entity(allUsers)
 					.build();
 		}catch(Exception ex) {
 			System.out.println("Inne i catch");

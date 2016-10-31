@@ -1,8 +1,6 @@
 package search4.entities;
 
-import java.util.List;
-
-import search4.helpers.Link;
+import search4.helpers.ResourceLink;
 
 
 public class DisplayUserEntity{
@@ -12,8 +10,9 @@ public class DisplayUserEntity{
     private String firstName;
     private String lastName;
     private String password;
-    private List<Link> links; 
-
+    private ResourceLink link; 
+    
+    
     public int getId() {
         return id;
     }
@@ -54,13 +53,14 @@ public class DisplayUserEntity{
         this.password = password;
     }
 
-	public List<Link> getLinks() {
-		return links;
+	public ResourceLink getLink() {
+		return link;
 	}
 
-	public void setLinks(List<Link> links) {
-		this.links = links;
+	public void setLink(ResourceLink link) {
+		this.link = link;
 	}
 
+    
 
 }
