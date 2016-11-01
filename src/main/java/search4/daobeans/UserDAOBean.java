@@ -78,6 +78,7 @@ public class UserDAOBean implements Serializable{
 
 	public boolean deleteUser(int id) {
 		try {
+			entityManager.createNamedQuery("ProviderEntity.deleteUser").setParameter("userId", id).executeUpdate();
 			entityManager.createNamedQuery("SubscriptionEntity.deleteUser").setParameter("userId", id).executeUpdate();
 			entityManager.createNamedQuery("UserEntity.deleteUserById").setParameter("id", id).executeUpdate();
 			return true;
