@@ -99,6 +99,32 @@ public class ProviderResource {
 		}
 	}
 	
+	
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getAllProvidersForOneUser(@Context UriInfo uriInfo, @PathParam("userId") Integer userId){
+		List<DisplayProviderEntity> providers = new ArrayList<DisplayProviderEntity>();
+		GenericEntity< List<DisplayProviderEntity> > entity;
+		providers = providerEJB.getAllForUser(userId);
+		try{
+			for (DisplayProviderEntity displayProviderEntity : providers) {
+				List<ResourceLink> links = new ArrayList<ResourceLink>();
+				ResourceLink link = new ResourceLink("self", uriInfo.getBaseUri()+ "providers/providerid/" + displayProviderEntity.getId());
+				links.add(link);
+				displayProviderEntity.setLinks(links);
+			}
+		
+			entity = new GenericEntity<List<DisplayProviderEntity>>(providers){};
+			return Response.status(200)
+					.entity(entity)
+					.build();
+		}catch (Exception e) {
+			return Response.status(Response.Status.NOT_FOUND)
+					.build();
+		}
+	}
+	
+	
 	@POST
 	@Path("/{userId}")
 	@Consumes(MediaType.APPLICATION_JSON)

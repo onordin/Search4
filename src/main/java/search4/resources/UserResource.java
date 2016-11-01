@@ -195,6 +195,13 @@ public class UserResource implements Serializable{
 	}
 	
 	
+	@Path("/{userId}/providers")
+	public ProviderResource getProviders() {
+		return new ProviderResource();
+	}
+	
+	
+	
 	public String getAbsolutePath(UriInfo uriInfo) {
 		String uri = uriInfo.getBaseUriBuilder()
 				.path(UserResource.class) 		//ger http://localhost:8080/MyMess/api/messages
