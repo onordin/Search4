@@ -15,7 +15,7 @@ import java.sql.Date;
     @NamedQuery(name = "MovieEntity.searchOrderByDateAsc", query = "SELECT movieEntity FROM MovieEntity movieEntity " +
             "WHERE movieEntity.title LIKE :input OR movieEntity.title LIKE :inputWithSpace ORDER BY movieEntity.date ASC"),
     @NamedQuery(name = "MovieEntity.searchOrderByDateDesc", query = "SELECT movieEntity FROM MovieEntity movieEntity " +
-            "WHERE movieEntity.title LIKE :query OR movieEntity.title LIKE :inputWithSpace ORDER BY movieEntity.date DESC"),
+            "WHERE movieEntity.title LIKE :input OR movieEntity.title LIKE :inputWithSpace ORDER BY movieEntity.date DESC"),
     @NamedQuery(name = "MovieEntity.searchOrderByTitleAsc", query = "SELECT movieEntity FROM MovieEntity movieEntity " +
             "WHERE movieEntity.title LIKE :input OR movieEntity.title LIKE :inputWithSpace ORDER BY movieEntity.title ASC"),
     @NamedQuery(name = "MovieEntity.searchOrderByTitleDesc", query = "SELECT movieEntity FROM MovieEntity movieEntity " +
