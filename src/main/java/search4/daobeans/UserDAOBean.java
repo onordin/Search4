@@ -1,14 +1,15 @@
 package search4.daobeans;
 
 
+import javax.ejb.EJBContext;
 import javax.ejb.Stateful;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 
 import search4.entities.UserEntity;
 import search4.exceptions.DataNotFoundException;
-import search4.exceptions.DuplicateDataException;
 
 import java.io.Serializable;
 import java.util.List;
@@ -16,15 +17,20 @@ import java.util.List;
 @Stateful
 public class UserDAOBean implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 9147207018580784695L;
+	
+	
 	@PersistenceContext
 	private EntityManager entityManager;
 	
-	public boolean createUser(UserEntity userEntity){
+	public void createUser(UserEntity userEntity){
 		try {
 			entityManager.merge(userEntity);
-			return true;
 		} catch (Exception e) {
-			return false;
+			e.printStackTrace();
 		}
 	}
 	
@@ -64,7 +70,7 @@ public class UserDAOBean implements Serializable{
 		}
 	}
 
-	public boolean changePassword(UserEntity userEntity) {
+	public boolean updateUser(UserEntity userEntity) {
 		try {
 			entityManager.merge(userEntity);
 			return true;
@@ -74,7 +80,7 @@ public class UserDAOBean implements Serializable{
 
 	}
 
-	public boolean userExist(int id) {
+	public boolean userExist(Integer id) {
 		try {
 			UserEntity userEntity = (UserEntity) entityManager.createNamedQuery("UserEntity.getUserById").setParameter("id", id).getSingleResult();
 			return true;
@@ -83,7 +89,7 @@ public class UserDAOBean implements Serializable{
 		}
 	}
 
-	public boolean deleteUser(int id) {
+	public boolean deleteUser(Integer id) {
 		try {
 			entityManager.createNamedQuery("SubscriptionEntity.deleteUser").setParameter("userId", id).executeUpdate();
 			entityManager.createNamedQuery("UserEntity.deleteUserById").setParameter("id", id).executeUpdate();

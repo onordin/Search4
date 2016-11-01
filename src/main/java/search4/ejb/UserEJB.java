@@ -2,6 +2,8 @@ package search4.ejb;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.naming.InvalidNameException;
+import javax.sound.midi.MidiDevice.Info;
 import javax.ws.rs.InternalServerErrorException;
 
 import search4.daobeans.SubscriptionDAOBean;
@@ -14,6 +16,7 @@ import search4.entities.UserEntity;
 import search4.exceptions.DataNotFoundException;
 import search4.exceptions.DuplicateDataException;
 import search4.exceptions.InvalidInputException;
+import search4.resources.entities.InfoPayload;
 import search4.validators.EmailValidator;
 
 import java.io.Serializable;
@@ -31,9 +34,13 @@ public class UserEJB implements LocalUser, Serializable {
     @EJB
     private SubscriptionDAOBean subscriptionDAOBean;
 	
-	public void createUser(UserEntity userEntity) throws DuplicateDataException, InternalServerErrorException{
+	public DisplayUserEntity createUser(UserEntity userEntity) throws DuplicateDataException, InternalServerErrorException{
 		//Validation
+		DisplayUserEntity displayUserEntity = null;
+		userEntity.setEmail(userEntity.getEmail().toLowerCase()); //Keep all email addresses in lowercase always
+		
 		EmailValidator emailValidator = new EmailValidator();
+		
 		if (userEntity.getFirstName().length() > 255) {
 			throw new InvalidInputException("First name must be less than or equal to 255 characters.");
 		}
@@ -43,15 +50,15 @@ public class UserEJB implements LocalUser, Serializable {
 		if (userEntity.getPassword().length() < 4) {
 			throw new InvalidInputException("Password must be 4 or more characters.");
 		}
- 		userEntity.setEmail(userEntity.getEmail().toLowerCase()); //Keep all email addresses in lowercase always
 		if (emailInDb(userEntity.getEmail())) {
 			throw new DuplicateDataException("The email address already exists in the system");
 		}
-		else {
+		else{
 			try {
 				String hashedPassword = PBKDF2.generatePasswordHash(userEntity.getPassword(), 666);
 				userEntity.setPassword(hashedPassword);
 				userDAOBean.createUser(userEntity);
+				displayUserEntity = getUserWithEmail(userEntity.getEmail());
 			} catch (NoSuchProviderException e) {
 				throw new InternalServerErrorException("Something went wrong internally, please try again later!");
 			} catch (NoSuchAlgorithmException e) {
@@ -60,6 +67,7 @@ public class UserEJB implements LocalUser, Serializable {
 				throw new InternalServerErrorException("Something went wrong internally, please try again later!");
 			}
 		}
+		return displayUserEntity;
 	}
 	
 
@@ -75,7 +83,6 @@ public class UserEJB implements LocalUser, Serializable {
 			DisplayUserEntity displayUser = getDisplayUserFromDBEntity(userEntity);
 			try {
 				if (PBKDF2.validatePassword(password, displayUser.getPassword())) {
-					displayUser.setPassword("HIDDEN");
 					return displayUser;
 				}
 			} catch (NoSuchAlgorithmException e) {
@@ -87,7 +94,6 @@ public class UserEJB implements LocalUser, Serializable {
 		} else {
 			return null;
 		}
-		
 	}
 
 	private DisplayUserEntity getDisplayUserFromDBEntity(UserEntity userEntity) {
@@ -131,6 +137,7 @@ public class UserEJB implements LocalUser, Serializable {
 	}
 	
 	
+	
 	public DisplayUserEntity getUserByID(Integer id) throws DataNotFoundException{
 		UserEntity userEntity = userDAOBean.getUser(id);
 		DisplayUserEntity displayUserEntity = getDisplayUserFromDBEntity(userEntity);
@@ -148,52 +155,155 @@ public class UserEJB implements LocalUser, Serializable {
 		}
 		return result;
 	}
-
-
 	
-	public void changePassword(DisplayUserEntity activeUser)  throws DuplicateDataException, InternalServerErrorException {
-		try {
-			String hashedPassword = PBKDF2.generatePasswordHash(activeUser.getPassword(), 666);
-			activeUser.setPassword(hashedPassword);
-			UserEntity userEntity = new UserEntity();
-			userEntity.setId(activeUser.getId());
-			userEntity.setFirstName(activeUser.getFirstName());
-			userEntity.setLastName(activeUser.getLastName());
-			userEntity.setEmail(activeUser.getEmail());
-			userEntity.setPassword(activeUser.getPassword());
-			System.out.println("USerEJD!!!!!!!!!!!!!!!!!!!!");
-			System.out.println("ID = " +userEntity.getId());
-			System.out.println("First name = " +userEntity.getFirstName());
-			System.out.println("Last name = " +userEntity.getLastName());
-			System.out.println("Email = " +userEntity.getEmail());
-			System.out.println("Password = " +userEntity.getPassword());
-			userDAOBean.changePassword(userEntity);
-		} catch (NoSuchProviderException e) {
-			throw new InternalServerErrorException("Something went wrong internally, please try again later!");
-		} catch (NoSuchAlgorithmException e) {
-			throw new InternalServerErrorException("Something went wrong internally, please try again later!");
-		} catch (InvalidKeySpecException e) {
-			throw new InternalServerErrorException("Something went wrong internally, please try again later!");
+	
+	
+
+	//doesnt update other user details (done in another method)
+	public InfoPayload changePassword(DisplayUserEntity activeUser) throws DuplicateDataException, InternalServerErrorException{
+		
+			InfoPayload infoPayload = new InfoPayload();
+			
+			DisplayUserEntity verifiedUser = getUser(activeUser.getEmail(), activeUser.getPassword());
+			
+			if(verifiedUser != null) {
+				
+				try {
+					
+					if (activeUser.getFirstPassword().length() < 4) {
+						throw new InvalidInputException("Password must be 4 or more characters.");
+					}
+					
+					String hashedPassword = PBKDF2.generatePasswordHash(activeUser.getFirstPassword(), 666);
+									
+					UserEntity userEntity = new UserEntity();
+					
+					userEntity.setId(verifiedUser.getId());
+					userEntity.setFirstName(verifiedUser.getFirstName());
+					userEntity.setLastName(verifiedUser.getLastName());
+					userEntity.setEmail(verifiedUser.getEmail());
+					userEntity.setPassword(hashedPassword); 		//has now been hashed
+					
+					if(userDAOBean.updateUser(userEntity)) {
+							infoPayload.setUser_Message("User: " + activeUser.getEmail() + " has been updated");
+							infoPayload.setResultOK(true);
+						}else {
+							infoPayload.setUser_Message("User: " + activeUser.getEmail() + " has not been updated");
+							infoPayload.setResultOK(false);
+						}
+					
+				} catch (NoSuchProviderException e) {
+					throw new InternalServerErrorException("Something went wrong internally, please try again later!");
+				} catch (NoSuchAlgorithmException e) {
+					throw new InternalServerErrorException("Something went wrong internally, please try again later!");
+				} catch (InvalidKeySpecException e) {
+					throw new InternalServerErrorException("Something went wrong internally, please try again later!");
+				}
+				
+			}else {
+				infoPayload.setUser_Message("User: " + activeUser.getEmail() + " has not been updated, please check username/password");
+				infoPayload.setResultOK(false);
+			}
+			return infoPayload;
 		}
-	}
-
-
-	public boolean deleteUser(int id) {
-		if(userDAOBean.userExist(id)) {
-			System.out.println("User exist!!! with Id = " +id);
-			if(userDAOBean.deleteUser(id)) {
-				return true;
-			} else {
-				return false;
+	
+	
+	
+	
+	//doesnt update password (done in another method)
+	public InfoPayload updateUserDetails(DisplayUserEntity activeUser) throws DuplicateDataException, InternalServerErrorException {
+		
+		InfoPayload infoPayload = new InfoPayload();
+		
+		DisplayUserEntity verifiedUser = getUser(activeUser.getEmail(), activeUser.getPassword());
+		
+		if(verifiedUser != null) {
+		
+			UserEntity userEntity = new UserEntity();
+			
+			userEntity.setId(verifiedUser.getId());
+			
+			
+			//CHECK/VALIDATE NEW INPUTS 
+			EmailValidator emailValidator = new EmailValidator();
+			
+			if(activeUser.getFirstName() != null && activeUser.getFirstName() != "") {
+				if (activeUser.getFirstName().length() > 255) {
+					throw new InvalidInputException("First name must be less than or equal to 255 characters.");
+				}
 			}
 			
-		} else {
-			System.out.println("User does not exist with id = " +id);
-			return false;
+			if(activeUser.getUpdatedEmail() != null && activeUser.getUpdatedEmail() != "") {
+				if (activeUser.getUpdatedEmail().length() > 255 || !emailValidator.validateEmail(activeUser.getUpdatedEmail())) {
+					throw new InvalidInputException("Email must be an email adress and less than or equal to 255 characters.");
+				}
+				if (emailInDb(activeUser.getUpdatedEmail()) && !activeUser.getUpdatedEmail().equalsIgnoreCase(activeUser.getEmail())) { //only check if newly entered emailaddress is already taken
+					throw new DuplicateDataException("The email address already exists in the system");
+				}
+			}
+			
+			//CHECK NOT TO UPDATE TO EMPTY FIELDS (if using REST JSON) 
+			if(activeUser.getFirstName() != null && activeUser.getFirstName() != "") {
+				userEntity.setFirstName(activeUser.getFirstName());
+			}else {
+				userEntity.setFirstName(verifiedUser.getFirstName());
+			}
+			
+			if(activeUser.getLastName() != null && activeUser.getLastName() != "") {
+			userEntity.setLastName(activeUser.getLastName());
+			}else {
+				userEntity.setLastName(verifiedUser.getLastName());
+			}
+			
+			if(activeUser.getUpdatedEmail() != null && activeUser.getUpdatedEmail() != "") {
+				userEntity.setEmail(activeUser.getUpdatedEmail());
+			}else {
+				userEntity.setEmail(verifiedUser.getEmail());
+			}
+
+			
+			userEntity.setPassword(verifiedUser.getPassword());
+			
+				
+			if(userDAOBean.updateUser(userEntity)) {
+				infoPayload.setUser_Message("User: " + activeUser.getEmail() + " has been updated");
+				infoPayload.setResultOK(true);
+			}else {
+				infoPayload.setUser_Message("User: " + activeUser.getEmail() + " has not been updated");
+				infoPayload.setResultOK(false);
+			}
+				
+		}else {
+			infoPayload.setUser_Message("User: " + activeUser.getEmail() + " has not been updated, please check username/password");
+			infoPayload.setResultOK(false);
 		}
+		return infoPayload;
 		
 	}
 
+
+
+	
+	public InfoPayload deleteUser(Integer id) {
+		InfoPayload infoPayload = new InfoPayload();
+		
+		if(userDAOBean.userExist(id)) {
+			System.out.println("User exist!!! with Id = " +id);
+			if(userDAOBean.deleteUser(id)) {
+				infoPayload.setUser_Message("User number: " + id + " has been deleted");
+				infoPayload.setResultOK(true);
+			} else {
+				infoPayload.setUser_Message("User number: " + id + " exists but has not been deleted");
+				infoPayload.setResultOK(false);
+			}
+			
+		} else {
+			infoPayload.setUser_Message("User does not exist with id = " + id);
+			infoPayload.setResultOK(false);
+		}
+		
+		return infoPayload;
+	}
 
 
 	
