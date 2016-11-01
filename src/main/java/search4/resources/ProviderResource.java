@@ -48,10 +48,10 @@ public class ProviderResource {
 				displayProviderEntity.setLinks(links);
 			}
 		
-		entity = new GenericEntity<List<DisplayProviderEntity>>(providers){};
-		return Response.status(200)
-				.entity(entity)
-				.build();
+			entity = new GenericEntity<List<DisplayProviderEntity>>(providers){};
+			return Response.status(200)
+					.entity(entity)
+					.build();
 		}catch (Exception e) {
 			return Response.status(Response.Status.NOT_FOUND)
 					.build();
@@ -63,14 +63,14 @@ public class ProviderResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getProviderByProviderId(@PathParam("providerId") Integer providerId){
 		try{
-		DisplayProviderEntity displayProviderEntity = providerEJB.getProviderById(providerId);
-		List<ResourceLink> links = new ArrayList<ResourceLink>();
-		ResourceLink link = new ResourceLink("self", uriInfo.getBaseUri() +"providers/providerid/"+displayProviderEntity.getId());
-		links.add(link);
-		displayProviderEntity.setLinks(links);
-		return Response.status(200)
-				.entity(displayProviderEntity)
-				.build();
+			DisplayProviderEntity displayProviderEntity = providerEJB.getProviderById(providerId);
+			List<ResourceLink> links = new ArrayList<ResourceLink>();
+			ResourceLink link = new ResourceLink("self", uriInfo.getBaseUri() +"providers/providerid/"+displayProviderEntity.getId());
+			links.add(link);
+			displayProviderEntity.setLinks(links);
+			return Response.status(200)
+					.entity(displayProviderEntity)
+					.build();
 		}catch (Exception e) {
 			return Response.status(Response.Status.NOT_FOUND)
 					.build();
@@ -83,17 +83,16 @@ public class ProviderResource {
 		List<DisplayProviderEntity> allProviders = providerEJB.getAllProviders("");
 		GenericEntity<List<DisplayProviderEntity>>entity;
 		try{
-		for (DisplayProviderEntity displayProviderEntity : allProviders) {
-			List<ResourceLink> links = new ArrayList<ResourceLink>();
-			ResourceLink link = new ResourceLink("self", uriInfo.getAbsolutePath()+ "/providerid/"+displayProviderEntity.getId());
-			links.add(link);
-			displayProviderEntity.setLinks(links);
-			
-		}
-		entity = new GenericEntity<List<DisplayProviderEntity>>(allProviders){};
-		return Response.status(200)
-				.entity(entity)
-				.build();
+			for (DisplayProviderEntity displayProviderEntity : allProviders) {
+				List<ResourceLink> links = new ArrayList<ResourceLink>();
+				ResourceLink link = new ResourceLink("self", uriInfo.getAbsolutePath()+ "/providerid/"+displayProviderEntity.getId());
+				links.add(link);
+				displayProviderEntity.setLinks(links);
+			}
+			entity = new GenericEntity<List<DisplayProviderEntity>>(allProviders){};
+			return Response.status(200)
+					.entity(entity)
+					.build();
 		}catch (Exception e) {
 			return Response.status(Response.Status.NOT_FOUND)
 					.build();
@@ -107,21 +106,21 @@ public class ProviderResource {
 	public Response addProvider(String provider,@PathParam("userId")Integer userId){
 		GenericEntity<List<DisplayProviderEntity>>entities;
 		try{
-		ProviderEntity providerEntity = new ProviderEntity();
-		providerEntity.setProvider(provider);
-		providerEntity.setUserId(userId);
-		ProviderEntity entity = providerEJB.addProvider(providerEntity.getProvider(),providerEntity.getUserId());
-		List<DisplayProviderEntity> providers = providerEJB.getAllForUser(entity.getUserId());
-		for (DisplayProviderEntity displayProviderEntity : providers) {
-			List<ResourceLink> links = new ArrayList<ResourceLink>();
-			ResourceLink link = new ResourceLink("self", uriInfo.getBaseUri()+ "providers/providerid/" + displayProviderEntity.getId());
-			links.add(link);
-			displayProviderEntity.setLinks(links);
-		}
-		entities = new GenericEntity<List<DisplayProviderEntity>>(providers){};
-		return Response.status(200)
-				.entity(entities)
-				.build();
+			ProviderEntity providerEntity = new ProviderEntity();
+			providerEntity.setProvider(provider);
+			providerEntity.setUserId(userId);
+			ProviderEntity entity = providerEJB.addProvider(providerEntity.getProvider(),providerEntity.getUserId());
+			List<DisplayProviderEntity> providers = providerEJB.getAllForUser(entity.getUserId());
+			for (DisplayProviderEntity displayProviderEntity : providers) {
+				List<ResourceLink> links = new ArrayList<ResourceLink>();
+				ResourceLink link = new ResourceLink("self", uriInfo.getBaseUri()+ "providers/providerid/" + displayProviderEntity.getId());
+				links.add(link);
+				displayProviderEntity.setLinks(links);
+			}
+			entities = new GenericEntity<List<DisplayProviderEntity>>(providers){};
+			return Response.status(200)
+					.entity(entities)
+					.build();
 		}catch (Exception e) {
 			return Response.status(Response.Status.NO_CONTENT)
 					.build();
