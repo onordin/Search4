@@ -85,6 +85,5 @@ public class UserDAOBean implements Serializable{
 		} catch (Exception e) {
 			return false;
 		}
-
 	}
 }
