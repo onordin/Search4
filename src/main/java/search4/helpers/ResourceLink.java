@@ -1,7 +1,7 @@
 package search4.helpers;
 
 public class ResourceLink {
-	
+
 	private String rel;
 	private String link;
 	
@@ -13,6 +13,7 @@ public class ResourceLink {
 		this.rel = rel;
 		this.link = link;
 	}
+
 	public String getRel() {
 		return rel;
 	}

@@ -22,6 +22,7 @@ import search4.entities.DisplayUserEntity;
 import search4.entities.UserEntity;
 import search4.exceptions.DuplicateDataException;
 import search4.exceptions.InvalidInputException;
+import search4.resources.entities.InfoPayload;
 
 @Named(value="userBean")
 @SessionScoped
@@ -83,6 +84,7 @@ public class UserBean implements Serializable{
 			displayUserEntity = userEJB.getUser(email, password);
 			String returnView = viewId.replace("/", "");
 			if (displayUserEntity == null) {
+				displayUserEntity.setPassword("");
 				message = "Email or Password Wrong!";
 				userIsLoggedIn = null;
 				System.out.println("Log in error, userIsLoggedIn: " + userIsLoggedIn );
@@ -102,12 +104,16 @@ public class UserBean implements Serializable{
 			message = e.getMessage();
 		}
 	}
+	
 	public String deleteUser() {
-		if(userEJB.deleteUser(displayUserEntity.getId())) {
-			System.out.println("User is deleted.");
+		
+		InfoPayload resultFromDelete = userEJB.deleteUser(displayUserEntity.getId());
+
+		if(resultFromDelete.isResultOK()) {
+			System.out.println(resultFromDelete.getUser_Message());
 			logOffUser();
 		} else {
-			System.out.println("User is not deleted.");
+			System.out.println(resultFromDelete.getUser_Message());
 		}
 		return "full_startpage";
 	}
@@ -146,18 +152,16 @@ public class UserBean implements Serializable{
 		// 1. kolla om gamla lösenordet är rätt
 		// 2. kolla om first o second är samma
 		// 3. uppdatera db med nya lösen
-		DisplayUserEntity activeUser = userEJB.getUser(displayUserEntity.getEmail(), password);
+		DisplayUserEntity activeUser = userEJB.getUser(displayUserEntity.getEmail(), password);	//checks correct old password
 		if(activeUser != null) {
 			if(firstPassword.equals(secondPassword)) {
 				if(firstPassword.matches(pattern)) {
-					activeUser.setPassword(firstPassword);
-					System.out.println("USerBEAN!!!!!!!!!!!!!!!!!!!!");
-					System.out.println("ID = " +activeUser.getId());
-					System.out.println("First name = " +activeUser.getFirstName());
-					System.out.println("Last name = " +activeUser.getLastName());
-					System.out.println("Email = " +activeUser.getEmail());
-					System.out.println("Password = " +activeUser.getPassword());
-					userEJB.changePassword(activeUser);
+					activeUser.setPassword(password); //to check old password again in EJB
+					activeUser.setFirstPassword(firstPassword);
+					activeUser.setSecondPassword(secondPassword);
+					userEJB.changePassword(activeUser);						
+					activeUser.setFirstPassword("");
+					activeUser.setSecondPassword("");
 					message = "New password saved!";
 				} else {
 					message = "New password needs to be at least 6 charecters long (plus en liten bokstav...)";
