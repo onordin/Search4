@@ -16,7 +16,7 @@ import search4.entities.UserEntity;
 import search4.exceptions.DataNotFoundException;
 import search4.exceptions.DuplicateDataException;
 import search4.exceptions.InvalidInputException;
-import search4.resources.entities.InfoPayload;
+import search4.entities.InfoPayload;
 import search4.validators.EmailValidator;
 
 import java.io.Serializable;

@@ -132,8 +132,15 @@ public class ProviderResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response removeProvider(@PathParam("providerId")Integer providerId){
 		InfoPayload infoPayload = providerEJB.removeProviderById(providerId);
-		return Response.status(200)
-				.entity(infoPayload)
-				.build();
+		if(infoPayload.isResultOK()!=false){
+			return Response.status(200)
+					.entity(infoPayload)
+					.build();
+		}else {
+			return Response.status(403)
+					.entity(infoPayload)
+					.build();
+		}
+		
 	}
 }

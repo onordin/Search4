@@ -23,11 +23,12 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
 import search4.ejb.interfaces.LocalUser;
+import search4.entities.DisplayProviderEntity;
 import search4.entities.DisplayUserEntity;
 import search4.entities.UserEntity;
 import search4.exceptions.DataNotFoundException;
 import search4.helpers.ResourceLink;
-import search4.resources.entities.InfoPayload;
+import search4.entities.InfoPayload;
 
 
 @Stateless
@@ -40,6 +41,9 @@ public class UserResource implements Serializable{
 	
 	@EJB
 	private LocalUser userEJB;
+	
+	@EJB
+	private ProviderResource providerResource;
 	
 	
 	@GET
@@ -201,6 +205,13 @@ public class UserResource implements Serializable{
 				.build()
 				.toString();
 		return uri;
+	}
+	
+	@GET
+	@Path("/{userId}/providers")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getProvidersForUser(@PathParam("userId") Integer userId ){
+		return providerResource.getProvidersByUserId(userId);
 	}
 	
 }
