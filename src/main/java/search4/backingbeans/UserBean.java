@@ -80,6 +80,7 @@ public class UserBean implements Serializable{
 
 	public void loginUser(){
 		ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+		System.out.println("HHHHHEEEEEEJJJJJJ");
 		try {
 			displayUserEntity = userEJB.getUser(email, password);
 			String returnView = viewId.replace("/", "");
