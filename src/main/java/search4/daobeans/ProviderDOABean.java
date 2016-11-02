@@ -14,16 +14,13 @@ public class ProviderDOABean {
 	@PersistenceContext
 	private EntityManager entityManager;
 
-	
-	public boolean addProvider(ProviderEntity providerEntity) {
+	public ProviderEntity addProvider(ProviderEntity providerEntity) {
 		try {
-			entityManager.merge(providerEntity);
-			return true;
+			return entityManager.merge(providerEntity);
 		} catch (Exception e) {
-			return false;
+			return null;
 		}
 	}
-	
 	
 	public boolean removeProvider(Integer id) {
 		try{
@@ -39,13 +36,34 @@ public class ProviderDOABean {
 	
 	}	
 	
-	
 	public List<ProviderEntity> getAllFor(Integer userId) {
 		return entityManager.createNamedQuery("ProviderEntity.getAllFor")
                 .setParameter("userId", userId)
                 .getResultList();
 	}
 	
+	public ProviderEntity getProvider(Integer providerId) {
+		return (ProviderEntity)entityManager.createNamedQuery("ProviderEntity.getOne")
+				.setParameter("id", providerId)
+				.getSingleResult();
+	}
 	
+	public List<ProviderEntity> getAll(String input){
+		return entityManager.createNamedQuery("ProviderEntity.search")
+				.setParameter("input", input+"%")
+				.setParameter("inputWithSpace","% "+input+"%")
+				.getResultList();
+	}
 	
+	public boolean providerExist(Integer providerId) {
+		try {
+			ProviderEntity providerEntity = (ProviderEntity) entityManager.createNamedQuery("ProviderEntity.getOne")
+					.setParameter("id", providerId)
+					.getSingleResult();
+			return true;
+		} catch (Exception e) {
+			System.err.println("PROVIDEREXISTS ERROR: " + e);
+			return false;
+		}
+	}
 }

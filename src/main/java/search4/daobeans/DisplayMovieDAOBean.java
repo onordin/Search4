@@ -27,6 +27,15 @@ public class DisplayMovieDAOBean implements Serializable{
         }
     }
 
+    public boolean movieExists(Integer id) {
+        try {
+            getMovieData(id);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
     public MovieEntity getMovieByGuideboxId(Long guideboxId) throws DataNotFoundException {
         MovieEntity m = null;
         try {

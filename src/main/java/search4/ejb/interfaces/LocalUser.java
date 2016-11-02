@@ -3,6 +3,7 @@ package search4.ejb.interfaces;
 import javax.ejb.Local;
 
 import search4.entities.DisplayUserEntity;
+import search4.entities.InfoPayload;
 import search4.entities.UserEntity;
 
 import java.util.List;
@@ -10,17 +11,22 @@ import java.util.List;
 @Local
 public interface LocalUser {
 
-	void createUser(UserEntity userEntity);
+	DisplayUserEntity createUser(UserEntity userEntity);
 	
 	DisplayUserEntity getUser(String email, String password);
 
 	DisplayUserEntity getUserWithEmail(String email);
+	
+	DisplayUserEntity getUserByID(Integer id);
 
-	void changePassword(DisplayUserEntity activeUser);
+	InfoPayload changePassword(DisplayUserEntity activeUser);
+	
+	InfoPayload updateUserDetails(DisplayUserEntity activeUser);
 
-	boolean deleteUser(int id);
+	InfoPayload deleteUser(Integer id) ;
 
 	List<DisplayUserEntity> getDisplayUsersSubscribedTo(Integer movieId);
 
+	List<DisplayUserEntity> getAllUsers();
 
 }

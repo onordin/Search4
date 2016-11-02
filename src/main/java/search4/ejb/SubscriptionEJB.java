@@ -9,12 +9,9 @@ import javax.ws.rs.BadRequestException;
 
 import search4.daobeans.DisplayMovieDAOBean;
 import search4.daobeans.SubscriptionDAOBean;
+import search4.daobeans.UserDAOBean;
 import search4.ejb.interfaces.LocalSubscription;
-import search4.entities.DisplaySubscriptionEntity;
-import search4.entities.MovieEntity;
-import search4.entities.DisplayUserEntity;
-import search4.entities.SubscriptionEntity;
-import search4.entities.UserEntity;
+import search4.entities.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +21,10 @@ public class SubscriptionEJB implements LocalSubscription{
 
 	@EJB
 	private SubscriptionDAOBean subscriptionDAOBean;
+    @EJB
+    private UserDAOBean userDAOBean;
+    @EJB
+    private DisplayMovieDAOBean movieDAOBean;
 	@EJB
 	private DisplayMovieDAOBean displayMovieDAOBean;
 
@@ -53,17 +54,48 @@ public class SubscriptionEJB implements LocalSubscription{
 		return displayEntity;
 	}
 
-	public void subscribeToMovie(Integer movieId, Integer userId) throws BadRequestException{
+	public InfoPayload subscribeToMovie(Integer movieId, Integer userId) {
+		InfoPayload infoPayload = new InfoPayload();
 		SubscriptionEntity subscriptionEntity = new SubscriptionEntity();
 		subscriptionEntity.setMovieId(movieId);
 		subscriptionEntity.setUserId(userId);
+
 		if (!subscriptionDAOBean.subscribeToMovie(subscriptionEntity)) {
-            throw new BadRequestException("Bad bad bad"); //TODO make better
+            if (!userDAOBean.userExist(userId)) {
+                infoPayload.setUser_Message("Failed to subscribe: No such user!");
+                infoPayload.setStatusCode(400);
+            }
+            else if (!displayMovieDAOBean.movieExists(movieId)) {
+                infoPayload.setUser_Message("Failed to subscribe: No such movie!");
+                infoPayload.setStatusCode(400);
+            }
+            else {
+                infoPayload.setUser_Message("Failed to subscribe: Unknown Error");
+                infoPayload.setStatusCode(500);
+            }
+            infoPayload.setResultOK(false);
         }
+        else {
+            infoPayload.setUser_Message("Subscription Successfull!");
+            infoPayload.setStatusCode(200);
+            infoPayload.setResultOK(true);
+        }
+        return infoPayload;
 	}
 
-	public boolean removeSubscription(Integer id) {
-		return subscriptionDAOBean.removeSubscription(id);
+	public InfoPayload removeSubscription(Integer id) {
+        InfoPayload infoPayload = new InfoPayload();
+        if (subscriptionDAOBean.removeSubscription(id)) {
+            infoPayload.setUser_Message("Successfully removed subscription!");
+            infoPayload.setStatusCode(200);
+            infoPayload.setResultOK(true);
+        }
+        else {
+            infoPayload.setUser_Message("Error removing subscription with id "+id);
+            infoPayload.setStatusCode(400); //TODO add check for subscriptionExists()? should be only possible reason for fail?
+            infoPayload.setResultOK(false);
+        }
+		return infoPayload;
 	}
 
 }

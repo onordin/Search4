@@ -1,10 +1,15 @@
 package search4.entities;
 
+import search4.helpers.ResourceLink;
+
+import java.util.List;
+
 public class DisplaySubscriptionEntity {
 
     private Integer subscribedMovieId;
     private String title;
     private Integer id;
+	private List<ResourceLink> links;
 
     public Integer getSubscribedMovieId() {
         return subscribedMovieId;
@@ -30,6 +35,11 @@ public class DisplaySubscriptionEntity {
 		this.id = id;
 	}
 
+	public List<ResourceLink> getLinks() {
+		return links;
+	}
 
-    
+	public void setLinks(List<ResourceLink> links) {
+		this.links = links;
+	}
 }

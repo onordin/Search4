@@ -2,17 +2,15 @@ package search4.resources;
 
 import search4.ejb.interfaces.LocalSubscription;
 import search4.ejb.interfaces.LocalUser;
-import search4.entities.DisplaySubscriptionEntity;
-import search4.entities.DisplayUserEntity;
-import search4.entities.SubscriptionEntity;
+import search4.entities.*;
+import search4.helpers.ResourceLink;
 
 import javax.ejb.EJB;
 import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
+import javax.ws.rs.core.*;
+import java.util.ArrayList;
 import java.util.List;
 
-//TODO add links
 @Path("/subscriptions")
 public class SubscriptionResource {
 
@@ -20,29 +18,57 @@ public class SubscriptionResource {
     private LocalSubscription subscriptionEJB;
     @EJB
     private LocalUser userEJB;
+    @Context
+    private UriInfo uriInfo;
 
     //TODO GET on subscription id?
 
     @GET
 	@Path("/user/{userId}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getUser(@PathParam("userId") Integer userId) throws Exception {
+	public Response getUser(@PathParam("userId") Integer userId) {
         try {
-            List<DisplaySubscriptionEntity> result = subscriptionEJB.getAllFor(userId);
+            List<DisplaySubscriptionEntity> subscriptionsForUser = subscriptionEJB.getAllFor(userId);
+            for (DisplaySubscriptionEntity displaySubscriptionEntity : subscriptionsForUser) {
+                List<ResourceLink> links = new ArrayList<ResourceLink>();
+                ResourceLink link = new ResourceLink("self", uriInfo.getBaseUri() + "movies/" + displaySubscriptionEntity.getSubscribedMovieId());
+                links.add(link);
+                displaySubscriptionEntity.setLinks(links);
+            }
+            GenericEntity<List<DisplaySubscriptionEntity>> entity = new GenericEntity<List<DisplaySubscriptionEntity>>(subscriptionsForUser){};
             return Response
-                    .ok()
-                    .entity(result) //TODO add links here
+                    .status(200)
+                    .entity(entity)
                     .build();
-        } catch (BadRequestException bre) {
-            return Response.status(Response.Status.BAD_REQUEST).build();
+        } catch (Exception e) {
+            return Response
+                    .status(400)
+                    .build();
         }
-	}
+    }
 
     @GET
     @Path("/movie/{movieId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<DisplayUserEntity> getMovie(@PathParam("movieId") Integer movieId) throws Exception {
-        return userEJB.getDisplayUsersSubscribedTo(movieId);
+    public Response getMovie(@PathParam("movieId") Integer movieId) {
+        try {
+            List<DisplayUserEntity> usersSubscribed = userEJB.getDisplayUsersSubscribedTo(movieId);
+            for (DisplayUserEntity displayUserEntity : usersSubscribed) {
+                List<ResourceLink> links = new ArrayList<ResourceLink>();
+                ResourceLink link = new ResourceLink("self", uriInfo.getBaseUri() + "users/" + displayUserEntity.getId());
+                links.add(link);
+                displayUserEntity.setLinks(links);
+            }
+            GenericEntity<List<DisplayUserEntity>> entity = new GenericEntity<List<DisplayUserEntity>>(usersSubscribed) {};
+            return Response
+                    .status(200)
+                    .entity(entity)
+                    .build();
+        } catch (Exception e) {
+            return Response
+                    .status(400)
+                    .build();
+        }
     }
 
     @GET
@@ -55,12 +81,8 @@ public class SubscriptionResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response addSubscription(SubscriptionEntity subscriptionEntity) {
-        try {
-            subscriptionEJB.subscribeToMovie(subscriptionEntity.getMovieId(), subscriptionEntity.getUserId());
-            return Response.ok("All is fine").build(); //TODO better response
-        } catch (BadRequestException bre) {
-            return Response.status(Response.Status.BAD_REQUEST).build(); //TODO better structure all the way down
-        }
+        InfoPayload infoPayload = subscriptionEJB.subscribeToMovie(subscriptionEntity.getMovieId(), subscriptionEntity.getUserId());
+        return responseFactory(infoPayload);
     }
 
     @DELETE
@@ -68,11 +90,15 @@ public class SubscriptionResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response removeSubscription(@PathParam("subscriptionId") Integer id) {
-        try {
-            subscriptionEJB.removeSubscription(id);
-            return Response.ok().build();
-        } catch (BadRequestException bre) {
-            return Response.status(Response.Status.BAD_REQUEST).build();
-        }
+        InfoPayload infoPayload = subscriptionEJB.removeSubscription(id);
+        return responseFactory(infoPayload);
+    }
+
+    private Response responseFactory(InfoPayload infoPayload) {
+        Integer status = infoPayload.getStatusCode();
+        return Response
+                .status(status)
+                .entity(infoPayload)
+                .build();
     }
 }

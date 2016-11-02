@@ -20,7 +20,6 @@
             <version>20160810</version>
         </dependency>
 
-        <!-- TEMP -->
         <dependency>
             <groupId>org.glassfish</groupId>
             <artifactId>javax.json</artifactId>
@@ -64,7 +63,19 @@
 	    	<version>2.0.1</version>
 	    	<scope>provided</scope>
 		</dependency>
+ 
+        <dependency>
+            <groupId>org.glassfish.jersey.core</groupId>
+            <artifactId>jersey-client</artifactId>
+            <version>2.6</version>
+            <scope>provided</scope>
+        </dependency>
 
+		 <dependency>
+		    <groupId>org.glassfish.jersey.media</groupId>
+		    <artifactId>jersey-media-moxy</artifactId>
+		     <version>2.24</version>
+		</dependency>
     </dependencies>
 
 </project>
