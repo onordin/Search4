@@ -15,7 +15,6 @@ import search4.entities.DisplayProviderEntity;
 @SessionScoped
 public class ProviderBean implements Serializable{
 
-	
 	private static final long serialVersionUID = 3275142775468170715L;
 	private List<DisplayProviderEntity> displayProviderEntities;
 	private List<String> providers;
@@ -44,7 +43,6 @@ public class ProviderBean implements Serializable{
 		}
 	}
 	
-	
 	public List<DisplayProviderEntity> getDisplayProviderEntities() {
 		return displayProviderEntities;
 	}
@@ -60,10 +58,4 @@ public class ProviderBean implements Serializable{
 	public void setProviders(List<String> providers) {
 		this.providers = providers;
 	}
-	
-	
-	
-	
-	
-	
 }

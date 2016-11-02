@@ -11,6 +11,7 @@ import javax.persistence.*;
 @Entity
 @Table(name="users", schema = "search4")
 @NamedQueries({
+		@NamedQuery(name="UserEntity.getAll", query="SELECT u from UserEntity u"),
 		@NamedQuery(name="UserEntity.getUserByEmail", query="SELECT userEntity FROM UserEntity userEntity WHERE userEntity.email = :email"),
 		@NamedQuery(name="UserEntity.getUserById", query="SELECT userEntity FROM UserEntity userEntity WHERE userEntity.id = :id"),
 		@NamedQuery(name="UserEntity.deleteUserById", query="DELETE FROM UserEntity userEntity WHERE userEntity.id = :id")

@@ -2,13 +2,13 @@ package search4.ejb;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
 import search4.daobeans.ProviderDOABean;
 import search4.ejb.interfaces.LocalProvider;
 import search4.entities.DisplayProviderEntity;
+import search4.entities.InfoPayload;
 import search4.entities.ProviderEntity;
 
 
@@ -32,7 +32,6 @@ public class ProviderEJB implements LocalProvider{
 		return listOfDisplayEntities;
 	}
 
-
 	//converts ProviderEntity to DisplayProviderEntity
 	private DisplayProviderEntity dbEntityToDisplayEntity(ProviderEntity providerEntity) {
 		DisplayProviderEntity displayProviderEntity = new DisplayProviderEntity();
@@ -41,8 +40,6 @@ public class ProviderEJB implements LocalProvider{
 		displayProviderEntity.setProvider(providerEntity.getProvider());
 		return displayProviderEntity;
 	}
-	
-	
 	
 	public void updateForUser(Integer userId, List<String> providersToKeep) {
 
@@ -58,7 +55,6 @@ public class ProviderEJB implements LocalProvider{
 		}		
 	}
 	
-	
 	private void addNewProviders(Integer userId, List<DisplayProviderEntity> oldList, List<String> providersToKeep) {
 		for(String currentProviderToAdd : providersToKeep) {
 			boolean alreadyAdded = false;
@@ -73,37 +69,42 @@ public class ProviderEJB implements LocalProvider{
 		}
 	}
 
-
-
 	private void removeUnwantedProviders(List<DisplayProviderEntity> oldList, List<String> providersToKeep) {
 		for(DisplayProviderEntity currentEntity : oldList) {
 			if(!providersToKeep.contains(currentEntity.getProvider())) {
-				removeProvider(currentEntity.getId());
+				removeProviderById(currentEntity.getId());
 			}
 		}
 	}
 
 
-
-	public boolean addProvider(String provider, Integer userId) {
+	public ProviderEntity addProvider(String provider, Integer userId) {
 		ProviderEntity providerEntity = new ProviderEntity();
 		providerEntity.setUserId(userId);
 		providerEntity.setProvider(provider);
-		if (providerDOABean.addProvider(providerEntity) == true) {
-			return true;
+		if (!providerDOABean.addProvider(providerEntity).equals(null)) {
+			return providerEntity;
 		}else {
-			return false;
+			return null;
 		}
 	}
-	
-	
-	public boolean removeProvider(Integer id) {
-		if (providerDOABean.removeProvider(id) == true) {
-			return true;
-		}else {
-			return false;
-		}
 		
+	public InfoPayload removeProviderById(Integer id) {
+		InfoPayload infoPayload = new InfoPayload();
+		if (providerDOABean.providerExist(id)!=false) {
+			if (providerDOABean.removeProvider(id) != false) {
+				infoPayload.setUser_Message("Provider with id: " + id + " has been deleted");
+				infoPayload.setResultOK(true);
+			}else {
+				infoPayload.setUser_Message("Provider with id: " + id + " has not been deleted");
+				infoPayload.setResultOK(false);
+			}		
+		}else {
+			infoPayload.setUser_Message("Provider with id: " + id + " do not exist");
+			infoPayload.setResultOK(false);
+		}
+		return infoPayload;
+
 	}
 	
 	public DisplayProviderEntity getProviderById(Integer providerId){
