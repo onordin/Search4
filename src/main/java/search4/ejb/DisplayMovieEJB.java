@@ -172,4 +172,5 @@ public class DisplayMovieEJB implements LocalDisplayMovie, Serializable{
     	return resultList;
     }
 
+
 }

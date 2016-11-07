@@ -72,6 +72,7 @@ public class ProviderEJB implements LocalProvider{
 		}
 	}
 
+
 	public ProviderEntity addProvider(String provider, Integer userId) {
 		ProviderEntity providerEntity = new ProviderEntity();
 		providerEntity.setUserId(userId);
@@ -98,6 +99,7 @@ public class ProviderEJB implements LocalProvider{
 			infoPayload.setResultOK(false);
 		}
 		return infoPayload;
+
 	}
 	
 	public DisplayProviderEntity getProviderById(Integer providerId){
