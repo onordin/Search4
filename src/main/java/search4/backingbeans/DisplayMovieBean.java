@@ -12,6 +12,7 @@ import search4.exceptions.UnregisteredProviderException;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
+import javax.enterprise.inject.New;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.inject.Named;
@@ -42,13 +43,13 @@ public class DisplayMovieBean implements Serializable{
     private boolean userSubscribesToMovie;
 
     private Integer subscriptionId;
-    private List<String> matchingProviders;
-
+    private List<String> matchingProviders = new ArrayList<>();
+    
+    
     public void postInit() {
         getMovieData(movieId);
-        matchingProviders = new ArrayList<String>();
-    }
-
+        }
+    
 
 	public void checkIfUserSubscribes(List<DisplaySubscriptionEntity> displaySubscriptionEntities) {
 		userSubscribesToMovie = false;
@@ -65,7 +66,10 @@ public class DisplayMovieBean implements Serializable{
     }
 
 	public void checkForMatchingSubscriptions(List<String> requestedProviders) {
-		matchingProviders = displayMovieEJB.getMatchingProviders(requestedProviders, displayMovieEntity);
+		List<String> matching = displayMovieEJB.getMatchingProviders(requestedProviders, displayMovieEntity);
+		for(String match : matching) {
+			matchingProviders.add(match);
+		}
 	}
 
     public void getMovieData(Integer id) {
@@ -158,6 +162,7 @@ public class DisplayMovieBean implements Serializable{
 		this.matchingProviders = matchingProviders;
 	}
 
-    
+
+
     
 }
