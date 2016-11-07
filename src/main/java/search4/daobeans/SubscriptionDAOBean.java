@@ -15,7 +15,13 @@ public class SubscriptionDAOBean implements Serializable{
 	
 	@PersistenceContext
 	private EntityManager entityManager;
-	
+
+	public SubscriptionEntity getSubscription(Integer id) {
+		return (SubscriptionEntity) entityManager.createNamedQuery("SubscriptionEntity.getWithId")
+				.setParameter("id", id)
+				.getSingleResult();
+	}
+
 	public List<SubscriptionEntity> getAll() {
 		return entityManager.createNamedQuery("SubscriptionEntity.findAll").getResultList();
 	}

@@ -11,7 +11,9 @@ import search4.entities.SubscriptionEntity;
 @Local
 public interface LocalSubscription {
 
-	List<SubscriptionEntity> getAll();
+	DisplaySubscriptionEntity getSubscription(Integer id);
+
+	List<DisplaySubscriptionEntity> getAll();
 
 	InfoPayload subscribeToMovie(Integer movieId, Integer userId);
 	

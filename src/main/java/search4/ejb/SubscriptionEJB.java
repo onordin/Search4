@@ -28,8 +28,17 @@ public class SubscriptionEJB implements LocalSubscription{
 	@EJB
 	private DisplayMovieDAOBean displayMovieDAOBean;
 
-    public List<SubscriptionEntity> getAll() {
-        return subscriptionDAOBean.getAll();
+    public DisplaySubscriptionEntity getSubscription(Integer id) {
+        SubscriptionEntity subscriptionEntity = subscriptionDAOBean.getSubscription(id);
+        return dbEntityToDisplayEntity(subscriptionEntity);
+    }
+    public List<DisplaySubscriptionEntity> getAll() {
+        List<SubscriptionEntity> subscriptionEntities = subscriptionDAOBean.getAll();
+        List<DisplaySubscriptionEntity> displaySubscriptionEntities = new ArrayList<DisplaySubscriptionEntity>();
+        for (SubscriptionEntity subscriptionEntity : subscriptionEntities) {
+            displaySubscriptionEntities.add(dbEntityToDisplayEntity(subscriptionEntity));
+        }
+        return displaySubscriptionEntities;
     }
 
 	public List<DisplaySubscriptionEntity> getAllFor(Integer userId) throws Exception { //TODO right place to do this?
@@ -45,6 +54,7 @@ public class SubscriptionEJB implements LocalSubscription{
 		DisplaySubscriptionEntity displayEntity = new DisplaySubscriptionEntity();
 		displayEntity.setSubscribedMovieId(se.getMovieId());
 		displayEntity.setId(se.getId());
+        displayEntity.setSubscribedUserId(se.getUserId());
 		try {
 			MovieEntity movieEntity = displayMovieDAOBean.getMovieData(se.getMovieId());
 			displayEntity.setTitle(movieEntity.getTitle());

@@ -7,6 +7,7 @@ import java.util.List;
 public class DisplaySubscriptionEntity {
 
     private Integer subscribedMovieId;
+	private Integer subscribedUserId;
     private String title;
     private Integer id;
 	private List<ResourceLink> links;
@@ -41,5 +42,13 @@ public class DisplaySubscriptionEntity {
 
 	public void setLinks(List<ResourceLink> links) {
 		this.links = links;
+	}
+
+	public Integer getSubscribedUserId() {
+		return subscribedUserId;
+	}
+
+	public void setSubscribedUserId(Integer subscribedUserId) {
+		this.subscribedUserId = subscribedUserId;
 	}
 }

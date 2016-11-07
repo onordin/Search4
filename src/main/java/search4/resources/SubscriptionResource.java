@@ -21,17 +21,40 @@ public class SubscriptionResource {
     @Context
     private UriInfo uriInfo;
 
-    //TODO GET on subscription id?
+    @GET
+    @Path("/{subscriptionId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getSubscription(@PathParam("subscriptionId") Integer subscriptionId) {
+        try {
+            DisplaySubscriptionEntity subscriptionEntity = subscriptionEJB.getSubscription(subscriptionId);
+            List<ResourceLink> links = new ArrayList<ResourceLink>();
+            ResourceLink movieLink = new ResourceLink("movie", uriInfo.getBaseUri() + "movies/" + subscriptionEntity.getSubscribedMovieId());
+            ResourceLink userLink = new ResourceLink("user", uriInfo.getBaseUri() + "users/" + subscriptionEntity.getSubscribedUserId());
+            links.add(movieLink);
+            links.add(userLink);
+            subscriptionEntity.setLinks(links);
+
+            GenericEntity<DisplaySubscriptionEntity> entity = new GenericEntity<DisplaySubscriptionEntity>(subscriptionEntity){};
+            return Response
+                    .status(200)
+                    .entity(entity)
+                    .build();
+        } catch (Exception e) {
+            return Response
+                    .status(400)
+                    .build();
+        }
+    }
 
     @GET
 	@Path("/user/{userId}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getUser(@PathParam("userId") Integer userId) {
+	public Response getAllMoviesForUser(@PathParam("userId") Integer userId) {
         try {
             List<DisplaySubscriptionEntity> subscriptionsForUser = subscriptionEJB.getAllFor(userId);
             for (DisplaySubscriptionEntity displaySubscriptionEntity : subscriptionsForUser) {
                 List<ResourceLink> links = new ArrayList<ResourceLink>();
-                ResourceLink link = new ResourceLink("self", uriInfo.getBaseUri() + "movies/" + displaySubscriptionEntity.getSubscribedMovieId());
+                ResourceLink link = new ResourceLink("movie", uriInfo.getBaseUri() + "movies/" + displaySubscriptionEntity.getSubscribedMovieId());
                 links.add(link);
                 displaySubscriptionEntity.setLinks(links);
             }
@@ -50,12 +73,12 @@ public class SubscriptionResource {
     @GET
     @Path("/movie/{movieId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getMovie(@PathParam("movieId") Integer movieId) {
+    public Response getAllUsersForMovie(@PathParam("movieId") Integer movieId) {
         try {
             List<DisplayUserEntity> usersSubscribed = userEJB.getDisplayUsersSubscribedTo(movieId);
             for (DisplayUserEntity displayUserEntity : usersSubscribed) {
                 List<ResourceLink> links = new ArrayList<ResourceLink>();
-                ResourceLink link = new ResourceLink("self", uriInfo.getBaseUri() + "users/" + displayUserEntity.getId());
+                ResourceLink link = new ResourceLink("user", uriInfo.getBaseUri() + "users/" + displayUserEntity.getId());
                 links.add(link);
                 displayUserEntity.setLinks(links);
             }
@@ -73,7 +96,7 @@ public class SubscriptionResource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<SubscriptionEntity> getSubscriptions() throws Exception {
+    public List<DisplaySubscriptionEntity> getSubscriptions() throws Exception {
         return subscriptionEJB.getAll();
     }
 
