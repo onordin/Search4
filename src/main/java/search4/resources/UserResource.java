@@ -8,6 +8,8 @@ import java.util.Map;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.enterprise.inject.Instance;
+import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -22,12 +24,13 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
+import search4.ejb.interfaces.LocalProvider;
 import search4.ejb.interfaces.LocalUser;
 import search4.entities.DisplayUserEntity;
 import search4.entities.UserEntity;
 import search4.exceptions.DataNotFoundException;
 import search4.helpers.ResourceLink;
-import search4.resources.entities.InfoPayload;
+import search4.entities.InfoPayload;
 
 
 @Stateless
@@ -40,6 +43,9 @@ public class UserResource implements Serializable{
 	
 	@EJB
 	private LocalUser userEJB;
+	
+	@Inject
+	private Instance<ProviderResource> providerResource;
 	
 	
 	@GET
@@ -54,7 +60,7 @@ public class UserResource implements Serializable{
 			displayUserEntity.setPassword("");
 			
 			List<ResourceLink> links = new ArrayList<ResourceLink>();
-			ResourceLink self = new ResourceLink("self", uriInfo.getAbsolutePath().toString());
+			ResourceLink self = new ResourceLink("self", uriInfo.getBaseUri().toString() + "users/" + displayUserEntity.getId());
 			links.add(self);
 			displayUserEntity.setLinks(links);
 			
@@ -81,7 +87,7 @@ public class UserResource implements Serializable{
 			
 			for(DisplayUserEntity displayUserEntity : allUsers) {
 				List<ResourceLink> links = new ArrayList<ResourceLink>();
-				ResourceLink self = new ResourceLink("self", uriInfo.getAbsolutePath().toString() + "/" + displayUserEntity.getId());
+				ResourceLink self = new ResourceLink("self", uriInfo.getBaseUri().toString() + "users/" + displayUserEntity.getId());
 				links.add(self);
 				displayUserEntity.setLinks(links);
 			}
@@ -117,7 +123,7 @@ public class UserResource implements Serializable{
 			displayUserEntity.setPassword("");
 			
 			List<ResourceLink> links = new ArrayList<ResourceLink>();
-			ResourceLink self = new ResourceLink("self", uriInfo.getAbsolutePath().toString() + "/" + displayUserEntity.getId());
+			ResourceLink self = new ResourceLink("self", uriInfo.getBaseUri().toString() + "users/" + displayUserEntity.getId());
 			links.add(self);
 			displayUserEntity.setLinks(links);
 			
@@ -147,7 +153,7 @@ public class UserResource implements Serializable{
 		try{
 			infoPayload = userEJB.updateUserDetails(displayUserEntity);
 			if(infoPayload.isResultOK()) {
-				infoPayload.setMore_Info(uriInfo.getAbsolutePath().toString());
+				infoPayload.setMore_Info(uriInfo.getBaseUri().toString() + "users/" + infoPayload.getInternal_Message());		//id has been put in InternalMessage variable
 				return Response
 						.status(Response.Status.OK)
 						.entity(infoPayload)
@@ -195,19 +201,19 @@ public class UserResource implements Serializable{
 	}
 	
 	
+
+	@GET
 	@Path("/{userId}/providers")
-	public ProviderResource getProviders() {
-		return new ProviderResource();
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getProvidersForUser(@PathParam("userId") Integer userId) {
+		return providerResource.get().getProvidersByUserId(userId);
 	}
 	
 	
 	
-	public String getAbsolutePath(UriInfo uriInfo) {
-		String uri = uriInfo.getBaseUriBuilder()
-				.path(UserResource.class) 		//ger http://localhost:8080/MyMess/api/messages
-				.build()
-				.toString();
-		return uri;
-	}
+	
+	
+	
+	
 	
 }

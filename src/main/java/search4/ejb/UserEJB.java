@@ -1,9 +1,14 @@
 package search4.ejb;
 
+import java.io.Serializable;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
+import java.security.spec.InvalidKeySpecException;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
-import javax.naming.InvalidNameException;
-import javax.sound.midi.MidiDevice.Info;
 import javax.ws.rs.InternalServerErrorException;
 
 import search4.daobeans.SubscriptionDAOBean;
@@ -16,15 +21,8 @@ import search4.entities.UserEntity;
 import search4.exceptions.DataNotFoundException;
 import search4.exceptions.DuplicateDataException;
 import search4.exceptions.InvalidInputException;
-import search4.resources.entities.InfoPayload;
+import search4.entities.InfoPayload;
 import search4.validators.EmailValidator;
-
-import java.io.Serializable;
-import java.security.NoSuchAlgorithmException;
-import java.security.NoSuchProviderException;
-import java.security.spec.InvalidKeySpecException;
-import java.util.ArrayList;
-import java.util.List;
 
 @Stateless
 public class UserEJB implements LocalUser, Serializable {
@@ -75,6 +73,14 @@ public class UserEJB implements LocalUser, Serializable {
 		return userDAOBean.userExist(email);
 	}
 
+	
+	public DisplayUserEntity getUserToFrontend(String email, String password) {
+		DisplayUserEntity displayUserEntity = getUser(email, password);
+		if(displayUserEntity != null) {
+			displayUserEntity.setPassword("");
+		}
+		return displayUserEntity;
+	}
 	
 	
 	public DisplayUserEntity getUser(String email, String password) {
@@ -268,6 +274,7 @@ public class UserEJB implements LocalUser, Serializable {
 			if(userDAOBean.updateUser(userEntity)) {
 				infoPayload.setUser_Message("User: " + activeUser.getEmail() + " has been updated");
 				infoPayload.setResultOK(true);
+				infoPayload.setInternal_Message(verifiedUser.getId().toString());
 			}else {
 				infoPayload.setUser_Message("User: " + activeUser.getEmail() + " has not been updated");
 				infoPayload.setResultOK(false);

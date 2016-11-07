@@ -3,26 +3,19 @@ package search4.backingbeans;
 import java.io.IOException;
 import java.io.Serializable;
 
-import java.util.Map;
-
-import java.util.Arrays;
-
-
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
-import javax.faces.application.NavigationHandler;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.ws.rs.InternalServerErrorException;
 
-import search4.ejb.UserEJB;
 import search4.ejb.interfaces.LocalUser;
 import search4.entities.DisplayUserEntity;
+import search4.entities.InfoPayload;
 import search4.entities.UserEntity;
 import search4.exceptions.DuplicateDataException;
 import search4.exceptions.InvalidInputException;
-import search4.resources.entities.InfoPayload;
 
 @Named(value="userBean")
 @SessionScoped
@@ -81,10 +74,9 @@ public class UserBean implements Serializable{
 	public void loginUser(){
 		ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
 		try {
-			displayUserEntity = userEJB.getUser(email, password);
+			displayUserEntity = userEJB.getUserToFrontend(email, password);
 			String returnView = viewId.replace("/", "");
 			if (displayUserEntity == null) {
-				displayUserEntity.setPassword("");
 				message = "Email or Password Wrong!";
 				userIsLoggedIn = null;
 				System.out.println("Log in error, userIsLoggedIn: " + userIsLoggedIn );
@@ -152,7 +144,7 @@ public class UserBean implements Serializable{
 		// 1. kolla om gamla lösenordet är rätt
 		// 2. kolla om first o second är samma
 		// 3. uppdatera db med nya lösen
-		DisplayUserEntity activeUser = userEJB.getUser(displayUserEntity.getEmail(), password);	//checks correct old password
+		DisplayUserEntity activeUser = userEJB.getUserToFrontend(displayUserEntity.getEmail(), password);	//checks correct old password
 		if(activeUser != null) {
 			if(firstPassword.equals(secondPassword)) {
 				if(firstPassword.matches(pattern)) {

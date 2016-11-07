@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -16,7 +17,6 @@ import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
-
 import search4.ejb.interfaces.LocalProvider;
 import search4.entities.DisplayProviderEntity;
 import search4.entities.InfoPayload;
@@ -77,9 +77,11 @@ public class ProviderResource {
 		}
 	}
 	
+	
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getAllProviders(){
+		System.out.println("getAll");
 		List<DisplayProviderEntity> allProviders = providerEJB.getAllProviders("");
 		GenericEntity<List<DisplayProviderEntity>>entity;
 		try{
@@ -100,30 +102,7 @@ public class ProviderResource {
 	}
 	
 	
-	@GET
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response getAllProvidersForOneUser(@Context UriInfo uriInfo, @PathParam("userId") Integer userId){
-		List<DisplayProviderEntity> providers = new ArrayList<DisplayProviderEntity>();
-		GenericEntity< List<DisplayProviderEntity> > entity;
-		providers = providerEJB.getAllForUser(userId);
-		try{
-			for (DisplayProviderEntity displayProviderEntity : providers) {
-				List<ResourceLink> links = new ArrayList<ResourceLink>();
-				ResourceLink link = new ResourceLink("self", uriInfo.getBaseUri()+ "providers/providerid/" + displayProviderEntity.getId());
-				links.add(link);
-				displayProviderEntity.setLinks(links);
-			}
-		
-			entity = new GenericEntity<List<DisplayProviderEntity>>(providers){};
-			return Response.status(200)
-					.entity(entity)
-					.build();
-		}catch (Exception e) {
-			return Response.status(Response.Status.NOT_FOUND)
-					.build();
-		}
-	}
-	
+
 	
 	@POST
 	@Path("/{userId}")
