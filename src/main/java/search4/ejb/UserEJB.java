@@ -137,6 +137,7 @@ public class UserEJB implements LocalUser, Serializable {
 		if(emailInDb(email)) {
 			UserEntity userEntity = userDAOBean.getUser(email);
 			DisplayUserEntity displayUser = getDisplayUserFromDBEntity(userEntity);
+			displayUser.setPassword("");
 			return displayUser;
 		}
 		return null;
@@ -145,6 +146,7 @@ public class UserEJB implements LocalUser, Serializable {
 	public DisplayUserEntity getUserByID(Integer id) throws DataNotFoundException{
 		UserEntity userEntity = userDAOBean.getUser(id);
 		DisplayUserEntity displayUserEntity = getDisplayUserFromDBEntity(userEntity);
+		displayUserEntity.setPassword("");
 		return displayUserEntity;
 	}
 

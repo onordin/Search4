@@ -47,6 +47,9 @@ public class UserResource implements Serializable{
 	@Inject
 	private Instance<ProviderResource> providerResource;
 	
+	@Inject
+	private Instance<SubscriptionResource> subscriptionResource;
+	
 	
 	@GET
 	@Path("/{userId}")
@@ -207,6 +210,15 @@ public class UserResource implements Serializable{
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getProvidersForUser(@PathParam("userId") Integer userId) {
 		return providerResource.get().getProvidersByUserId(userId);
+	}
+	
+	
+	
+	@GET
+	@Path("/{userId}/subscriptions")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getSubscriptionsForUser(@PathParam("userId") Integer userId) {
+		return subscriptionResource.get().getAllMoviesForUser(userId);
 	}
 	
 	

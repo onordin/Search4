@@ -3,6 +3,7 @@ package search4.ejb.interfaces;
 import java.util.List;
 
 import javax.ejb.Local;
+import javax.ws.rs.InternalServerErrorException;
 
 import search4.entities.DisplayUserEntity;
 import search4.entities.InfoPayload;
@@ -13,7 +14,7 @@ import search4.exceptions.DuplicateDataException;
 @Local
 public interface LocalUser {
 
-	DisplayUserEntity createUser(UserEntity userEntity);
+	DisplayUserEntity createUser(UserEntity userEntity) throws DuplicateDataException, InternalServerErrorException;
 	
 	DisplayUserEntity getUserToFrontend(String email, String password);
 	
@@ -27,7 +28,7 @@ public interface LocalUser {
 	
 	InfoPayload updateUserDetails(DisplayUserEntity activeUser);
 
-	InfoPayload deleteUser(Integer id) ;
+	InfoPayload deleteUser(Integer id);
 
 	List<DisplayUserEntity> getDisplayUsersSubscribedTo(Integer movieId);
 
