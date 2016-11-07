@@ -15,8 +15,16 @@ public class SubscriptionDAOBean implements Serializable{
 	
 	@PersistenceContext
 	private EntityManager entityManager;
-	
 
+	public SubscriptionEntity getSubscription(Integer id) {
+		return (SubscriptionEntity) entityManager.createNamedQuery("SubscriptionEntity.getWithId")
+				.setParameter("id", id)
+				.getSingleResult();
+	}
+
+	public List<SubscriptionEntity> getAll() {
+		return entityManager.createNamedQuery("SubscriptionEntity.findAll").getResultList();
+	}
 	public List<SubscriptionEntity> getAllFor(Integer userId) {
 		return entityManager.createNamedQuery("SubscriptionEntity.findAllFor")
                 .setParameter("userId", userId)
@@ -29,7 +37,6 @@ public class SubscriptionDAOBean implements Serializable{
 				.getResultList();
 	}
 
-
 	public boolean subscribeToMovie(SubscriptionEntity subscriptionEntity) {
 		try {
 			entityManager.merge(subscriptionEntity);
@@ -39,24 +46,17 @@ public class SubscriptionDAOBean implements Serializable{
 		}
 	}
 
-
-
 	public boolean removeSubscription(Integer id) {
-
-		try{
+		try {
 			SubscriptionEntity entity = (SubscriptionEntity) entityManager.createNamedQuery("SubscriptionEntity.getOneSubscription")
 			.setParameter("id", id)
 			.getSingleResult();
 			System.out.println(entity.toString());
 			entityManager.remove(entity);
 			return true;
-		}catch(Exception ex) {
+		} catch(Exception ex) {
 			ex.printStackTrace();
 			return false;
 		}
-
 	}
-
-
-
 }

@@ -3,7 +3,6 @@ package search4.ejb.interfaces;
 import java.util.List;
 
 import javax.ejb.Local;
-import javax.ws.rs.InternalServerErrorException;
 
 import search4.entities.DisplayUserEntity;
 import search4.entities.InfoPayload;
@@ -22,11 +21,11 @@ public interface LocalUser {
 
 	DisplayUserEntity getUserWithEmail(String email);
 	
-	DisplayUserEntity getUserByID(Integer id) throws DataNotFoundException;
+	DisplayUserEntity getUserByID(Integer id);
 
-	InfoPayload changePassword(DisplayUserEntity activeUser) throws DuplicateDataException, InternalServerErrorException;
+	InfoPayload changePassword(DisplayUserEntity activeUser);
 	
-	InfoPayload updateUserDetails(DisplayUserEntity activeUser) throws DuplicateDataException, InternalServerErrorException;
+	InfoPayload updateUserDetails(DisplayUserEntity activeUser);
 
 	InfoPayload deleteUser(Integer id) ;
 

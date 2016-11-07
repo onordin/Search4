@@ -13,8 +13,10 @@ public interface LocalProvider {
 	
 	public void updateForUser(Integer id, List<String> providers);
 	public List<DisplayProviderEntity> getAllForUser(Integer id);
+
 	public ProviderEntity addProvider(String provider, Integer userId);
 	public InfoPayload removeProviderById(Integer id);
+
 	public DisplayProviderEntity getProviderById(Integer providerId);
 	public List<DisplayProviderEntity> getAllProviders(String search);
 }

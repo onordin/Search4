@@ -2,8 +2,11 @@ package search4.entities;
 
 import javax.persistence.*;
 
+import search4.helpers.ResourceLink;
+
 import java.io.Serializable;
 import java.sql.Date;
+import java.util.List;
 
 /**
  * Auto generated from database table
@@ -121,4 +124,10 @@ public class MovieEntity implements Serializable {
                 ", date=" + date +
                 '}';
     }
+
+
+
+	
+
+
 }

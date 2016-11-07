@@ -6,6 +6,8 @@ import java.util.List;
 
 import javax.swing.plaf.synth.SynthScrollBarUI;
 
+import search4.helpers.ResourceLink;
+
 public class DisplayMovieEntity {
 
 //	private static final long serialVersionUID = -8197962163887331570L;
@@ -56,6 +58,8 @@ public class DisplayMovieEntity {
     private boolean hasOther;
     
     private boolean hasNone;
+    
+    private List<ResourceLink> links;
     
 
     public String getTitle() {
@@ -371,6 +375,14 @@ public class DisplayMovieEntity {
     				&& hasOther !=  true ? true : false);
     	
     }
+
+	public List<ResourceLink> getLinks() {
+		return links;
+	}
+
+	public void setLinks(List<ResourceLink> links) {
+		this.links = links;
+	}
     
     
 }

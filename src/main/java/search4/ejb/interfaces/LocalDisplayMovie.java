@@ -12,4 +12,5 @@ public interface LocalDisplayMovie {
 	DisplayMovieEntity getDisplayMovie(Integer id) throws Exception;
 
 	List<String> getMatchingProviders(List<String> requestedProviders, DisplayMovieEntity displayMovieEntity);
+
 }

@@ -5,6 +5,7 @@ public class InfoPayload {
 	private String user_Message;
 	private String internal_Message;
 	private String errorCode;
+	private Integer statusCode;
 	private String more_Info;
 	private boolean resultOK;
 	
@@ -37,5 +38,13 @@ public class InfoPayload {
 	}
 	public void setResultOK(boolean resultOK) {
 		this.resultOK = resultOK;
+	}
+
+	public Integer getStatusCode() {
+		return statusCode;
+	}
+
+	public void setStatusCode(Integer statusCode) {
+		this.statusCode = statusCode;
 	}
 }

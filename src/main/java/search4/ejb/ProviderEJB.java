@@ -18,12 +18,9 @@ public class ProviderEJB implements LocalProvider{
 	@EJB
 	private ProviderDOABean providerDOABean;
 
-	
 	public List<DisplayProviderEntity> getAllForUser(Integer userId) {
-		
 		List<ProviderEntity> listOfEntities = providerDOABean.getAllFor(userId);
 		List<DisplayProviderEntity> listOfDisplayEntities = new ArrayList<DisplayProviderEntity>();
-		System.out.println("list form DAOBean : " + listOfEntities);
 		if(listOfEntities != null && !listOfEntities.isEmpty()) {
 			for(ProviderEntity providerEntity : listOfEntities) {
 				listOfDisplayEntities.add(dbEntityToDisplayEntity(providerEntity));
@@ -42,9 +39,7 @@ public class ProviderEJB implements LocalProvider{
 	}
 	
 	public void updateForUser(Integer userId, List<String> providersToKeep) {
-
 		List<DisplayProviderEntity> oldList = getAllForUser(userId);
-		
 		if(oldList.isEmpty()) {
 			for(String provider : providersToKeep) {
 				addProvider(provider, userId);
@@ -77,6 +72,7 @@ public class ProviderEJB implements LocalProvider{
 		}
 	}
 
+
 	public ProviderEntity addProvider(String provider, Integer userId) {
 		ProviderEntity providerEntity = new ProviderEntity();
 		providerEntity.setUserId(userId);
@@ -103,6 +99,7 @@ public class ProviderEJB implements LocalProvider{
 			infoPayload.setResultOK(false);
 		}
 		return infoPayload;
+
 	}
 	
 	public DisplayProviderEntity getProviderById(Integer providerId){
