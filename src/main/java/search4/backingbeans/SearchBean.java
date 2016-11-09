@@ -36,6 +36,11 @@ public class SearchBean implements Serializable {
 		sortByParameter = "title";
 		sortHow = "ascending";
 	}
+    
+    public void cleanSearch() {
+    	query = "";
+    	movieEntities.clear();
+    }
 
     public String search(Integer setLimit) {
     	limit = setLimit;
