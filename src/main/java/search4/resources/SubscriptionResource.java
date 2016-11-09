@@ -110,7 +110,6 @@ public class SubscriptionResource {
 
     @DELETE
     @Path("/{subscriptionId}")
-    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response removeSubscription(@PathParam("subscriptionId") Integer id) {
         InfoPayload infoPayload = subscriptionEJB.removeSubscription(id);

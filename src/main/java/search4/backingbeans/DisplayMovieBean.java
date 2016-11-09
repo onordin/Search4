@@ -43,7 +43,7 @@ public class DisplayMovieBean implements Serializable{
     private boolean userSubscribesToMovie;
 
     private Integer subscriptionId;
-    private List<String> matchingProviders = new ArrayList<>();
+    private List<String> matchingProviders = new ArrayList<String>();
     
     
     public void postInit() {

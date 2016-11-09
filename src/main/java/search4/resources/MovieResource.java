@@ -55,7 +55,7 @@ public class MovieResource {
 	public Response getAllMovies(@Context UriInfo uriInfo) {
 		List<MovieEntity> allMovies;
 		GenericEntity< List <MovieResourceEntity> > entity;
-		List<MovieResourceEntity> movieEntityWrapped = new ArrayList<>();	
+		List<MovieResourceEntity> movieEntityWrapped = new ArrayList<MovieResourceEntity>();
 		try{
 			allMovies = searchEJB.searchOrderByTitleAsc("", 0);
 			for(MovieEntity movieEntity : allMovies) {
@@ -84,7 +84,7 @@ public class MovieResource {
 	public Response getMoviesOrderByTitleAsc(@Context UriInfo uriInfo, @PathParam("value") String value) {
 		List<MovieEntity> result;
 		GenericEntity< List <MovieResourceEntity> > entity;
-		List<MovieResourceEntity> movieEntityWrapped = new ArrayList<>();	
+		List<MovieResourceEntity> movieEntityWrapped = new ArrayList<MovieResourceEntity>();
 		try{
 			result = searchEJB.searchOrderByTitleAsc(value, 0);
 			for(MovieEntity movieEntity : result) {
@@ -113,7 +113,7 @@ public class MovieResource {
 		
 		List<MovieEntity> result;
 		GenericEntity< List <MovieResourceEntity> > entity;
-		List<MovieResourceEntity> movieEntityWrapped = new ArrayList<>();	
+		List<MovieResourceEntity> movieEntityWrapped = new ArrayList<MovieResourceEntity>();
 		try{
 			result = searchEJB.searchOrderByTitleDesc(value, 0);
 			for(MovieEntity movieEntity : result) {
@@ -141,7 +141,7 @@ public class MovieResource {
 	public Response getMoviesOrderByDateAsc(@Context UriInfo uriInfo, @PathParam("value") String value) {
 		List<MovieEntity> result;
 		GenericEntity< List <MovieResourceEntity> > entity;
-		List<MovieResourceEntity> movieEntityWrapped = new ArrayList<>();	
+		List<MovieResourceEntity> movieEntityWrapped = new ArrayList<MovieResourceEntity>();
 		try{
 			result = searchEJB.searchOrderByDateAsc(value, 0);
 			for(MovieEntity movieEntity : result) {
@@ -169,7 +169,7 @@ public class MovieResource {
 	public Response getMoviesOrderByDateDesc(@Context UriInfo uriInfo, @PathParam("value") String value) {
 		List<MovieEntity> result;
 		GenericEntity< List <MovieResourceEntity> > entity;
-		List<MovieResourceEntity> movieEntityWrapped = new ArrayList<>();	
+		List<MovieResourceEntity> movieEntityWrapped = new ArrayList<MovieResourceEntity>();
 		try{
 			result = searchEJB.searchOrderByDateDesc(value, 0);
 			for(MovieEntity movieEntity : result) {
