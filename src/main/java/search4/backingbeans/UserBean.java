@@ -28,6 +28,7 @@ public class UserBean implements Serializable{
 	private String email;
 	private String password;
 	private String message;
+	private String registerMessage;
 	private String userIsLoggedIn;
 	private String passwordReset;
 	private String firstPassword;
@@ -42,13 +43,31 @@ public class UserBean implements Serializable{
 	private LocalUser userEJB;
 	
 	public String createUser(){
+		String pattern = "((?=.*[A-Za-z]).{6,})";
 		UserEntity userEntity = new UserEntity();
+		
+		if(firstPassword.equals(secondPassword)) {
+			if(firstPassword.matches(pattern)) {
+				userEntity.setPassword(firstPassword);
+			} else {
+				registerMessage = "Password needs to be 6-50 characters";
+				return "full_register";
+			}
+		} else {
+			registerMessage = "Both new passwords have to match";
+			return "full_register";
+		}
+
 		userEntity.setFirstName(firstName);
 		userEntity.setLastName(lastName);
 		userEntity.setEmail(email);
-		userEntity.setPassword(password);
+		
 		try {
 			userEJB.createUser(userEntity);
+			firstName = "";
+			lastName = "";
+			email = "";
+			password = "";
 			message = "New user with email: " + email + " created";
 			return "full_startpage";
 		} catch (DuplicateDataException dde) {
@@ -138,7 +157,7 @@ public class UserBean implements Serializable{
 	}
 	
 	public String changePassword() {
-		String pattern = "((?=.*[a-z]).{6,})";
+		String pattern = "((?=.*[A-Za-z]).{6,})";
 		// 1. kolla om gamla lösenordet är rätt
 		// 2. kolla om first o second är samma
 		// 3. uppdatera db med nya lösen
@@ -154,7 +173,7 @@ public class UserBean implements Serializable{
 					activeUser.setSecondPassword("");
 					message = "New password saved!";
 				} else {
-					message = "New password needs to be at least 6 charecters long (plus en liten bokstav...)";
+					message = "New password needs to be at least 6 -50 characters";
 				}
 			} else {
 				message = "Both new passwords have to match. New password was not changed.";
@@ -263,6 +282,21 @@ public class UserBean implements Serializable{
 
 	public void setId(Integer id) {
 		this.id = id;
+	}
+
+
+	public String getRegisterMessage() {
+		return registerMessage;
+	}
+
+
+	public void setRegisterMessage(String registerMessage) {
+		this.registerMessage = registerMessage;
+	}
+
+
+	public void setMessage(String message) {
+		this.message = message;
 	}
 
 }
