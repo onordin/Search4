@@ -2,6 +2,8 @@ package search4.backingbeans;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.math.BigInteger;
+import java.security.SecureRandom;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
@@ -10,6 +12,7 @@ import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.ws.rs.InternalServerErrorException;
 
+import search4.ejb.interfaces.LocalEmail;
 import search4.ejb.interfaces.LocalUser;
 import search4.entities.DisplayUserEntity;
 import search4.entities.InfoPayload;
@@ -35,11 +38,14 @@ public class UserBean implements Serializable{
 	
 	private String viewId;
 	private Integer id;
+	
 
 	private DisplayUserEntity displayUserEntity;
 	
 	@EJB
 	private LocalUser userEJB;
+	@EJB
+	private LocalEmail emailEJB;
 	
 	public void createUser(){
 		UserEntity userEntity = new UserEntity();
@@ -125,20 +131,30 @@ public class UserBean implements Serializable{
 	}
 	
 	public String forgotPassword() {
-		displayUserEntity = userEJB.getUserWithEmail(email);
 		
-		if(displayUserEntity == null) {
+		DisplayUserEntity activeUser = userEJB.getUserWithEmail(email);
+		
+		if(activeUser == null) {
 			passwordReset = "Email doesn't exist";
 			email = "";
 			return "forgot_password";
 		}
-		// generate new random password
-		// update db
-		// send email
+		String randomPassword = GenerateRandomPassword();
+		activeUser.setFirstPassword(randomPassword);
+		activeUser.setSecondPassword(randomPassword);
+		userEJB.changePasswordByEmail(activeUser);
+		
 		passwordReset = "Instrctions sent to " +email;
 		email = "";
 		return "full_forgot_password";
 	}
+	
+	private String GenerateRandomPassword() {
+		SecureRandom random = new SecureRandom();
+		return new BigInteger(130, random).toString(32);
+	}
+
+	  
 	
 	public String changePassword() {
 		String pattern = "((?=.*[a-z]).{6,})";

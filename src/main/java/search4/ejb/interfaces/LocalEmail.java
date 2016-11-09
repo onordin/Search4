@@ -15,4 +15,6 @@ public interface LocalEmail {
     void sendNotificationMail(DisplayUserEntity user, MovieEntity movie);
 
     String linkFactory(DisplayMovieEntity movie);
+    
+    void sendForgotPasswordMail(DisplayUserEntity user, String newPassword);
 }

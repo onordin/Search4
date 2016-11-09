@@ -34,4 +34,6 @@ public interface LocalUser {
 
 	List<DisplayUserEntity> getAllUsers();
 
+	InfoPayload changePasswordByEmail(DisplayUserEntity activeUser);
+
 }
