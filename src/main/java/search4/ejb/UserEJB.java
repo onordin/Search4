@@ -181,7 +181,7 @@ public class UserEJB implements LocalUser, Serializable {
                 userEntity.setLastName(verifiedUser.getLastName());
                 userEntity.setEmail(verifiedUser.getEmail());
                 userEntity.setPassword(hashedPassword); 		//has now been hashed
-                setInfoPayloadInfo(activeUser, userEntity, infoPayload);
+                infoPayload = tryUpdateDatabaseAndInfoPayload(activeUser, userEntity, infoPayload);
             } catch (NoSuchProviderException e) {
                 throw new InternalServerErrorException("Something went wrong internally, please try again later!");
             } catch (NoSuchAlgorithmException e) {
@@ -244,7 +244,7 @@ public class UserEJB implements LocalUser, Serializable {
 			}
 
 			userEntity.setPassword(verifiedUser.getPassword());
-			setInfoPayloadInfo(activeUser, userEntity, infoPayload);
+			infoPayload = tryUpdateDatabaseAndInfoPayload(activeUser, userEntity, infoPayload);
 		} else {
 			infoPayload.setUser_Message("User: " + activeUser.getEmail() + " has not been updated, please check username/password");
 			infoPayload.setResultOK(false);
@@ -253,7 +253,7 @@ public class UserEJB implements LocalUser, Serializable {
 	}
 
 	
-	private void setInfoPayloadInfo(DisplayUserEntity displayUserEntity, UserEntity userEntity, InfoPayload infoPayload) {
+	private InfoPayload tryUpdateDatabaseAndInfoPayload(DisplayUserEntity displayUserEntity, UserEntity userEntity, InfoPayload infoPayload) {
 		if(userDAOBean.updateUser(userEntity)) {
 			infoPayload.setUser_Message("User: " + displayUserEntity.getEmail() + " has been updated");
 			infoPayload.setResultOK(true);
@@ -262,6 +262,7 @@ public class UserEJB implements LocalUser, Serializable {
 			infoPayload.setUser_Message("User: " + displayUserEntity.getEmail() + " has not been updated");
 			infoPayload.setResultOK(false);
 		}
+		return infoPayload;
 	}
 
     public InfoPayload deleteUser(Integer id) {
