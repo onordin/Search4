@@ -48,7 +48,7 @@ public class UserBean implements Serializable{
 	@EJB
 	private LocalUser userEJB;
 	
-	public void createUser(){
+	public String createUser(){
 		UserEntity userEntity = new UserEntity();
 		userEntity.setFirstName(firstName);
 		userEntity.setLastName(lastName);
@@ -57,23 +57,25 @@ public class UserBean implements Serializable{
 		try {
 			userEJB.createUser(userEntity);
 			message = "New user with email: " + email + " created";
-			String returnView = viewId.replace("/", "");
+			/*String returnView = viewId.replace("/", "");
 			ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
-			externalContext.redirect(returnView+"?id="+id);
+			System.out.println("REGISTER: " + returnView);
+			externalContext.redirect(returnView+"?faces-redirect=true");*/
+			return "full_startpage";
 			
 		} catch (DuplicateDataException dde) {
 			message = dde.getMessage();
-			//return "full_startpage";
+			return "full_startpage";
 		} catch (InternalServerErrorException isee) {
 			message = isee.getMessage();
-			//return "full_startpage";
+			return "full_startpage";
 		} catch (InvalidInputException iie) {
 			message = iie.getMessage();
-			//return "full_startpage";
+			return "full_startpage";
 		}
 		catch (Exception e) {
 			message = "Unknown Error";
-			//return "full_startpage";
+			return "full_startpage";
 		}
 	}
 	
@@ -84,7 +86,7 @@ public class UserBean implements Serializable{
 			displayUserEntity = userEJB.getUser(email, password);
 			String returnView = viewId.replace("/", "");
 			if (displayUserEntity == null) {
-				displayUserEntity.setPassword("");
+				//displayUserEntity.setPassword("");
 				message = "Email or Password Wrong!";
 				userIsLoggedIn = null;
 				System.out.println("Log in error, userIsLoggedIn: " + userIsLoggedIn );

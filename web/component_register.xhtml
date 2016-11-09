@@ -60,7 +60,9 @@
 						</h:inputText>
 					
 					
-						<h:commandButton action="#{userBean.createUser()}" value="Create" />
+						<h:commandButton action="#{userBean.createUser()}" value="Create">
+							<f:setPropertyActionListener value="#{view.viewId}" target="#{userBean.viewId}"></f:setPropertyActionListener>
+						</h:commandButton>
 						
 						
 					</h:panelGrid>
