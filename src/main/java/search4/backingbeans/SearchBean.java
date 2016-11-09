@@ -135,17 +135,13 @@ public class SearchBean implements Serializable {
 
 
 	public void updateListSortByParameter() {
-		System.out.println("sortbyparameter: " + sortByParameter);
-		System.out.println("movielist size:" + movieEntities.size());
 		if(sortByParameter.equals("title") && !movieEntities.isEmpty()) {
 			Collections.sort(movieEntities, new MovieEntityTitleComparator());
 			if(sortHow.equals("descending")){
 				Collections.reverse(movieEntities);
 			}
-			System.out.println("in title sort");
 		}else if(!movieEntities.isEmpty()) {
 			Collections.sort(movieEntities, new MovieEntityDateComparator());	
-			System.out.println("in date sort");
 			if(sortHow.equals("descending")){
 				Collections.reverse(movieEntities);
 			}
@@ -154,7 +150,6 @@ public class SearchBean implements Serializable {
 	
 
 	public void updateListSortByHow() {
-		System.out.println("inside sort by how");
 		
 	}
 	

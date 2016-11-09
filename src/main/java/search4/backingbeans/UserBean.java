@@ -89,14 +89,12 @@ public class UserBean implements Serializable{
 
 	public void loginUser(){
 		ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
-		System.out.println("HHHHHEEEEEEJJJJJJ");
 		try {
 			displayUserEntity = userEJB.getUserToFrontend(email, password);
 			String returnView = viewId.replace("/", "");
 			if (displayUserEntity == null) {
 				message = "Email or Password Wrong!";
 				userIsLoggedIn = null;
-				System.out.println("Log in error, userIsLoggedIn: " + userIsLoggedIn );
 				externalContext.redirect(externalContext.getRequestContextPath() + viewId+"?id="+id);
 			}else{
 			message = "Login Successfull";
