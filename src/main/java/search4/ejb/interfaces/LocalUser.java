@@ -1,5 +1,7 @@
 package search4.ejb.interfaces;
 
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.util.List;
 
 import javax.ejb.Local;
@@ -14,11 +16,11 @@ import search4.exceptions.DuplicateDataException;
 @Local
 public interface LocalUser {
 
-	DisplayUserEntity createUser(UserEntity userEntity) throws DuplicateDataException, InternalServerErrorException;
+	DisplayUserEntity createUser(UserEntity userEntity) throws DuplicateDataException, InternalServerErrorException, NoSuchAlgorithmException, InvalidKeySpecException;
 	
-	DisplayUserEntity getUserToFrontend(String email, String password);
+	DisplayUserEntity getUserToFrontend(String email, String password)throws NoSuchAlgorithmException, InvalidKeySpecException;
 	
-	DisplayUserEntity getUser(String email, String password);
+	DisplayUserEntity getUser(String email, String password) throws NoSuchAlgorithmException, InvalidKeySpecException;
 
 	DisplayUserEntity getUserWithEmail(String email);
 	

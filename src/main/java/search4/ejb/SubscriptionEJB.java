@@ -12,6 +12,7 @@ import search4.daobeans.SubscriptionDAOBean;
 import search4.daobeans.UserDAOBean;
 import search4.ejb.interfaces.LocalSubscription;
 import search4.entities.*;
+import search4.exceptions.DataNotFoundException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +29,7 @@ public class SubscriptionEJB implements LocalSubscription{
 	@EJB
 	private DisplayMovieDAOBean displayMovieDAOBean;
 
-    public DisplaySubscriptionEntity getSubscription(Integer id) {
+    public DisplaySubscriptionEntity getSubscription(Integer id) throws DataNotFoundException {
         SubscriptionEntity subscriptionEntity = subscriptionDAOBean.getSubscription(id);
         return dbEntityToDisplayEntity(subscriptionEntity);
     }
@@ -41,7 +42,7 @@ public class SubscriptionEJB implements LocalSubscription{
         return displaySubscriptionEntities;
     }
 
-	public List<DisplaySubscriptionEntity> getAllFor(Integer userId) throws Exception { //TODO right place to do this?
+	public List<DisplaySubscriptionEntity> getAllFor(Integer userId) throws DataNotFoundException {
 		List<SubscriptionEntity> list = subscriptionDAOBean.getAllFor(userId);
 		List<DisplaySubscriptionEntity> displayEntities = new ArrayList<DisplaySubscriptionEntity>();
 		for (SubscriptionEntity se : list) {

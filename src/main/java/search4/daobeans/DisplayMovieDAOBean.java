@@ -36,6 +36,9 @@ public class DisplayMovieDAOBean implements Serializable{
         }
     }
 
+    //Movie should ideally return a Status object with the status (DataNotFound or similar, or OK) + the Object
+    //However, due to lack of time, returns null in case of error and handled higher up
+    //Problem due to Java EE's way of handling thrown Exceptions and transaction rollbacks
     public MovieEntity getMovieByGuideboxId(Long guideboxId) throws DataNotFoundException {
         MovieEntity m = null;
         try {
@@ -45,9 +48,8 @@ public class DisplayMovieDAOBean implements Serializable{
             return m;
         }
         catch (NoResultException ne) {
-            //TODO temp to return null instead of error
-//            throw new DataNotFoundException("No movie in database with that guidebox ID ("+guideboxId+")");
+            System.out.println("LOG: Error, No movie in database with that guidebox ID ("+guideboxId+")");
         }
-        return m;
+		return m;
     }
 }

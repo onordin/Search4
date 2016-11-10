@@ -34,7 +34,7 @@ public class UserEJB implements LocalUser, Serializable {
     private SubscriptionDAOBean subscriptionDAOBean;
   
 	
-	public DisplayUserEntity createUser(UserEntity userEntity) throws DuplicateDataException, InternalServerErrorException{
+	public DisplayUserEntity createUser(UserEntity userEntity) throws DuplicateDataException, InternalServerErrorException, NoSuchAlgorithmException, InvalidKeySpecException{
 		//Validation
 		DisplayUserEntity displayUserEntity = null;
 		userEntity.setEmail(userEntity.getEmail().toLowerCase()); //Keep all email addresses in lowercase always
@@ -74,7 +74,7 @@ public class UserEJB implements LocalUser, Serializable {
 	}
 
 	
-	public DisplayUserEntity getUserToFrontend(String email, String password) {
+	public DisplayUserEntity getUserToFrontend(String email, String password) throws NoSuchAlgorithmException, InvalidKeySpecException {
 		DisplayUserEntity displayUserEntity = getUser(email, password);
 		if(displayUserEntity != null) {
 			displayUserEntity.setPassword("");
@@ -84,21 +84,16 @@ public class UserEJB implements LocalUser, Serializable {
 	
 	
 
-	public DisplayUserEntity getUser(String email, String password) {
+	public DisplayUserEntity getUser(String email, String password) throws NoSuchAlgorithmException, InvalidKeySpecException {
 		if(userDAOBean.userExist(email)) {
 			UserEntity userEntity = userDAOBean.getUser(email);
 			DisplayUserEntity displayUser = getDisplayUserFromDBEntity(userEntity);
-			try {
-				if (PBKDF2.validatePassword(password, displayUser.getPassword())) {
+			
+			if (PBKDF2.validatePassword(password, displayUser.getPassword())) {
 					return displayUser;
-				}
-				//TODO handle this better?
-			} catch (NoSuchAlgorithmException e) {
-				e.printStackTrace();
-			} catch (InvalidKeySpecException e) {
-				e.printStackTrace();
-			}
+			}else {
 			return null;
+			}
 		} else {
 			return null;
 		}
@@ -120,7 +115,7 @@ public class UserEJB implements LocalUser, Serializable {
         DisplayUserEntity current;
         for (UserEntity userEntity : userEntities) {
             current = getDisplayUserFromDBEntity(userEntity);
-            current.setPassword("HIDDEN"); //TODO remove? remove password alltogehter?
+            current.setPassword("HIDDEN"); 
             displayUserEntities.add(current);
         }
         return displayUserEntities;
@@ -167,7 +162,15 @@ public class UserEJB implements LocalUser, Serializable {
 	public InfoPayload changePassword(DisplayUserEntity activeUser) throws DuplicateDataException, InternalServerErrorException{
 
         InfoPayload infoPayload = new InfoPayload();
-        DisplayUserEntity verifiedUser = getUser(activeUser.getEmail(), activeUser.getPassword());
+        DisplayUserEntity verifiedUser = null;
+        
+		try {
+			verifiedUser = getUser(activeUser.getEmail(), activeUser.getPassword());
+		} catch (NoSuchAlgorithmException nsale) {
+			infoPayload.setMore_Info(nsale.getMessage());
+		} catch (InvalidKeySpecException ikse) {
+			infoPayload.setMore_Info(ikse.getMessage());
+		}
 
         if(verifiedUser != null) {
             try {
@@ -238,7 +241,15 @@ public class UserEJB implements LocalUser, Serializable {
 	public InfoPayload updateUserDetails(DisplayUserEntity activeUser) throws DuplicateDataException, InternalServerErrorException {
 
 		InfoPayload infoPayload = new InfoPayload();
-		DisplayUserEntity verifiedUser = getUser(activeUser.getEmail(), activeUser.getPassword());
+		DisplayUserEntity verifiedUser = null;
+		
+		try {
+			verifiedUser = getUser(activeUser.getEmail(), activeUser.getPassword());
+		} catch (NoSuchAlgorithmException nsae) {
+			infoPayload.setMore_Info(nsae.getMessage());
+		} catch (InvalidKeySpecException ikse) {
+			infoPayload.setMore_Info(ikse.getMessage());
+		}
 
 		if(verifiedUser != null) {
 			UserEntity userEntity = new UserEntity();
