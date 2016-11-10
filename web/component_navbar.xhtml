@@ -105,7 +105,9 @@
 	        	<h:form class="navbar-form navbar-right">
          			<ul class="nav navbar-nav navbar-right">
             			<li><h:commandButton type="submit" class="log-off" action="#{userBean.viewProfile()}" value="Profile"></h:commandButton></li>
-			            <li><h:commandButton type="submit" class="log-off" action="#{userBean.logOffUser()}" value="Log off"></h:commandButton></li>
+			            <li><h:commandButton type="submit" class="log-off" action="#{userBean.logOffUser()}" value="Log off">
+			            	<f:actionListener binding="#{searchBean.cleanSearch()}" />
+			            </h:commandButton></li>
           			</ul>
           			</h:form>
         		</div>

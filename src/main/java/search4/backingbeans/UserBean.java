@@ -28,6 +28,7 @@ public class UserBean implements Serializable{
 	private String email;
 	private String password;
 	private String message;
+	private String registerMessage;
 	private String userIsLoggedIn;
 	private String passwordReset;
 	private String firstPassword;
@@ -41,32 +42,47 @@ public class UserBean implements Serializable{
 	@EJB
 	private LocalUser userEJB;
 	
-	public void createUser(){
+	public String createUser(){
+		String pattern = "((?=.*[A-Za-z]).{6,})";
 		UserEntity userEntity = new UserEntity();
+		
+		if(firstPassword.equals(secondPassword)) {
+			if(firstPassword.matches(pattern)) {
+				userEntity.setPassword(firstPassword);
+			} else {
+				registerMessage = "Password needs to be 6-50 characters";
+				return "full_register";
+			}
+		} else {
+			registerMessage = "Both new passwords have to match";
+			return "full_register";
+		}
+
 		userEntity.setFirstName(firstName);
 		userEntity.setLastName(lastName);
 		userEntity.setEmail(email);
-		userEntity.setPassword(password);
+		
 		try {
 			userEJB.createUser(userEntity);
+			firstName = "";
+			lastName = "";
+			email = "";
+			password = "";
 			message = "New user with email: " + email + " created";
-			String returnView = viewId.replace("/", "");
-			ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
-			externalContext.redirect(returnView+"?id="+id);
-			
+			return "full_startpage";
 		} catch (DuplicateDataException dde) {
 			message = dde.getMessage();
-			//return "full_startpage";
+			return "full_startpage";
 		} catch (InternalServerErrorException isee) {
 			message = isee.getMessage();
-			//return "full_startpage";
+			return "full_startpage";
 		} catch (InvalidInputException iie) {
 			message = iie.getMessage();
-			//return "full_startpage";
+			return "full_startpage";
 		}
 		catch (Exception e) {
 			message = "Unknown Error";
-			//return "full_startpage";
+			return "full_startpage";
 		}
 	}
 	
@@ -122,8 +138,24 @@ public class UserBean implements Serializable{
 		
 	}
 	
+	public String forgotPassword() {
+		displayUserEntity = userEJB.getUserWithEmail(email);
+		
+		if(displayUserEntity == null) {
+			passwordReset = "Email doesn't exist";
+			email = "";
+			return "forgot_password";
+		}
+		// generate new random password
+		// update db
+		// send email
+		passwordReset = "Instrctions sent to " +email;
+		email = "";
+		return "full_forgot_password";
+	}
+	
 	public String changePassword() {
-		String pattern = "((?=.*[a-z]).{6,})";
+		String pattern = "((?=.*[A-Za-z]).{6,})";
 		// 1. kolla om gamla lösenordet är rätt
 		// 2. kolla om first o second är samma
 		// 3. uppdatera db med nya lösen
@@ -139,7 +171,7 @@ public class UserBean implements Serializable{
 					activeUser.setSecondPassword("");
 					message = "New password saved!";
 				} else {
-					message = "New password needs to be at least 6 charecters long (plus en liten bokstav...)";
+					message = "New password needs to be at least 6 -50 characters";
 				}
 			} else {
 				message = "Both new passwords have to match. New password was not changed.";
@@ -248,6 +280,21 @@ public class UserBean implements Serializable{
 
 	public void setId(Integer id) {
 		this.id = id;
+	}
+
+
+	public String getRegisterMessage() {
+		return registerMessage;
+	}
+
+
+	public void setRegisterMessage(String registerMessage) {
+		this.registerMessage = registerMessage;
+	}
+
+
+	public void setMessage(String message) {
+		this.message = message;
 	}
 
 }
