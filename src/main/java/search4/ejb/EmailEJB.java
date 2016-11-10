@@ -1,13 +1,13 @@
 package search4.ejb;
 
 
+import search4.ejb.interfaces.LocalDisplayMovie;
 import search4.ejb.interfaces.LocalEmail;
-import search4.entities.DisplayMovieEntity;
-import search4.entities.DisplayUserEntity;
-import search4.entities.MovieEntity;
-import search4.entities.ServiceProviderLink;
+import search4.ejb.interfaces.LocalProvider;
+import search4.entities.*;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
@@ -27,8 +27,9 @@ import javax.mail.internet.MimeMessage;
 public class EmailEJB implements LocalEmail, Serializable{
 
     @EJB
-    private DisplayMovieEJB displayMovieEJB;
-    
+    private LocalDisplayMovie displayMovieEJB;
+    @EJB
+    private LocalProvider providerEJB;
 
     private final String USERNAME = "searchfourmail@gmail.com";
 
@@ -51,10 +52,15 @@ public class EmailEJB implements LocalEmail, Serializable{
         return session;
     }
 
-    public void sendNotificationMail(DisplayUserEntity user, MovieEntity movie) {
+    public void sendNotificationMail(DisplayUserEntity user, DisplayMovieEntity movie) {
         String recipent = user.getEmail();
         String subject = movie.getTitle()+" avaliable";
-        String link = linkFactory(displayMovieEJB.createDisplayMovie(movie));
+        String link = "LINK ERROR";
+        try {
+            link = linkFactory(movie, user);
+        } catch (Exception e) {
+            System.out.println("SUPER ERROR "+e);
+        }
         String message = "Hello "+user.getFirstName()+", the movie "+movie.getTitle()+
                 " which you subscribed to has become available on a streaming service.\n"+
                 "Please use the link(s) below to watch it.\n\n"+
@@ -85,8 +91,35 @@ public class EmailEJB implements LocalEmail, Serializable{
     }
 
     //TODO in helper or factory file/package? feels like the wrong place -- HELPER
-    public String linkFactory(DisplayMovieEntity movie) {
+    public String linkFactory(DisplayMovieEntity movie, DisplayUserEntity userEntity) {
         String link = "";
+        List<ServiceProviderLink> links = getAllServiceProviderLinksFor(movie);
+        for (ServiceProviderLink spl : links) {
+            link += spl.getName()+": "+spl.getUrl()+"\n";
+        }
+        return link;
+    }
+
+//    private List<ServiceProviderLink> getDesiredProviders(List<ServiceProviderLink> allLinks, DisplayUserEntity userEntity) {
+//        List<ServiceProviderLink> desiredProviderLinks = new ArrayList<ServiceProviderLink>();
+//        List<DisplayProviderEntity> desiredProviders = providerEJB.getAllForUser(userEntity.getId());
+////        List<ServiceProviderLink> compareableProviders = displayProvidersToServiceProviderLinks(desiredProviders);
+//        for (ServiceProviderLink providerLink : allLinks) {
+//
+//        }
+//    }
+//
+//    private List<ServiceProviderLink> displayProvidersToServiceProviderLinks(List<DisplayProviderEntity> displayProviderEntities) {
+//        List<ServiceProviderLink> serviceProviderLinks = new ArrayList<ServiceProviderLink>();
+//        for (DisplayProviderEntity displayProvider : displayProviderEntities) {
+//            ServiceProviderLink providerLink = new ServiceProviderLink();
+//            providerLink.setName(displayProvider.getProvider()
+//            serviceProviderLinks.add(providerLink);
+//        }
+//        return serviceProviderLinks;
+//    }
+
+    private List<ServiceProviderLink> getAllServiceProviderLinksFor(DisplayMovieEntity movie) {
         List<ServiceProviderLink> links = movie.getProviderListAndroidFree();
         links.addAll(movie.getProviderListAndroidPurchase());
         links.addAll(movie.getProviderListAndroidSubscription());
@@ -102,9 +135,8 @@ public class EmailEJB implements LocalEmail, Serializable{
         links.addAll(movie.getProviderListWebPurchase());
         links.addAll(movie.getProviderListWebSubscription());
         links.addAll(movie.getProviderListWebTvEverywhere());
-        for (ServiceProviderLink spl : links) {
-            link += spl.getName()+": "+spl.getUrl()+"\n";
-        }
-        return link;
+        return links;
     }
+
+	
 }

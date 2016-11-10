@@ -2,9 +2,9 @@ package search4.ejb;
 
 import search4.daobeans.DisplayMovieDAOBean;
 import search4.daobeans.UpdateDatabaseDAOBean;
-import search4.ejb.interfaces.LocalEmail;
-import search4.ejb.interfaces.LocalUpdateDatabase;
-import search4.ejb.interfaces.LocalUser;
+import search4.ejb.interfaces.*;
+import search4.entities.DisplayMovieEntity;
+import search4.entities.DisplayProviderEntity;
 import search4.entities.DisplayUserEntity;
 import search4.entities.MovieEntity;
 import search4.exceptions.DataNotFoundException;
@@ -27,9 +27,13 @@ public class UpdateDatabaseEJB implements LocalUpdateDatabase, Serializable{
     @EJB
     private DisplayMovieDAOBean displayMovieDAOBean;
     @EJB
+    private LocalDisplayMovie displayMovieEJB;
+    @EJB
     private LocalUser userEJB;
     @EJB
     private LocalEmail emailEJB;
+    @EJB
+    private LocalProvider providerEJB;
 
     public void getMovieChanges() throws Exception {
         URLBuilder urlBuilder = new URLBuilder();
@@ -40,27 +44,41 @@ public class UpdateDatabaseEJB implements LocalUpdateDatabase, Serializable{
             throw new Exception("NO NO NO NONO");
         }
 
-//        String path = "/updates/movies/changes/"; //TODO shows returns correctly for test, but is it properly?
-        String path = "/updates/shows/changes/";
+        String path = "/updates/movies/changes/";
         String endQuery = "?limit=100&page=1";
         String url = urlBuilder.guideboxUpdateUrl(path, lastUpdate, endQuery);
         JsonObject jsonObject = jSonHelper.getObject(url);
 
         List<JsonObject> jsonMovies = jSonHelper.getObjectList(jsonObject, "results");
 
-        //TODO currently this always returns 0 with a bunch of transactionRollbacks
         List<MovieEntity> movieEntities = getMovieEntitiesByGuideboxId(jsonMovies);
-        System.out.println(movieEntities);
-        System.out.println("l: "+movieEntities.size());
-        System.out.println("TEST");
+
         for (MovieEntity movie : movieEntities) {
             List<DisplayUserEntity> displayUsers = userEJB.getDisplayUsersSubscribedTo(movie.getId());
-            for (DisplayUserEntity userEntity : displayUsers) {
-                System.out.println("Send mail to "+userEntity.getEmail()+" that "+movie.getTitle()+" is available");
-                emailEJB.sendNotificationMail(userEntity, movie);
+            DisplayMovieEntity displayMovieEntity = displayMovieEJB.createDisplayMovie(movie);
+            List<DisplayUserEntity> usersWithMatching = userWithMatichingProviders(displayUsers, displayMovieEntity);
+            for (DisplayUserEntity userEntity : usersWithMatching) {
+                emailEJB.sendNotificationMail(userEntity, displayMovieEntity);
             }
         }
         setLastChanges(getCurrentDate());
+    }
+
+    private List<DisplayUserEntity> userWithMatichingProviders (List<DisplayUserEntity> allSubscribedUsers, DisplayMovieEntity displayMovieEntity) {
+        List<DisplayUserEntity> matchingUsers = new ArrayList<DisplayUserEntity>();
+        for (DisplayUserEntity userEntity : allSubscribedUsers) {
+            List<DisplayProviderEntity> desiredProviders = providerEJB.getAllForUser(userEntity.getId());
+            List<String> movieProviders = displayMovieEntity.getCurrentProviders();
+            String tempProvider;
+            for (DisplayProviderEntity displayProvider : desiredProviders) {
+                tempProvider = displayProvider.getProvider();
+                if (movieProviders.contains(tempProvider)) {
+                    matchingUsers.add(userEntity);
+                    break;
+                }
+            }
+        }
+        return matchingUsers;
     }
 
     private List<MovieEntity> getMovieEntitiesByGuideboxId(List<JsonObject> jsonMovies) {

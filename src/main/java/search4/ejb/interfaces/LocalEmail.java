@@ -12,9 +12,9 @@ public interface LocalEmail {
 
     Session setUpMail();
 
-    void sendNotificationMail(DisplayUserEntity user, MovieEntity movie);
+    void sendNotificationMail(DisplayUserEntity user, DisplayMovieEntity movie);
 
-    String linkFactory(DisplayMovieEntity movie);
-    
     void sendForgotPasswordMail(String mail, String password);
+    
+    String linkFactory(DisplayMovieEntity movie, DisplayUserEntity userEntity);
 }
