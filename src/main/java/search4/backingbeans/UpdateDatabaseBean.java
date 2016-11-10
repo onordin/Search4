@@ -20,8 +20,10 @@ public class UpdateDatabaseBean implements Serializable{
     private LocalUpdateDatabase updateDatabaseEJB;
 
     private String message;
+    private Integer numberOfMoviesToUpdate;
 
     public String updateDatabase(Integer limit) {
+    	System.out.println("got this number: " + limit);
         try {
             updateDatabaseEJB.updateDatabase(limit);
             message = "Database updated";
@@ -52,4 +54,19 @@ public class UpdateDatabaseBean implements Serializable{
     public String getMessage() {
         return message;
     }
+
+	public Integer getNumberOfMoviesToUpdate() {
+		return numberOfMoviesToUpdate;
+	}
+
+	public void setNumberOfMoviesToUpdate(Integer numberOfMoviesToUpdate) {
+		this.numberOfMoviesToUpdate = numberOfMoviesToUpdate;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
+	}
+    
+    
+    
 }
