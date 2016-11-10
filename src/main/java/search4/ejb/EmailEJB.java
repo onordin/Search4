@@ -129,4 +129,6 @@ public class EmailEJB implements LocalEmail, Serializable{
         links.addAll(movie.getProviderListWebTvEverywhere());
         return links;
     }
+
+	
 }
