@@ -39,15 +39,13 @@ public class DisplayMovieDAOBean implements Serializable{
     public MovieEntity getMovieByGuideboxId(Long guideboxId) throws DataNotFoundException {
         MovieEntity m = null;
         try {
-//            System.out.println("Try get movie");
             m = (MovieEntity) entityManager.createNamedQuery("MovieEntity.getWithGuideboxId")
                     .setParameter("guideboxId", guideboxId)
                     .getSingleResult();
-//            System.out.println("Got it, returning");
             return m;
         }
         catch (NoResultException ne) {
-//            System.err.println("Throwing datanotfound");
+            //TODO temp to return null instead of error
 //            throw new DataNotFoundException("No movie in database with that guidebox ID ("+guideboxId+")");
         }
         return m;

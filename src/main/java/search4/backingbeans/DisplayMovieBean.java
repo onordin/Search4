@@ -21,8 +21,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-//@Named(value="displayBean")
-//@SessionScoped //TODO should be ViewScoped?
 @ManagedBean(name="displayBean")
 @ViewScoped
 public class DisplayMovieBean implements Serializable{
@@ -66,28 +64,19 @@ public class DisplayMovieBean implements Serializable{
     }
 
 	public void checkForMatchingSubscriptions(List<String> requestedProviders) {
-		List<String> matching = displayMovieEJB.getMatchingProviders(requestedProviders, displayMovieEntity);
-		for(String match : matching) {
-			matchingProviders.add(match);
-		}
+        try {
+            List<String> matching = displayMovieEJB.getMatchingProviders(requestedProviders, displayMovieEntity);
+            for (String match : matching) {
+                matchingProviders.add(match);
+            }
+        } catch (Exception e) { //TODO catch different errors
+            message = "Unknown Error";
+        }
 	}
 
+	//TODO refactor to setMovie?
     public void getMovieData(Integer id) {
-        //TODO use getMovie
-        try {
-            displayMovieEntity = displayMovieEJB.getDisplayMovie(id);
-            message = "";
-        } catch (UnregisteredProviderException pe) {
-            displayMovieEntity = null;
-            message = "Error: "+pe;
-        } catch (DataNotFoundException de) {
-            displayMovieEntity = null;
-            message = "400 Bad Request: No such movie!";
-        }
-        catch (Exception e) {
-            displayMovieEntity = null;
-            message = "Error"+e;
-        }
+        displayMovieEntity = getMovie(id);
     }
 
     public DisplayMovieEntity getMovie(Integer id) {
