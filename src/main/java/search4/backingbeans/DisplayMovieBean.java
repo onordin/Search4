@@ -69,12 +69,11 @@ public class DisplayMovieBean implements Serializable{
             for (String match : matching) {
                 matchingProviders.add(match);
             }
-        } catch (Exception e) { //TODO catch different errors
-            message = "Unknown Error";
+        } catch (Exception e) { 
+            message = e.getMessage();
         }
 	}
 
-	//TODO refactor to setMovie?
     public void getMovieData(Integer id) {
         displayMovieEntity = getMovie(id);
     }

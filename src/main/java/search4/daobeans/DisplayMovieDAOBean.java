@@ -50,6 +50,6 @@ public class DisplayMovieDAOBean implements Serializable{
         catch (NoResultException ne) {
             System.out.println("LOG: Error, No movie in database with that guidebox ID ("+guideboxId+")");
         }
-        return m;
+		return m;
     }
 }
