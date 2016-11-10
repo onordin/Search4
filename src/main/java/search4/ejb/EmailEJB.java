@@ -73,7 +73,6 @@ public class EmailEJB implements LocalEmail, Serializable{
         String recipent = mail;
         String subject = "Search4 password changed";
         String message = "Hello, your new random generated password is: " +password;
-        //System.out.println(mail + " " + subject + " " +message);
         sendMail(recipent, subject, message);
     }
 

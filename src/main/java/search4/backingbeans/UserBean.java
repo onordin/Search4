@@ -4,9 +4,11 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.security.SecureRandom;
+import java.util.ArrayList;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
@@ -47,6 +49,10 @@ public class UserBean implements Serializable{
 	private LocalUser userEJB;
 	@EJB
 	private LocalEmail emailEJB;
+	
+	public void postInit() {
+		passwordReset = "";
+	}
 	
 	public String createUser(){
 		String pattern = "((?=.*[A-Za-z]).{6,})";
@@ -141,30 +147,30 @@ public class UserBean implements Serializable{
 		email = "";
 		password = "";
 		return "full_startpage";
-		
 	}
 	
 	public String forgotPassword() {
 		
 		DisplayUserEntity activeUser = userEJB.getUserWithEmail(email);
-		
 		if(activeUser == null) {
 			passwordReset = "Email doesn't exist";
 			email = "";
-			return "forgot_password";
+			return "full_password_fail";
 		}
 		String randomPassword = GenerateRandomPassword();
 		activeUser.setFirstPassword(randomPassword);
 		activeUser.setSecondPassword(randomPassword);
 		userEJB.changePasswordByEmail(activeUser);
 		String mail = activeUser.getEmail();
-		System.out.println("random password = " +randomPassword);
-		//emailEJB.sendForgotPasswordMail(mail, randomPassword);
-		passwordReset = "Instrctions sent to " +email;
+		System.out.println("New random password = " +randomPassword);
+		emailEJB.sendForgotPasswordMail(mail, randomPassword);
+		passwordReset = "";
 		email = "";
-		return "full_forgot_password";
+		
+		return "full_password_sent";
 	}
 	
+
 	private String GenerateRandomPassword() {
 		SecureRandom random = new SecureRandom();
 		return new BigInteger(130, random).toString(32);
@@ -174,9 +180,6 @@ public class UserBean implements Serializable{
 	
 	public String changePassword() {
 		String pattern = "((?=.*[A-Za-z]).{6,})";
-		// 1. kolla om gamla lösenordet är rätt
-		// 2. kolla om first o second är samma
-		// 3. uppdatera db med nya lösen
 		DisplayUserEntity activeUser = userEJB.getUserToFrontend(displayUserEntity.getEmail(), password);	//checks correct old password
 		if(activeUser != null) {
 			if(firstPassword.equals(secondPassword)) {
