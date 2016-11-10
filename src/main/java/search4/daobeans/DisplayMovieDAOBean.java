@@ -45,9 +45,8 @@ public class DisplayMovieDAOBean implements Serializable{
             return m;
         }
         catch (NoResultException ne) {
-            //TODO temp to return null instead of error
-//            throw new DataNotFoundException("No movie in database with that guidebox ID ("+guideboxId+")");
+            throw new DataNotFoundException("No movie in database with that guidebox ID ("+guideboxId+")");
         }
-        return m;
+//        return m; TODO test if works
     }
 }

@@ -49,7 +49,6 @@ public class DisplayMovieEJB implements LocalDisplayMovie, Serializable{
         return createDisplayMovie(movieEntity);
     }
 
-    //TODO buisness logic or belongs in a helper/factory class?
     public DisplayMovieEntity createDisplayMovie(MovieEntity movieEntity) throws Exception{
         DisplayMovieEntity displayMovieEntity = new DisplayMovieEntity();
         tempProviders = new ArrayList<String>();
