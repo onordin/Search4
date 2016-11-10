@@ -42,7 +42,7 @@ public class DisplayMovieEJB implements LocalDisplayMovie, Serializable{
     }
     
     //NEW METHOD: better to send the id to EJB and retrieve MovieEntity here. No point in bringing it to backing bean.
-    public DisplayMovieEntity getDisplayMovie(Integer id) throws Exception{
+    public DisplayMovieEntity getDisplayMovie(Integer id) throws Exception {
         MovieEntity movieEntity = getMovieData(id);
         setGuideboxId(movieEntity); //Check if guidbox id is set. If not, set it.
         tempProviders = new ArrayList<String>();
@@ -50,23 +50,24 @@ public class DisplayMovieEJB implements LocalDisplayMovie, Serializable{
     }
 
     //TODO buisness logic or belongs in a helper/factory class?
-    public DisplayMovieEntity createDisplayMovie(MovieEntity movieEntity) {
+    public DisplayMovieEntity createDisplayMovie(MovieEntity movieEntity) throws Exception{
         DisplayMovieEntity displayMovieEntity = new DisplayMovieEntity();
+        tempProviders = new ArrayList<String>();
         setStreamingServices(displayMovieEntity, movieEntity.getGuideboxId()); //Retrieve streaming services from guidebox
         displayMovieEntity.setCurrentProviders(tempProviders);
         setTmdbInfo(displayMovieEntity, movieEntity.getTmdbId()); //Retrieve movie information (description, poster etc) from TMDB
-        displayMovieEntity.checkAddedServices();	//populate all boolean has-properties
+        displayMovieEntity.checkAddedServices();    //populate all boolean has-properties
         return displayMovieEntity;
     }
 
-    private void setGuideboxId(MovieEntity movieEntity) {
+    private void setGuideboxId(MovieEntity movieEntity) throws Exception {
         if (movieEntity.getGuideboxId() < 1) { //first actual guidebox id is 6
             //TODO if we get weird errors with getting display movie it probably means there is an exception thrown from this method
             movieEntity.setGuideboxId(getGuideboxId(movieEntity.getTmdbId()));
         }
     }
 
-    private Integer getGuideboxId(Integer tmdbId) {
+    private Integer getGuideboxId(Integer tmdbId) throws Exception {
         Integer guideboxId = 0;
         JSonHelper jSonHelper = new JSonHelper();
         URLBuilder urlBuilder = new URLBuilder();
@@ -83,7 +84,7 @@ public class DisplayMovieEJB implements LocalDisplayMovie, Serializable{
         return guideboxId;
     }
 
-    private void setStreamingServices(DisplayMovieEntity displayMovieEntity, Integer guideBoxId) throws UnregisteredProviderException, DataNotFoundException{
+    private void setStreamingServices(DisplayMovieEntity displayMovieEntity, Integer guideBoxId) throws Exception {
         URLBuilder urlBuilder = new URLBuilder();
 
         String url = urlBuilder.guideboxUrl(guideBoxId, "/movie/");
@@ -112,12 +113,13 @@ public class DisplayMovieEJB implements LocalDisplayMovie, Serializable{
         displayMovieEntity.setProviderListOther(getProvidersOfType(movieObject, "other_sources", guideBoxId));
     }
 
-    private List<ServiceProviderLink> getProvidersOfType(JsonObject movieObject, String providerType, Integer guideBoxId) {
+    private List<ServiceProviderLink> getProvidersOfType(JsonObject movieObject, String providerType, Integer guideBoxId) throws Exception {
         JSonHelper jSonHelper = new JSonHelper();
         List<JsonObject> objectList = jSonHelper.getObjectList(movieObject, providerType);
         List<ServiceProviderLink> serviceProviderLinks = new ArrayList<ServiceProviderLink>();
 
         if (objectList == null) {
+            System.out.println("This is explosion?");
             throw new DataNotFoundException("Invalid Guidebox ID ("+guideBoxId+")");
         }
 
@@ -152,13 +154,11 @@ public class DisplayMovieEJB implements LocalDisplayMovie, Serializable{
     }
 
 
-    public List<String> getMatchingProviders(List<String> requestedProviders, DisplayMovieEntity displayMovieEntity) {
-
+    public List<String> getMatchingProviders(List<String> requestedProviders, DisplayMovieEntity displayMovieEntity) throws Exception{
     	List<String> resultList = new ArrayList<String>();
-
-    	if(requestedProviders.contains("All")) {
+    	if (requestedProviders.contains("All")) {
     		resultList = displayMovieEntity.getCurrentProviders();
-    	}else {
+    	} else {
 	    	for(String requestedProvider : requestedProviders) {
 	    		for(String movieProvider : displayMovieEntity.getCurrentProviders()) {
 	    			if(requestedProvider.equalsIgnoreCase(movieProvider)) {

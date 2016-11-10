@@ -128,7 +128,7 @@ public class UserEJB implements LocalUser, Serializable {
         List<SubscriptionEntity> subscriptionEntities = subscriptionDAOBean.getUsersSubscribedTo(movieId);
         List<UserEntity> userEntities = new ArrayList<UserEntity>();
         for (SubscriptionEntity subscriptionEntity : subscriptionEntities) {
-            userEntities.add(userDAOBean.getUser(subscriptionEntity.getId()));
+            userEntities.add(userDAOBean.getUser(subscriptionEntity.getUserId()));
         }
         return userEntities;
     }
