@@ -50,7 +50,6 @@ public class MovieResource {
 	}
 	
 	@GET
-	@Path("/getallmovies")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getAllMovies(@Context UriInfo uriInfo) {
 		List<MovieEntity> allMovies;

@@ -32,8 +32,7 @@ public class UserEJB implements LocalUser, Serializable {
 	private UserDAOBean userDAOBean;
     @EJB
     private SubscriptionDAOBean subscriptionDAOBean;
-    @EJB
-    private LocalEmail emailEJB;
+  
 	
 	public DisplayUserEntity createUser(UserEntity userEntity) throws DuplicateDataException, InternalServerErrorException{
 		//Validation
@@ -220,7 +219,7 @@ public class UserEJB implements LocalUser, Serializable {
 	                userEntity.setEmail(verifiedUser.getEmail());
 	                userEntity.setPassword(hashedPassword); 		//has now been hashed
 	                infoPayload = tryUpdateDatabaseAndInfoPayload(activeUser, userEntity, infoPayload);
-	                emailEJB.sendForgotPasswordMail(verifiedUser, activeUser.getFirstPassword());
+	                
 	            } catch (NoSuchProviderException e) {
 	                throw new InternalServerErrorException("Something went wrong internally, please try again later!");
 	            } catch (NoSuchAlgorithmException e) {

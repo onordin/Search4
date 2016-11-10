@@ -143,7 +143,9 @@ public class UserBean implements Serializable{
 		activeUser.setFirstPassword(randomPassword);
 		activeUser.setSecondPassword(randomPassword);
 		userEJB.changePasswordByEmail(activeUser);
-		
+		String mail = activeUser.getEmail();
+		System.out.println("random password = " +randomPassword);
+		//emailEJB.sendForgotPasswordMail(mail, randomPassword);
 		passwordReset = "Instrctions sent to " +email;
 		email = "";
 		return "full_forgot_password";
