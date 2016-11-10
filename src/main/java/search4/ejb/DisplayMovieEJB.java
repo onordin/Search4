@@ -41,10 +41,12 @@ public class DisplayMovieEJB implements LocalDisplayMovie, Serializable{
     	
     }
     
-    //NEW METHOD: better to send the id to EJB and retrieve MovieEntity here. No point in bringing it to backing bean.
+
     public DisplayMovieEntity getDisplayMovie(Integer id) throws Exception {
         MovieEntity movieEntity = getMovieData(id);
-        setGuideboxId(movieEntity); //Check if guidbox id is set. If not, set it.
+        if(movieEntity.getGuideboxId() == 0) { //guidebox Id might not have been set before
+        	setGuideboxId(movieEntity); 	
+        }
         tempProviders = new ArrayList<String>();
         return createDisplayMovie(movieEntity);
     }
@@ -61,7 +63,6 @@ public class DisplayMovieEJB implements LocalDisplayMovie, Serializable{
 
     private void setGuideboxId(MovieEntity movieEntity) throws Exception {
         if (movieEntity.getGuideboxId() < 1) { //first actual guidebox id is 6
-            //TODO if we get weird errors with getting display movie it probably means there is an exception thrown from this method
             movieEntity.setGuideboxId(getGuideboxId(movieEntity.getTmdbId()));
         }
     }
