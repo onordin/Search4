@@ -28,6 +28,7 @@ public class EmailEJB implements LocalEmail, Serializable{
 
     @EJB
     private DisplayMovieEJB displayMovieEJB;
+    
 
     private final String USERNAME = "searchfourmail@gmail.com";
 
