@@ -111,7 +111,7 @@ public class UserBean implements Serializable{
 				userIsLoggedIn = null;
 				externalContext.redirect(externalContext.getRequestContextPath() + viewId+"?id="+id);
 			}else{
-			message = "Login Successfull";
+			message = "Login Successfullll";
 			userIsLoggedIn = "user is now logged in";
 			//Wiping these just to be sure
 			firstName = "";
