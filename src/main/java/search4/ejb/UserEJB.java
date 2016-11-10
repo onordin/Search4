@@ -13,6 +13,7 @@ import javax.ws.rs.InternalServerErrorException;
 
 import search4.daobeans.SubscriptionDAOBean;
 import search4.daobeans.UserDAOBean;
+import search4.ejb.interfaces.LocalEmail;
 import search4.ejb.interfaces.LocalUser;
 import search4.ejb.passwordencryption.PBKDF2;
 import search4.entities.DisplayUserEntity;
@@ -31,6 +32,7 @@ public class UserEJB implements LocalUser, Serializable {
 	private UserDAOBean userDAOBean;
     @EJB
     private SubscriptionDAOBean subscriptionDAOBean;
+  
 	
 	public DisplayUserEntity createUser(UserEntity userEntity) throws DuplicateDataException, InternalServerErrorException, NoSuchAlgorithmException, InvalidKeySpecException{
 		//Validation
@@ -198,6 +200,42 @@ public class UserEJB implements LocalUser, Serializable {
         }
         return infoPayload;
     }
+	
+	//doesnt update other user details (done in another method)
+		public InfoPayload changePasswordByEmail(DisplayUserEntity activeUser) throws DuplicateDataException, InternalServerErrorException{
+
+	        InfoPayload infoPayload = new InfoPayload();
+	        DisplayUserEntity verifiedUser = getUserWithEmail(activeUser.getEmail());
+
+	        if(verifiedUser != null) {
+	            try {
+	                if (activeUser.getFirstPassword().length() < 4) {
+	                    throw new InvalidInputException("Password must be 4 or more characters.");
+	                }
+
+	                String hashedPassword = PBKDF2.generatePasswordHash(activeUser.getFirstPassword(), 666);
+	                UserEntity userEntity = new UserEntity();
+
+	                userEntity.setId(verifiedUser.getId());
+	                userEntity.setFirstName(verifiedUser.getFirstName());
+	                userEntity.setLastName(verifiedUser.getLastName());
+	                userEntity.setEmail(verifiedUser.getEmail());
+	                userEntity.setPassword(hashedPassword); 		//has now been hashed
+	                infoPayload = tryUpdateDatabaseAndInfoPayload(activeUser, userEntity, infoPayload);
+	                
+	            } catch (NoSuchProviderException e) {
+	                throw new InternalServerErrorException("Something went wrong internally, please try again later!");
+	            } catch (NoSuchAlgorithmException e) {
+	                throw new InternalServerErrorException("Something went wrong internally, please try again later!");
+	            } catch (InvalidKeySpecException e) {
+	                throw new InternalServerErrorException("Something went wrong internally, please try again later!");
+	            }
+	        }else {
+	            infoPayload.setUser_Message("User: " + activeUser.getEmail() + " has not been updated, please check username/password");
+	            infoPayload.setResultOK(false);
+	        }
+	        return infoPayload;
+	    }
 
 	//doesnt update password (done in another method)
 	public InfoPayload updateUserDetails(DisplayUserEntity activeUser) throws DuplicateDataException, InternalServerErrorException {

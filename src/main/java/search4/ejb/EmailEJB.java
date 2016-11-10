@@ -68,6 +68,13 @@ public class EmailEJB implements LocalEmail, Serializable{
                 link;
         sendMail(recipent, subject, message);
     }
+    
+    public void sendForgotPasswordMail(String mail, String password) {
+        String recipent = mail;
+        String subject = "Search4 password changed";
+        String message = "Hello, your new random generated password is: " +password;
+        sendMail(recipent, subject, message);
+    }
 
     private void sendMail(String recipent, String subject, String content) {
         try {
@@ -129,4 +136,6 @@ public class EmailEJB implements LocalEmail, Serializable{
         links.addAll(movie.getProviderListWebTvEverywhere());
         return links;
     }
+
+	
 }
