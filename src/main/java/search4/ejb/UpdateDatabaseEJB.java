@@ -85,17 +85,10 @@ public class UpdateDatabaseEJB implements LocalUpdateDatabase, Serializable{
         List<MovieEntity> movieEntities = new ArrayList<MovieEntity>();
         MovieEntity movieEntity;
         for (JsonObject obj : jsonMovies) {
-            try {
-                Long gid = Long.parseLong(obj.get("id").toString());
-                movieEntity = displayMovieDAOBean.getMovieByGuideboxId(gid);
-                if (movieEntity != null) {
-                    movieEntities.add(movieEntity);
-                }
-            } catch (DataNotFoundException dnfe) {
-                System.out.println("LOG: ERROR: Data not found: " + dnfe);
-            }
-            catch (Exception e) {
-                System.out.println("LOG: ERROR: Unknown Error: " + e);
+            Long gid = Long.parseLong(obj.get("id").toString());
+            movieEntity = displayMovieDAOBean.getMovieByGuideboxId(gid);
+            if (movieEntity != null) { //Uggly hack, see DisplayMovieDAOBean.getMovieByGuideboxId() for explanation
+                movieEntities.add(movieEntity);
             }
         }
         return movieEntities;
