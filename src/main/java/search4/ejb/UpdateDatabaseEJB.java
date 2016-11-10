@@ -132,42 +132,44 @@ public class UpdateDatabaseEJB implements LocalUpdateDatabase, Serializable{
         return movieEntity;
     }
 
-    //TODO probably rewrite this so it works better and is easier to use, hard for outside user to understand passes
-    public void updateDatabase(Integer passes) throws Exception{
+    //TODO rewritten but needs testing
+    public void updateDatabase(Integer amount) throws Exception{
         Integer start;
-        Integer startMod;
         Integer limit;
+        Integer tmdbLast;
+        Integer iterator;
+        Integer current;
+        Integer intervalLimit;
         List<MovieEntity> movieEntities;
 
-        //Marked methods both loops through the list of movies; combine them? Bad idea from an OOP perspective, good from an computer resource perspective
-        startMod = 0;
-        for (int i = 0; i < passes; i++) {
-            start = getLastTMDBIdFromDB()+startMod;
-            if (passes == 0) {
-                limit = getTMDBLimit(start);
-            } else {
-                limit = start+40;
+        start = getLastTMDBIdFromDB();
+        tmdbLast = getLatestMovieFromTmdb();
+        limit = start + amount;
+        if (limit > tmdbLast || amount == 0) {
+            limit = tmdbLast;
+        }
+        iterator = 0;
+        current = start;
+        while (current < limit) {
+            intervalLimit = current + 40;
+            if (limit < intervalLimit) {
+                intervalLimit = limit;
             }
-            movieEntities = getMoviesInInterval(start, limit); //#1
-            if (movieEntities.size() < 1) {
-                startMod += 40;
+            movieEntities = getMoviesInInterval(start, intervalLimit);
+            insertMovies(movieEntities);
+            if (iterator == 39) {
+                try {
+                    Thread.sleep(11*1000);
+                } catch (InterruptedException ie) {
+                    System.out.println("LOG: Error, unexpected interrupt");
+                }
+                iterator = 0;
             }
-            else {
-                insertMovies(movieEntities); //#2
-                startMod = 0;
-            }
-            try {
-                Thread.sleep(11*1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            iterator++;
+            current++;
         }
     }
 
-    public Integer getTMDBLimit(int start) {
-        //TODO get last tmdb movie added
-        return start+40;
-    }
     public Integer getLastTMDBIdFromDB() throws Exception {
         return updateDatabaseDAOBean.getLastTmdbId()+1;
     }
@@ -185,10 +187,10 @@ public class UpdateDatabaseEJB implements LocalUpdateDatabase, Serializable{
             try {
                 currentMovie = getMovieFromTMDB(i);
             } catch (DataNotFoundException dnfe) {
-                System.err.println("Data not found: "+dnfe); //TODO send to admin frontend in future
+                System.err.println("LOG: Error, Data not found: " + dnfe);
             }
             catch (Exception e) {
-                System.err.println(""+e);
+                System.err.println("LOG: Unknown Error: " + e);
                 currentMovie = null;
             }
             if (currentMovie != null) {
@@ -196,5 +198,16 @@ public class UpdateDatabaseEJB implements LocalUpdateDatabase, Serializable{
             }
         }
         return movieInterval;
+    }
+
+    private Integer getLatestMovieFromTmdb(){
+        URLBuilder urlBuilder = new URLBuilder();
+        JSonHelper jSonHelper = new JSonHelper();
+
+        String path = "latest/";
+        String url = urlBuilder.tmdbUrlUpdate(path);
+        JsonObject jsonObject = jSonHelper.getObject(url);
+        Integer latestId = jsonObject.getInt("id");
+        return latestId;
     }
 }

@@ -1,5 +1,7 @@
 package search4.soap;
 
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -22,7 +24,14 @@ public class UserSoap {
 	
 	
 	public DisplayUserEntity getUser(String email, String password) {
-		return userEJB.getUserToFrontend(email, password);
+		try {
+			return userEJB.getUserToFrontend(email, password);
+		} catch (InvalidKeySpecException e) {
+			e.printStackTrace();
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 	
 

@@ -164,8 +164,10 @@ public class UserEJB implements LocalUser, Serializable {
         
 		try {
 			verifiedUser = getUser(activeUser.getEmail(), activeUser.getPassword());
-		} catch (NoSuchAlgorithmException | InvalidKeySpecException e1) {
-			infoPayload.setMore_Info(e1.getMessage());
+		} catch (NoSuchAlgorithmException nsale) {
+			infoPayload.setMore_Info(nsale.getMessage());
+		} catch (InvalidKeySpecException ikse) {
+			infoPayload.setMore_Info(ikse.getMessage());
 		}
 
         if(verifiedUser != null) {
@@ -205,8 +207,10 @@ public class UserEJB implements LocalUser, Serializable {
 		
 		try {
 			verifiedUser = getUser(activeUser.getEmail(), activeUser.getPassword());
-		} catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
-			infoPayload.setMore_Info(e.getMessage());
+		} catch (NoSuchAlgorithmException nsae) {
+			infoPayload.setMore_Info(nsae.getMessage());
+		} catch (InvalidKeySpecException ikse) {
+			infoPayload.setMore_Info(ikse.getMessage());
 		}
 
 		if(verifiedUser != null) {

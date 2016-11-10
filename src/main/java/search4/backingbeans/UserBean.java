@@ -169,10 +169,12 @@ public class UserBean implements Serializable{
 		String errorMessage = "";
 		try {
 			activeUser = userEJB.getUserToFrontend(displayUserEntity.getEmail(), password);
-		} catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
-			errorMessage = e.getMessage();
-			message = errorMessage;
+		} catch (NoSuchAlgorithmException nsae) {
+			message = nsae.getMessage();
 		}	//checks correct old password
+		catch (InvalidKeySpecException ikse) {
+			message = ikse.getMessage();
+		}
 		if(activeUser != null) {
 			if(firstPassword.equals(secondPassword)) {
 				if(firstPassword.matches(pattern)) {
