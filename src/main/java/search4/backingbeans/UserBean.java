@@ -71,14 +71,14 @@ public class UserBean implements Serializable{
 			message = "New user with email: " + email + " created";
 			return "full_startpage";
 		} catch (DuplicateDataException dde) {
-			message = dde.getMessage();
-			return "full_startpage";
+			registerMessage = dde.getMessage();
+			return "";
 		} catch (InternalServerErrorException isee) {
-			message = isee.getMessage();
-			return "full_startpage";
+			registerMessage = isee.getMessage();
+			return "";
 		} catch (InvalidInputException iie) {
-			message = iie.getMessage();
-			return "full_startpage";
+			registerMessage = iie.getMessage();
+			return "";
 		}
 		catch (Exception e) {
 			message = "Unknown Error";
