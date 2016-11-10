@@ -28,14 +28,14 @@ public class UpdateDatabaseBean implements Serializable{
             updateDatabaseEJB.updateDatabase(limit);
             message = "Database updated";
         } catch (DataNotFoundException dnfe) {
-            message = "Something went wrong!";
-            System.err.println(""+dnfe);
+            message = "Something went wrong: DataNotFoundException: " + dnfe;
+            System.out.println("LOG: Error, DataNotFound: " + dnfe);
         } catch (DuplicateDataException dde) {
-            message = "Something went wrong!";
-            System.err.println(""+dde);
+            message = "Something went wrong: " + dde;
+            System.out.println("LOG: Error, DuplicateDataException: " + dde);
         } catch (Exception e) {
-            message = "Something went wrong!";
-            System.err.println(""+e);
+            message = "Something went wrong: Unknown Error: " + e;
+            System.out.println("LOG: Unknown Error: " + e);
         }
         return "admin_panel";
     }

@@ -137,36 +137,32 @@ public class UpdateDatabaseEJB implements LocalUpdateDatabase, Serializable{
         Integer start;
         Integer limit;
         Integer tmdbLast;
-        Integer iterator;
         Integer current;
         Integer intervalLimit;
         List<MovieEntity> movieEntities;
 
         start = getLastTMDBIdFromDB();
-        tmdbLast = getLatestMovieFromTmdb();
+        System.out.println("LOG: Start: " + start);
+//        tmdbLast = getLatestMovieFromTmdb();
+        tmdbLast = 100000;
         limit = start + amount;
         if (limit > tmdbLast || amount == 0) {
             limit = tmdbLast;
         }
-        iterator = 0;
         current = start;
         while (current < limit) {
             intervalLimit = current + 40;
             if (limit < intervalLimit) {
                 intervalLimit = limit;
             }
-            movieEntities = getMoviesInInterval(start, intervalLimit);
+            movieEntities = getMoviesInInterval(current, intervalLimit);
             insertMovies(movieEntities);
-            if (iterator == 39) {
-                try {
-                    Thread.sleep(11*1000);
-                } catch (InterruptedException ie) {
-                    System.out.println("LOG: Error, unexpected interrupt");
-                }
-                iterator = 0;
+            current += intervalLimit;
+            try {
+                Thread.sleep(11*1000);
+            } catch (InterruptedException ie) {
+                System.out.println("LOG: Error, unexpected interrupt");
             }
-            iterator++;
-            current++;
         }
     }
 

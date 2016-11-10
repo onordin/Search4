@@ -194,10 +194,12 @@ public class UserBean implements Serializable{
 		try {
 			activeUser = userEJB.getUserToFrontend(displayUserEntity.getEmail(), password);
 		} catch (NoSuchAlgorithmException nsae) {
-			message = nsae.getMessage();
+			errorMessage = nsae.getMessage();
+			message = errorMessage;
 		}	//checks correct old password
 		catch (InvalidKeySpecException ikse) {
-			message = ikse.getMessage();
+			errorMessage = ikse.getMessage();
+			message = errorMessage;
 		}
 		if(activeUser != null) {
 			if(firstPassword.equals(secondPassword)) {
