@@ -2,6 +2,8 @@ package search4.backingbeans;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
@@ -109,6 +111,10 @@ public class UserBean implements Serializable{
 			}
 		} catch (IOException e) {
 			message = e.getMessage();
+		} catch (NoSuchAlgorithmException e) {
+			message = e.getMessage();
+		} catch (InvalidKeySpecException e) {
+			message = e.getMessage();
 		}
 	}
 	
@@ -159,7 +165,14 @@ public class UserBean implements Serializable{
 		// 1. kolla om gamla lösenordet är rätt
 		// 2. kolla om first o second är samma
 		// 3. uppdatera db med nya lösen
-		DisplayUserEntity activeUser = userEJB.getUserToFrontend(displayUserEntity.getEmail(), password);	//checks correct old password
+		DisplayUserEntity activeUser = null;
+		String errorMessage = "";
+		try {
+			activeUser = userEJB.getUserToFrontend(displayUserEntity.getEmail(), password);
+		} catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
+			errorMessage = e.getMessage();
+			message = errorMessage;
+		}	//checks correct old password
 		if(activeUser != null) {
 			if(firstPassword.equals(secondPassword)) {
 				if(firstPassword.matches(pattern)) {
@@ -177,7 +190,9 @@ public class UserBean implements Serializable{
 				message = "Both new passwords have to match. New password was not changed.";
 			}
 		} else {
-			message = "Old password is wrong. New password was not changed.";
+			if(errorMessage == "") {	//otherwise it has also set message-variable above because of caught exception...  
+				message = "Old password is wrong. New password was not changed.";
+			}
 		}
 		password = "";
 		firstPassword = "";
