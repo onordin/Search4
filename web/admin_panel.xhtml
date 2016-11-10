@@ -15,10 +15,14 @@
     <h2 style="color: red;">#{updateDatabaseBean.message}</h2>
     <h1>Update local database from TMDB</h1>
     <h:form id="update">
-        <h:commandButton action="#{updateDatabaseBean.updateDatabase(1)}" value="Update 40 from current"></h:commandButton><br></br>
-        <h:commandButton action="#{updateDatabaseBean.updateDatabase(10)}" value="Update 400 from current"></h:commandButton><br></br>
-        <h:commandButton action="#{updateDatabaseBean.updateDatabase(100)}" value="Update 4000 from current"></h:commandButton><br></br>
-        <h:commandButton action="#{updateDatabaseBean.updateDatabase(0)}" value="Update All"></h:commandButton>
+    	<h:outputLabel for="numberOfMovies" value="Update number of movies:"></h:outputLabel>
+		<h:inputText id="numberOfMovies" label="Update number of movies:" value="#{updateDatabaseBean.numberOfMoviesToUpdate}" required="true"
+				requiredMessage="This field is required">	 
+		</h:inputText>
+		
+        <h:commandButton action="#{updateDatabaseBean.updateDatabase(updateDatabaseBean.numberOfMoviesToUpdate)}" value="Update"></h:commandButton>
+        
+        <br></br>
     </h:form>
     <h1>Synchronize Subscriptions With Database</h1>
     <h:form id="sync">

@@ -11,6 +11,8 @@ import javax.inject.Named;
 import search4.ejb.interfaces.LocalSubscription;
 import search4.entities.DisplayMovieEntity;
 import search4.entities.DisplaySubscriptionEntity;
+import search4.entities.InfoPayload;
+import search4.exceptions.DataNotFoundException;
 
 @Named(value="subscriptionBean")
 @SessionScoped
@@ -18,35 +20,44 @@ public class SubscriptionBean implements Serializable{
 
 	private static final long serialVersionUID = -7246771514304788402L;
 	private List<DisplaySubscriptionEntity> displaySubscriptionEntities;
+    private String message;
 	
 	@EJB
 	private LocalSubscription subscriptionEJB;
 
 	private List<DisplaySubscriptionEntity> getSubscriptionEntities(Integer userId) {
 		try {
+            message = "";
 			return subscriptionEJB.getAllFor(userId);
+		} catch (DataNotFoundException dnfe) {
+			message = "Data not found: " + dnfe.getMessage();
 		} catch (Exception e) {
-			System.err.println("Error "+e);
-			//TODO take proper look at entire chain here
+			message = "Unknown error: " + e;
 		}
 		return new ArrayList<DisplaySubscriptionEntity>();
 	}
 
 	public void postInit(Integer userId) {
+        message = "";
 		displaySubscriptionEntities = getSubscriptionEntities(userId);
     }
 	
     public void subscribe(Integer id, Integer userId){
     	try {
+            message = "";
     		subscriptionEJB.subscribeToMovie(id, userId);
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (DataNotFoundException dnfe) {
+			message = "Data not found: "+dnfe.getMessage();
 		}
-    	displaySubscriptionEntities = getSubscriptionEntities(userId);	//TODO what does this mean -> to update subscribebutton with displayBean.checkIfUserSubscribes()
+    	displaySubscriptionEntities = getSubscriptionEntities(userId);
     }
 
 	public void removeSubscription(Integer id, Integer userId) {
-		subscriptionEJB.removeSubscription(id);
+        message = "";
+        InfoPayload infoPayload = subscriptionEJB.removeSubscription(id);
+        if (!infoPayload.isResultOK()) {
+            message = "Something went wrong mith deleting subscription";
+        }
 		displaySubscriptionEntities = getSubscriptionEntities(userId);	//to update subscribebutton with displayBean.checkIfUserSubscribes()
 	}
 

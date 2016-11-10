@@ -2,6 +2,8 @@ package search4.backingbeans;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
@@ -71,14 +73,14 @@ public class UserBean implements Serializable{
 			message = "New user with email: " + email + " created";
 			return "full_startpage";
 		} catch (DuplicateDataException dde) {
-			message = dde.getMessage();
-			return "full_startpage";
+			registerMessage = dde.getMessage();
+			return "";
 		} catch (InternalServerErrorException isee) {
-			message = isee.getMessage();
-			return "full_startpage";
+			registerMessage = isee.getMessage();
+			return "";
 		} catch (InvalidInputException iie) {
-			message = iie.getMessage();
-			return "full_startpage";
+			registerMessage = iie.getMessage();
+			return "";
 		}
 		catch (Exception e) {
 			message = "Unknown Error";
@@ -108,6 +110,10 @@ public class UserBean implements Serializable{
 			externalContext.redirect(externalContext.getRequestContextPath() + viewId+"?id="+id);
 			}
 		} catch (IOException e) {
+			message = e.getMessage();
+		} catch (NoSuchAlgorithmException e) {
+			message = e.getMessage();
+		} catch (InvalidKeySpecException e) {
 			message = e.getMessage();
 		}
 	}
@@ -159,7 +165,16 @@ public class UserBean implements Serializable{
 		// 1. kolla om gamla lösenordet är rätt
 		// 2. kolla om first o second är samma
 		// 3. uppdatera db med nya lösen
-		DisplayUserEntity activeUser = userEJB.getUserToFrontend(displayUserEntity.getEmail(), password);	//checks correct old password
+		DisplayUserEntity activeUser = null;
+		String errorMessage = "";
+		try {
+			activeUser = userEJB.getUserToFrontend(displayUserEntity.getEmail(), password);
+		} catch (NoSuchAlgorithmException nsae) {
+			message = nsae.getMessage();
+		}	//checks correct old password
+		catch (InvalidKeySpecException ikse) {
+			message = ikse.getMessage();
+		}
 		if(activeUser != null) {
 			if(firstPassword.equals(secondPassword)) {
 				if(firstPassword.matches(pattern)) {
@@ -177,7 +192,9 @@ public class UserBean implements Serializable{
 				message = "Both new passwords have to match. New password was not changed.";
 			}
 		} else {
-			message = "Old password is wrong. New password was not changed.";
+			if(errorMessage == "") {	//otherwise it has also set message-variable above because of caught exception...  
+				message = "Old password is wrong. New password was not changed.";
+			}
 		}
 		password = "";
 		firstPassword = "";

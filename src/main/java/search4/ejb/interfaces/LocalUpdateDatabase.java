@@ -12,8 +12,8 @@ public interface LocalUpdateDatabase {
 	void updateDatabase(Integer limit) throws Exception;
 
 	void getMovieChanges() throws Exception;
-
-	Integer getTMDBLimit(int start);
 	
 	Integer getLastTMDBIdFromDB() throws Exception;
+
+
 }
