@@ -89,7 +89,6 @@ public class EmailEJB implements LocalEmail, Serializable{
         }
     }
 
-    //TODO in helper or factory file/package? feels like the wrong place -- HELPER
     public String linkFactory(DisplayMovieEntity movie, DisplayUserEntity userEntity) {
         String link = "";
         List<ServiceProviderLink> links = getAllServiceProviderLinksFor(movie);

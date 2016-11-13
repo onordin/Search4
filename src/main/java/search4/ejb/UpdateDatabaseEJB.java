@@ -39,8 +39,8 @@ public class UpdateDatabaseEJB implements LocalUpdateDatabase, Serializable{
         URLBuilder urlBuilder = new URLBuilder();
         JSonHelper jSonHelper = new JSonHelper();
         Long lastUpdate = getLastChanges();
-
-        if (lastUpdate == null) { //TODO fix
+        
+        if (lastUpdate == null) {
             throw new Exception("NO NO NO NONO");
         }
 
@@ -127,12 +127,11 @@ public class UpdateDatabaseEJB implements LocalUpdateDatabase, Serializable{
             movieEntity.setTmdbId(tmdbId);
             movieEntity.setDate(dateParser.getDateFromString(jsonObject.getString("release_date")));
         } catch (Exception e) {
-            throw new DataNotFoundException("Unknown Error: "+e); //TODO figure out posssible exceptions thrown, and send a proper message
+            throw new DataNotFoundException("Unknown Error: "+e); 
         }
         return movieEntity;
     }
 
-    //TODO rewritten but needs testing
     public void updateDatabase(Integer amount) throws Exception{
         Integer start;
         Integer limit;

@@ -24,9 +24,7 @@ public class UpdateDatabaseDAOBean implements Serializable{
             return (MovieEntity) entityManager.createNamedQuery("MovieEntity.getMovieByTmdbId").setParameter("tmdbId", tmdbId).getSingleResult();
         } catch (NoResultException nre) {
             System.out.println("LOG: No movie in database with id (" + tmdbId + ")");
-            return null; //Due to rollback errors we must return null. See TODO reference
-//            throw new DataNotFoundException("No movie in database with that TMdB ID ("+tmdbId+")");
-        }
+            return null;         }
     }
 
     private boolean movieWithIdInDB(Integer tmdbId) throws DataNotFoundException{
@@ -46,7 +44,7 @@ public class UpdateDatabaseDAOBean implements Serializable{
         if (movieWithIdInDB(tmdbId)) {
             throw new DuplicateDataException("Already exists movie in database with that TMdB ID ("+tmdbId+")");
         }
-        try { //TODO possibly encase above if in this; if it throws DataNotFound, will it work properly? Wait for REST
+        try {
             System.out.println("LOG: Insert movie into database");
             entityManager.merge(movieEntity);
             return true;
@@ -61,7 +59,7 @@ public class UpdateDatabaseDAOBean implements Serializable{
         try {
             tmdbId = (Integer) entityManager.createNamedQuery("MovieEntity.getLastTmdbId").getSingleResult();
         } catch (NoResultException nre) {
-            throw new DataNotFoundException("Got nothing from database when trying to get last TMdB ID"); //TODO will this explode with an empty database?
+            throw new DataNotFoundException("Got nothing from database when trying to get last TMdB ID"); 
         }
         if (tmdbId < 1) {
             return 1;

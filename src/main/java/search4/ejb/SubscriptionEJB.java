@@ -103,7 +103,7 @@ public class SubscriptionEJB implements LocalSubscription{
         }
         else {
             infoPayload.setUser_Message("Error removing subscription with id "+id);
-            infoPayload.setStatusCode(400); //TODO add check for subscriptionExists()? should be only possible reason for fail?
+            infoPayload.setStatusCode(400); 
             infoPayload.setResultOK(false);
         }
 		return infoPayload;

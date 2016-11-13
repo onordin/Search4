@@ -43,7 +43,7 @@ public class PBKDF2 {
         String hex = bigInteger.toString(16);
         int paddingLenght = (array.length * 2) - hex.length();
         if (paddingLenght > 0) {
-            return String.format("%0"+paddingLenght+"d", 0)+hex; //TODO ask about this
+            return String.format("%0"+paddingLenght+"d", 0)+hex; 
         }else {
             return hex;
         }

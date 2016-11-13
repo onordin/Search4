@@ -29,7 +29,7 @@ public class SubscriptionDAOBean implements Serializable{
 	}
 
 	public List<SubscriptionEntity> getAll() {
-        //Only possible exception should be if database does not exist, should throw a InternalServerError TODO look into this?
+        //Only possible exception should be if database does not exist, should throw a InternalServerError. look into this?
 		return entityManager.createNamedQuery("SubscriptionEntity.findAll").getResultList();
 	}
 	public List<SubscriptionEntity> getAllFor(Integer userId) throws DataNotFoundException {
